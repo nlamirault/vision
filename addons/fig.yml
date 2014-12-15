@@ -1,0 +1,51 @@
+elasticsearch:
+  image: vision/elasticsearch:ES_VERSION
+  ports:
+    - "9200:9200"
+    - "9300:9300"
+  volumes:
+    - data/elasticsearch/lib:/var/lib/elasticsearch
+    - data/elasticsearch/log:/var/log/supervisor
+  hostname: elasticsearch
+
+influxdb:
+  image: vision/influxdb:INFLUXDB_VERSION
+  ports:
+    - "8083:8083"
+    - "8086:8086"
+    - "8090:8090"
+    - "8099:8099"
+  volumes:
+    - data/influxdb/lib:/var/lib/influxdb
+    - data/influxdb/log:/var/log/supervisor
+
+grafana:
+  image: vision/grafana:GRAFANA_VERSION
+  ports:
+    - "9090:80"
+  volumes:
+    - data/grafana/log:/var/log/supervisor
+  links:
+    - elasticsearch:elasticsearch
+    - influxdb:influxdb
+
+kibana:
+  image: vision/kibana:KIBANA_VERSION
+  build: kibana
+  ports:
+    - "5601:5601"
+  volumes:
+    - data/kibana/log:/var/log/supervisor
+  links:
+    - elasticsearch:elasticsearch
+
+fluentd:
+  image: vision/fluentd:FLUENTD_VERSION
+  build: fluentd
+  ports:
+    - "24224:24224"
+    - "9292:9292"
+  volumes:
+    - data/fluentd/log:/var/log/supervisor
+  links:
+    - elasticsearch:elasticsearch
