@@ -1,323 +1,14 @@
 {
+  "id": null,
   "title": "Vision",
-  "services": {
-    "filter": {
-      "list": [],
-      "time": {
-        "from": "now-1h",
-        "to": "now"
-      }
-    }
-  },
+  "originalTitle": "Vision",
+  "tags": [],
+  "style": "dark",
+  "timezone": "browser",
+  "editable": true,
+  "hideControls": false,
+  "sharedCrosshair": false,
   "rows": [
-    {
-      "title": "Cpu",
-      "height": "250px",
-      "editable": true,
-      "collapse": false,
-      "collapsable": true,
-      "panels": [
-        {
-          "span": 6,
-          "editable": true,
-          "type": "graph",
-          "x-axis": true,
-          "y-axis": true,
-          "scale": 1,
-          "y_formats": [
-            "short",
-            "short"
-          ],
-          "grid": {
-            "max": null,
-            "min": null,
-            "threshold1": null,
-            "threshold2": null,
-            "threshold1Color": "rgba(216, 200, 27, 0.27)",
-            "threshold2Color": "rgba(234, 112, 112, 0.22)",
-            "leftMax": null,
-            "rightMax": null,
-            "leftMin": null,
-            "rightMin": null
-          },
-          "resolution": 100,
-          "lines": true,
-          "fill": 1,
-          "linewidth": 2,
-          "points": false,
-          "pointradius": 5,
-          "bars": false,
-          "stack": true,
-          "spyable": true,
-          "options": false,
-          "legend": {
-            "show": true,
-            "values": false,
-            "min": false,
-            "max": false,
-            "current": false,
-            "total": false,
-            "avg": false
-          },
-          "interactive": true,
-          "legend_counts": true,
-          "timezone": "browser",
-          "percentage": false,
-          "zerofill": true,
-          "nullPointMode": "connected",
-          "steppedLine": false,
-          "tooltip": {
-            "value_type": "cumulative",
-            "query_as_alias": true
-          },
-          "targets": [
-            {
-              "target": "stats.gauges.cpu.percent",
-              "function": "mean",
-              "column": "value"
-            },
-            {
-              "target": "stats.gauges.undefined",
-              "hide": true,
-              "function": "mean",
-              "column": "value"
-            },
-            {
-              "hide": true,
-              "function": "mean",
-              "column": "value",
-              "target": ""
-            }
-          ],
-          "aliasColors": {},
-          "aliasYAxis": {},
-          "title": "CPU Graphite",
-          "datasource": "Graphite",
-          "renderer": "flot",
-          "annotate": {
-            "enable": false
-          }
-        },
-        {
-          "span": 6,
-          "editable": true,
-          "type": "graph",
-          "loadingEditor": false,
-          "datasource": "Graphite",
-          "renderer": "flot",
-          "x-axis": true,
-          "y-axis": true,
-          "scale": 1,
-          "y_formats": [
-            "short",
-            "short"
-          ],
-          "grid": {
-            "max": null,
-            "min": null,
-            "threshold1": null,
-            "threshold2": null,
-            "threshold1Color": "rgba(216, 200, 27, 0.27)",
-            "threshold2Color": "rgba(234, 112, 112, 0.22)",
-            "leftMax": null,
-            "rightMax": null,
-            "leftMin": null,
-            "rightMin": null
-          },
-          "annotate": {
-            "enable": false
-          },
-          "resolution": 100,
-          "lines": true,
-          "fill": 1,
-          "linewidth": 2,
-          "points": false,
-          "pointradius": 5,
-          "bars": false,
-          "stack": false,
-          "legend": {
-            "show": true,
-            "values": false,
-            "min": false,
-            "max": false,
-            "current": false,
-            "total": false,
-            "avg": false
-          },
-          "percentage": false,
-          "zerofill": true,
-          "nullPointMode": "connected",
-          "steppedLine": false,
-          "tooltip": {
-            "value_type": "cumulative",
-            "query_as_alias": true
-          },
-          "targets": [
-            {
-              "target": "stats.gauges.memory.percent",
-              "function": "mean",
-              "column": "value"
-            }
-          ],
-          "aliasColors": {},
-          "aliasYAxis": {},
-          "title": "Memory Graphite"
-        }
-      ],
-      "notice": false
-    },
-    {
-      "title": "Memory",
-      "height": "250px",
-      "editable": true,
-      "collapse": false,
-      "collapsable": true,
-      "panels": [
-        {
-          "span": 6,
-          "editable": true,
-          "type": "graph",
-          "loadingEditor": false,
-          "datasource": "Graphite",
-          "renderer": "flot",
-          "x-axis": true,
-          "y-axis": true,
-          "scale": 1,
-          "y_formats": [
-            "short",
-            "short"
-          ],
-          "grid": {
-            "max": null,
-            "min": null,
-            "threshold1": null,
-            "threshold2": null,
-            "threshold1Color": "rgba(216, 200, 27, 0.27)",
-            "threshold2Color": "rgba(234, 112, 112, 0.22)",
-            "leftMax": null,
-            "rightMax": null,
-            "leftMin": null,
-            "rightMin": null
-          },
-          "annotate": {
-            "enable": false
-          },
-          "resolution": 100,
-          "lines": true,
-          "fill": 1,
-          "linewidth": 2,
-          "points": false,
-          "pointradius": 5,
-          "bars": false,
-          "stack": false,
-          "legend": {
-            "show": true,
-            "values": false,
-            "min": false,
-            "max": false,
-            "current": false,
-            "total": false,
-            "avg": false
-          },
-          "percentage": false,
-          "zerofill": true,
-          "nullPointMode": "connected",
-          "steppedLine": false,
-          "tooltip": {
-            "value_type": "cumulative",
-            "query_as_alias": true
-          },
-          "targets": [
-            {
-              "target": "stats.gauges.disk.read.time",
-              "function": "mean",
-              "column": "value"
-            },
-            {
-              "target": "stats.gauges.disk.write.bytes",
-              "function": "mean",
-              "column": "value"
-            }
-          ],
-          "aliasColors": {},
-          "aliasYAxis": {},
-          "title": "I/O Graphite"
-        },
-        {
-          "span": 6,
-          "editable": true,
-          "type": "graph",
-          "loadingEditor": false,
-          "datasource": "Graphite",
-          "renderer": "flot",
-          "x-axis": true,
-          "y-axis": true,
-          "scale": 1,
-          "y_formats": [
-            "short",
-            "short"
-          ],
-          "grid": {
-            "max": null,
-            "min": null,
-            "threshold1": null,
-            "threshold2": null,
-            "threshold1Color": "rgba(216, 200, 27, 0.27)",
-            "threshold2Color": "rgba(234, 112, 112, 0.22)",
-            "leftMax": null,
-            "rightMax": null,
-            "leftMin": null,
-            "rightMin": null
-          },
-          "annotate": {
-            "enable": false
-          },
-          "resolution": 100,
-          "lines": true,
-          "fill": 1,
-          "linewidth": 2,
-          "points": false,
-          "pointradius": 5,
-          "bars": false,
-          "stack": false,
-          "legend": {
-            "show": true,
-            "values": false,
-            "min": false,
-            "max": false,
-            "current": false,
-            "total": false,
-            "avg": false
-          },
-          "percentage": false,
-          "zerofill": true,
-          "nullPointMode": "connected",
-          "steppedLine": false,
-          "tooltip": {
-            "value_type": "cumulative",
-            "query_as_alias": true
-          },
-          "targets": [
-            {
-              "target": "stats.gauges.net.in.bytes",
-              "hide": false,
-              "function": "mean",
-              "column": "value"
-            },
-            {
-              "target": "stats.gauges.net.out.bytes",
-              "hide": false,
-              "function": "mean",
-              "column": "value"
-            }
-          ],
-          "aliasColors": {},
-          "aliasYAxis": {},
-          "title": "Network Graphite"
-        }
-      ],
-      "notice": false
-    },
     {
       "title": "I/O",
       "height": "250px",
@@ -374,29 +65,41 @@
           "steppedLine": false,
           "tooltip": {
             "value_type": "cumulative",
-            "query_as_alias": true
+            "query_as_alias": true,
+            "shared": false
           },
           "targets": [
             {
               "target": "",
               "function": "mean",
-              "column": "system",
-              "series": "vision-lite.cpu",
-              "query": "select  mean(system) from \"vision-lite.cpu\" where  time > now() - 1h     group by time(10s)  order asc",
-              "interval": "10s"
+              "column": "used",
+              "interval": "60s",
+              "hide": false,
+              "series": "vision.mem",
+              "query": "select mean(used) from \"vision.mem\" where $timeFilter group by time($interval) order asc"
             },
             {
               "target": "",
               "function": "mean",
-              "column": "user",
-              "series": "vision-lite.cpu",
-              "query": "select  mean(user) from \"vision-lite.cpu\" where  time > now() - 1h     group by time(10s)  order asc",
-              "interval": "10s"
+              "column": "free",
+              "series": "vision.mem",
+              "query": "select mean(free) from \"vision.mem\" where $timeFilter group by time($interval) order asc",
+              "interval": "60s"
+            },
+            {
+              "target": "",
+              "function": "mean",
+              "column": "total",
+              "series": "vision.mem",
+              "query": "select mean(total) from \"vision.mem\" where $timeFilter group by time($interval) order asc",
+              "interval": "60s"
             }
           ],
           "aliasColors": {},
-          "aliasYAxis": {},
-          "title": "CPU InfluxDB"
+          "title": "Memory InfluxDB",
+          "id": 5,
+          "seriesOverrides": [],
+          "links": []
         },
         {
           "span": 6,
@@ -447,47 +150,264 @@
           "steppedLine": false,
           "tooltip": {
             "value_type": "cumulative",
-            "query_as_alias": true
+            "query_as_alias": true,
+            "shared": false
           },
           "targets": [
             {
               "function": "mean",
               "column": "recv_bytes",
-              "series": "vision-lite.network",
-              "query": "select  mean(recv_bytes) from \"vision-lite.network\" where  time > now() - 1h     group by time(10s)  order asc",
+              "series": "vision.network",
+              "query": "select mean(recv_bytes) from \"vision.network\" where $timeFilter group by time($interval) order asc",
               "interval": "10s"
             },
             {
               "target": "",
               "function": "mean",
               "column": "trans_bytes",
-              "series": "vision-lite.network",
-              "query": "select  mean(trans_bytes) from \"vision-lite.network\" where  time > now() - 1h     group by time(10s)  order asc",
+              "series": "vision.network",
+              "query": "select mean(trans_bytes) from \"vision.network\" where $timeFilter group by time($interval) order asc",
               "interval": "10s"
             }
           ],
           "aliasColors": {},
-          "aliasYAxis": {},
-          "title": "Network InfluxDB"
+          "title": "Network InfluxDB",
+          "id": 6,
+          "seriesOverrides": []
         }
       ],
       "notice": false
-    }
-  ],
-  "editable": true,
-  "failover": false,
-  "panel_hints": true,
-  "style": "dark",
-  "pulldowns": [
-    {
-      "type": "filtering",
-      "collapse": false,
-      "notice": false,
-      "enable": false
     },
     {
-      "type": "annotations",
-      "enable": false
+      "title": "New row",
+      "height": "250px",
+      "editable": true,
+      "collapse": false,
+      "panels": [
+        {
+          "title": "CPU InfluxDB",
+          "error": false,
+          "span": 6,
+          "editable": true,
+          "type": "graph",
+          "id": 7,
+          "datasource": null,
+          "renderer": "flot",
+          "x-axis": true,
+          "y-axis": true,
+          "y_formats": [
+            "short",
+            "short"
+          ],
+          "grid": {
+            "leftMax": null,
+            "rightMax": null,
+            "leftMin": null,
+            "rightMin": null,
+            "threshold1": null,
+            "threshold2": null,
+            "threshold1Color": "rgba(216, 200, 27, 0.27)",
+            "threshold2Color": "rgba(234, 112, 112, 0.22)"
+          },
+          "lines": true,
+          "fill": 0,
+          "linewidth": 2,
+          "points": false,
+          "pointradius": 5,
+          "bars": false,
+          "stack": false,
+          "percentage": false,
+          "legend": {
+            "show": true,
+            "values": false,
+            "min": false,
+            "max": false,
+            "current": false,
+            "total": false,
+            "avg": false
+          },
+          "nullPointMode": "connected",
+          "steppedLine": false,
+          "tooltip": {
+            "value_type": "cumulative",
+            "shared": false
+          },
+          "targets": [
+            {
+              "function": "mean",
+              "column": "sys",
+              "series": "vision.cpu",
+              "query": "select mean(sys) from \"vision.cpu\" where $timeFilter group by time($interval) order asc",
+              "interval": "30s"
+            },
+            {
+              "target": "",
+              "function": "mean",
+              "column": "user",
+              "series": "vision.cpu",
+              "query": "select mean(user) from \"vision.cpu\" where $timeFilter group by time($interval) order asc",
+              "interval": "30s"
+            }
+          ],
+          "aliasColors": {},
+          "seriesOverrides": [],
+          "links": []
+        },
+        {
+          "title": "I/O InfluxDB",
+          "error": false,
+          "span": 6,
+          "editable": true,
+          "type": "graph",
+          "id": 8,
+          "datasource": null,
+          "renderer": "flot",
+          "x-axis": true,
+          "y-axis": true,
+          "y_formats": [
+            "short",
+            "short"
+          ],
+          "grid": {
+            "leftMax": null,
+            "rightMax": null,
+            "leftMin": null,
+            "rightMin": null,
+            "threshold1": null,
+            "threshold2": null,
+            "threshold1Color": "rgba(216, 200, 27, 0.27)",
+            "threshold2Color": "rgba(234, 112, 112, 0.22)"
+          },
+          "lines": true,
+          "fill": 0,
+          "linewidth": 2,
+          "points": false,
+          "pointradius": 5,
+          "bars": false,
+          "stack": false,
+          "percentage": false,
+          "legend": {
+            "show": true,
+            "values": false,
+            "min": false,
+            "max": false,
+            "current": false,
+            "total": false,
+            "avg": false
+          },
+          "nullPointMode": "connected",
+          "steppedLine": false,
+          "tooltip": {
+            "value_type": "cumulative",
+            "shared": false
+          },
+          "targets": [
+            {
+              "function": "mean",
+              "column": "write_ios",
+              "series": "vision.disks",
+              "query": "select mean(write_ios) from \"vision.disks\" where $timeFilter group by time($interval) order asc",
+              "interval": "10s"
+            },
+            {
+              "target": "",
+              "function": "mean",
+              "column": "read_ios",
+              "series": "vision.disks",
+              "query": "select mean(read_ios) from \"vision.disks\" where $timeFilter group by time($interval) order asc",
+              "interval": "10s"
+            }
+          ],
+          "aliasColors": {},
+          "seriesOverrides": [],
+          "links": []
+        }
+      ]
+    },
+    {
+      "title": "New row",
+      "height": "250px",
+      "editable": true,
+      "collapse": false,
+      "panels": [
+        {
+          "title": "Load InfluxDB",
+          "error": false,
+          "span": 6,
+          "editable": true,
+          "type": "graph",
+          "id": 9,
+          "datasource": null,
+          "renderer": "flot",
+          "x-axis": true,
+          "y-axis": true,
+          "y_formats": [
+            "short",
+            "short"
+          ],
+          "grid": {
+            "leftMax": null,
+            "rightMax": null,
+            "leftMin": null,
+            "rightMin": null,
+            "threshold1": null,
+            "threshold2": null,
+            "threshold1Color": "rgba(216, 200, 27, 0.27)",
+            "threshold2Color": "rgba(234, 112, 112, 0.22)"
+          },
+          "lines": true,
+          "fill": 0,
+          "linewidth": 2,
+          "points": false,
+          "pointradius": 5,
+          "bars": false,
+          "stack": false,
+          "percentage": false,
+          "legend": {
+            "show": true,
+            "values": false,
+            "min": false,
+            "max": false,
+            "current": false,
+            "total": false,
+            "avg": false
+          },
+          "nullPointMode": "connected",
+          "steppedLine": false,
+          "tooltip": {
+            "value_type": "cumulative",
+            "shared": false
+          },
+          "targets": [
+            {
+              "function": "mean",
+              "column": "one",
+              "series": "vision.load",
+              "query": "select mean(one) from \"vision.load\" where $timeFilter group by time($interval) order asc",
+              "interval": "30s"
+            },
+            {
+              "target": "",
+              "function": "mean",
+              "column": "five",
+              "series": "vision.load",
+              "query": "select mean(five) from \"vision.load\" where $timeFilter group by time($interval) order asc",
+              "interval": "30s"
+            },
+            {
+              "target": "",
+              "function": "mean",
+              "column": "fifteen",
+              "series": "vision.load",
+              "query": "select mean(fifteen) from \"vision.load\" where $timeFilter group by time($interval) order asc",
+              "interval": "30s"
+            }
+          ],
+          "aliasColors": {},
+          "seriesOverrides": [],
+          "links": []
+        }
+      ]
     }
   ],
   "nav": [
@@ -523,21 +443,18 @@
       "now": true
     }
   ],
-  "loader": {
-    "save_gist": false,
-    "save_elasticsearch": true,
-    "save_local": true,
-    "save_default": true,
-    "save_temp": true,
-    "save_temp_ttl_enable": true,
-    "save_temp_ttl": "30d",
-    "load_gist": false,
-    "load_elasticsearch": true,
-    "load_elasticsearch_size": 20,
-    "load_local": false,
-    "hide": false
+  "time": {
+    "from": "now-1h",
+    "to": "now"
+  },
+  "templating": {
+    "list": [],
+    "enable": false
+  },
+  "annotations": {
+    "enable": false
   },
   "refresh": false,
-  "tags": [],
-  "timezone": "browser"
+  "version": 6,
+  "hideAllLegends": false
 }
