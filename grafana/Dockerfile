@@ -1,4 +1,4 @@
-# VERSION 1.0
+# VERSION 1.1
 # AUTHOR:         Nicolas Lamirault <nicolas.lamirault@gmail.com>
 # DESCRIPTION:    vision/grafana
 
