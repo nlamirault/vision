@@ -33,15 +33,15 @@ git push --tags
 echo -e "\033[32;01m[vision] Build image \033[0m"
 docker build -t vision/release addons
 
-# echo -e "\033[32;01m[vision] Make release \033[0m"
-# docker run --rm -e GITHUB_TOKEN vision/release \
-#     github-release release \
-#     --user nlamirault \
-#     --repo vision \
-#     --tag $VERSION \
-#     --name $VERSION \
-#     --description "" \
-#     --pre-release \
+echo -e "\033[32;01m[vision] Make release \033[0m"
+docker run --rm -e GITHUB_TOKEN vision/release \
+    github-release release \
+    --user nlamirault \
+    --repo vision \
+    --tag $VERSION \
+    --name $VERSION \
+    --description "" \
+    --pre-release \
 
 echo -e "\033[32;01m[vision] Upload archive \033[0m"
 for BINARY in vision-$VERSION-*.tar.gz; do

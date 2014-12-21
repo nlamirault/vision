@@ -106,7 +106,7 @@ binaries:
 .PHONY: release
 release: binaries
 	@echo -e "$(OK_COLOR)[$(APP)] New release $(VERSION) $(NO_COLOR)"
-	@addons/github.sh
+	@addons/github.sh $(VERSION)
 
 clean:
 	@echo -e "$(OK_COLOR)[$(APP)] Nettoyage de l'environnement$(NO_COLOR)"
