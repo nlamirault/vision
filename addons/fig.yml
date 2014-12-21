@@ -31,7 +31,6 @@ grafana:
 
 kibana:
   image: vision/kibana:KIBANA_VERSION
-  build: kibana
   ports:
     - "5601:5601"
   volumes:
@@ -41,7 +40,6 @@ kibana:
 
 fluentd:
   image: vision/fluentd:FLUENTD_VERSION
-  build: fluentd
   ports:
     - "24224:24224"
     - "9292:9292"
