@@ -1,4 +1,4 @@
-# VERSION 1.0
+# VERSION 1.1
 # AUTHOR:         Nicolas Lamirault <nicolas.lamirault@gmail.com>
 # DESCRIPTION:    vision/influxdb
 
@@ -7,9 +7,11 @@ MAINTAINER Nicolas Lamirault <nicolas.lamirault@gmail.com>
 
 RUN apt-get update && apt-get install -y wget supervisor
 
+ENV INFLUXDB_VERSION 0.8.7
+
 RUN mkdir -p /src/influxdb && \
-    wget http://s3.amazonaws.com/influxdb/influxdb_latest_amd64.deb && \
-    dpkg -i influxdb_latest_amd64.deb
+    wget http://s3.amazonaws.com/influxdb/influxdb_${INFLUXDB_VERSION}_amd64.deb && \
+    dpkg -i influxdb_${INFLUXDB_VERSION}_amd64.deb
 
 ADD ./config.toml /src/influxdb/config.toml
 
