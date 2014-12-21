@@ -40,8 +40,8 @@ docker run --rm -e GITHUB_TOKEN vision/release \
     --repo vision \
     --tag $VERSION \
     --name $VERSION \
-    --description "" \
-    --pre-release \
+    --description ""
+    # --pre-release \
 
 echo -e "\033[32;01m[vision] Upload archive \033[0m"
 for BINARY in vision-$VERSION-*.tar.gz; do

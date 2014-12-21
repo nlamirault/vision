@@ -18,15 +18,22 @@ Some [Elasticsearch][] plugins are available:
 * [ElasticHQ][]: `http://xxx:9200/_plugin/HQ/`
 * [Kopf][]: `http://xxx:9200/_plugin/kopf/`
 
+[cAdvisor][] is used (`http://xxx:8080`) to monitoring containers.
+
 
 ## Deployment
 
 ### Local
 
-* Install it:
+* Download and install a release :
 
-        $ make init
-        $ ./fig up
+        $ curl https://github.com/nlamirault/vision/releases/download/x.y.z/vision-x.y.z-linux.tar.gz
+        $ tar zxvf vision-x.y.z
+        $ cd vision-x.y.z
+
+* Start it :
+
+        $ ./fig -d up
 
 * Creates the [InfluxDB][] database:
 
@@ -120,6 +127,7 @@ Nicolas Lamirault <nicolas.lamirault@gmail.com>
 [Supervisor]: http://supervisord.org
 [sysinfo_influxdb]: https://github.com/novaquark/sysinfo_influxdb
 [InfluxDB]: http://influxdb.com
+[cAdvisor]: https://github.com/google/cadvisor
 
 [Virtualbox]: https://www.virtualbox.org
 [Vagrant]: http://downloads.vagrantup.com
