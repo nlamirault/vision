@@ -16,15 +16,9 @@
 APP=vision
 NAMESPACE=$(APP)
 
-# ES_VERSION :=$(shell grep ' VERSION' elasticsearch/Dockerfile|awk -F" " '{ print $$3 }')
-# KIBANA_VERSION :=$(shell grep ' VERSION' kibana/Dockerfile|awk -F" " '{ print $$3 }')
-# GRAFANA_VERSION :=$(shell grep ' VERSION' grafana/Dockerfile|awk -F" " '{ print $$3 }')
-# INFLUXDB_VERSION :=$(shell grep ' VERSION' influxdb/Dockerfile|awk -F" " '{ print $$3 }')
-# FLUENTD_VERSION :=$(shell grep ' VERSION' fluentd/Dockerfile|awk -F" " '{ print $$3 }')
-
 OS = darwin linux
 
-VERSION=0.1.0
+VERSION=0.2.0
 
 NO_COLOR=\033[0m
 OK_COLOR=\033[32;01m

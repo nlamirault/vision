@@ -34,13 +34,13 @@ image_version() {
 
 download_fig_linux() {
    mkdir -p $APP-$VERSION-linux
-   curl -Ls $FIG_URI/$FIG_VERSION/fig-Linux_x86-64 > $APP-$VERSION-linux/fig
+   curl -Ls $FIG_URI/$FIG_VERSION/fig-Linux-x86_64 > $APP-$VERSION-linux/fig
    chmod +x $APP-$VERSION-linux/fig
 }
 
 download_fig_darwin() {
     mkdir -p $APP-$VERSION-darwin
-    curl -Ls $FIG_URI/$FIG_VERSION/fig-Darwin_x86-64 > $APP-$VERSION-darwin/fig
+    curl -Ls $FIG_URI/$FIG_VERSION/fig-Darwin-x86_64 > $APP-$VERSION-darwin/fig
     chmod +x $APP-$VERSION-darwin/fig
 }
 
@@ -68,7 +68,7 @@ release() {
     sed -i "s/GRAFANA_VERSION/$GRAFANA_VERSION/g" $APP-$VERSION-$OS/fig.yml
     sed -i "s/INFLUXDB_VERSION/$INFLUXDB_VERSION/g" $APP-$VERSION-$OS/fig.yml
     sed -i "s/FLUENTD_VERSION/$FLUENTD_VERSION/g" $APP-$VERSION-$OS/fig.yml
-    sed -i "s/CADVISOR_VERSION/$FLUENTD_VERSION/g" $APP-$VERSION-$OS/fig.yml
+    sed -i "s/CADVISOR_VERSION/$CADVISOR_VERSION/g" $APP-$VERSION-$OS/fig.yml
     tar cf - $APP-$VERSION-$OS | gzip > $APP-$VERSION-$OS.tar.gz
     rm -fr $APP-$VERSION-$OS
 }
