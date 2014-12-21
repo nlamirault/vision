@@ -44,7 +44,6 @@ download_fig_darwin() {
     chmod +x $APP-$VERSION-darwin/fig
 }
 
-
 release() {
     OS=$1
     VERSION=$2
@@ -63,11 +62,13 @@ release() {
     GRAFANA_VERSION=$(image_version "grafana")
     INFLUXDB_VERSION=$(image_version "influxdb")
     FLUENTD_VERSION=$(image_version "fluentd")
+    CADVISOR_VERSION="0.7.0"
     sed -i "s/ES_VERSION/$ES_VERSION/g" $APP-$VERSION-$OS/fig.yml
     sed -i "s/KIBANA_VERSION/$KIBANA_VERSION/g" $APP-$VERSION-$OS/fig.yml
     sed -i "s/GRAFANA_VERSION/$GRAFANA_VERSION/g" $APP-$VERSION-$OS/fig.yml
     sed -i "s/INFLUXDB_VERSION/$INFLUXDB_VERSION/g" $APP-$VERSION-$OS/fig.yml
     sed -i "s/FLUENTD_VERSION/$FLUENTD_VERSION/g" $APP-$VERSION-$OS/fig.yml
+    sed -i "s/CADVISOR_VERSION/$FLUENTD_VERSION/g" $APP-$VERSION-$OS/fig.yml
     tar cf - $APP-$VERSION-$OS | gzip > $APP-$VERSION-$OS.tar.gz
     rm -fr $APP-$VERSION-$OS
 }
