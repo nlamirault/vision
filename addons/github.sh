@@ -27,8 +27,8 @@ fi
 
 VERSION=$1
 
-# git tag $VERSION
-# git push --tags
+git tag $VERSION
+git push --tags
 
 echo -e "\033[32;01m[vision] Build image \033[0m"
 docker build -t vision/release addons
