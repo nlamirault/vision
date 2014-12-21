@@ -26,32 +26,30 @@ if [ -z "$GITHUB_TOKEN" ]; then
 fi
 
 VERSION=$1
-ARCHIVE="vision-$VERSION.tar.gz"
-
-if [ ! -f "$ARCHIVE" ]; then
-    echo "Archive $ARCHIVE not found"
-    exit 1
-fi
 
 # git tag $VERSION
 # git push --tags
 
 echo -e "\033[32;01m[vision] Build image \033[0m"
-docker build -t vision/release release
-echo -e "\033[32;01m[vision] Make release \033[0m"
-docker run --rm -e GITHUB_TOKEN vision/release \
-    github-release release \
-    --user nlamirault \
-    --repo vision \
-    --tag $VERSION \
-    --name $VERSION \
-    --description "" \
-    --pre-release \
-# echo -e "\033[32;01m[vision] Upload archive \033[0m"
-# docker run --rm -e GITHUB_TOKEN -v `pwd`:/src/vision \
-#     vision/release github-release upload \
+docker build -t vision/release addons
+
+# echo -e "\033[32;01m[vision] Make release \033[0m"
+# docker run --rm -e GITHUB_TOKEN vision/release \
+#     github-release release \
 #     --user nlamirault \
 #     --repo vision \
 #     --tag $VERSION \
-#     --name $ARCHIVE \
-#     --file /src/$ARCHIVE
+#     --name $VERSION \
+#     --description "" \
+#     --pre-release \
+
+echo -e "\033[32;01m[vision] Upload archive \033[0m"
+for BINARY in vision-$VERSION-*.tar.gz; do
+    docker run --rm -e GITHUB_TOKEN -v `pwd`:/src/vision \
+        vision/release github-release upload \
+        --user nlamirault \
+        --repo vision \
+        --tag $VERSION \
+        --name $BINARY \
+        --file /src/vision/$BINARY
+done

@@ -53,33 +53,12 @@ fluentd:
   links:
     - elasticsearch:elasticsearch
 
-
-
-
-
-
-
-
-
-# sirocco:
-#   image: nimbus/sirocco:1.7.0
-#   ports:
-#     - "8801:6666"
-# dashboard:
-#   image: nimbus/dashboard:1.16.0
-#   ports:
-#     - "8802:6666"
-# cmdb:
-#   image: nimbus/cmdb:2.5.0
-#   ports:
-#   - "8803:6666"
-#   links:
-#    - db
-# db:
-#   image: mysql:5.5.41
-#   ports:
-#     - 3306
-#   volumes:
-#     - volumes/log:/var/log/mysql
-#     - volumes/lib:/var/lib/mysql
-#     - volumes/conf.d:/etc/mysql/conf.d
+cadvisor:
+  image: google/cadvisor
+  volumes:
+   - /:/rootfs:ro
+   - /var/run:/var/run:rw
+   - /sys:/sys:ro
+   - /var/lib/docker/:/var/lib/docker:ro
+  ports:
+   - "8080:8080"
