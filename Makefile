@@ -103,6 +103,11 @@ binaries:
 	@addons/release.sh linux $(VERSION)
 	@addons/release.sh darwin $(VERSION)
 
+.PHONY: release
+release: binaries
+	@echo -e "$(OK_COLOR)[$(APP)] New release $(VERSION) $(NO_COLOR)"
+	@addons/github.sh
+
 clean:
 	@echo -e "$(OK_COLOR)[$(APP)] Nettoyage de l'environnement$(NO_COLOR)"
 	@rm -fr *.tar.gz $(APP)-*
