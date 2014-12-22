@@ -18,7 +18,7 @@ NAMESPACE=$(APP)
 
 OS = darwin linux
 
-VERSION=0.3.0
+VERSION=0.4.0
 
 NO_COLOR=\033[0m
 OK_COLOR=\033[32;01m
