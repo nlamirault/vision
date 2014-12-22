@@ -1,0 +1,29 @@
+# Creates index:
+# $ curl http://10.33.1.174:9200/hekad -X POST
+# {"acknowledged":true}
+
+[hekad]
+maxprocs=10
+
+[LogstreamerInput]
+log_directory = "/var/log"
+file_match = 'local7\.log'
+
+[PayloadEncoder]
+append_newlines = false
+
+[LogOutput]
+message_matcher = "TRUE"
+encoder = "PayloadEncoder"
+
+[ESJsonEncoder]
+index = "%{Type}-%{2006.01.02}"
+es_index_from_timestamp = true
+type_name = "%{Type}"
+
+[ElasticSearchOutput]
+message_matcher = "TRUE"
+server = "http://ww.xx.yy.zz:9200"
+flush_interval = 5000
+flush_count = 10
+encoder = "ESJsonEncoder"

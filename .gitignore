@@ -1,0 +1,6 @@
+*~
+.vagrant
+fig
+machine
+data
+vision-*.tar.gz

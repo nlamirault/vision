@@ -1,0 +1,10 @@
+cluster.name: elasticsearch
+node.data: true
+http.port: 9200
+http.cors.enabled: true
+http.cors.allow-origin: "/.*/"
+path:
+  data: /var/lib/elasticsearch
+  logs: /var/log/elasticsearch
+  plugins: /var/lib/elasticsearch/plugins
+  work: /var/lib/elasticsearch/work
