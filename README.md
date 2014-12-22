@@ -1,7 +1,7 @@
 # Vision
 
 [![License GPL 3][badge-license]][COPYING]
-[![Version][badge-release]]
+![Version][badge-release]
 
 ## Description
 
