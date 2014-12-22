@@ -17,11 +17,11 @@
 
 set -e
 if [ -z "$1" ]; then
-    echo "Pass the version number as the first arg. E.g.: release/vision.sh 1.2.3"
+    echo -e "\033[31;01m[vision] Pass the version number as the first arg. E.g.: $0 1.2.3 \033[0m"
     exit 1
 fi
 if [ -z "$GITHUB_TOKEN" ]; then
-    echo "GITHUB_TOKEN must be set for github-release"
+    echo "\033[31;01m[vision] GITHUB_TOKEN must be set for github-release \033[0m"
     exit 1
 fi
 

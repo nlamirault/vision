@@ -1,6 +1,7 @@
 # Vision
 
 [![License GPL 3][badge-license]][COPYING]
+[![Version][badge-version]]
 
 ## Description
 
@@ -111,7 +112,8 @@ Nicolas Lamirault <nicolas.lamirault@gmail.com>
 [Vision]: https://github.com/nlamirault/vision
 [COPYING]: https://github.com/nlamirault/vision/blob/master/COPYING
 [Issue tracker]: https://github.com/nlamirault/vision/issues
-[badge-license]: https://img.shields.io/badge/license-GPL_3-green.svg?style=flat
+[badge-license]: https://img.shields.io/badge/license-GPL_3-green.svg
+[badge-release]: https://img.shields.io/github/release/nlamirault/vision.svg
 
 [Docker]: https://www.docker.io
 [Docker documentation]: http://docs.docker.io
