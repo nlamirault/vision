@@ -1,0 +1,28 @@
+[hekad]
+maxprocs=10
+
+[LogstreamerInput]
+log_directory = "/var/log"
+file_match = 'local7\.log'
+
+[PayloadEncoder]
+append_newlines = false
+
+[ESJsonEncoder]
+index = "%{Type}-%{2006.01.02}"
+es_index_from_timestamp = true
+type_name = "%{Type}"
+
+[LogOutput]
+message_matcher = "TRUE"
+encoder = "PayloadEncoder"
+
+[ElasticSearchOutput]
+message_matcher = "TRUE"
+server = "http://%ENV[ES_HOST]:%ENV[ES_PORT]"
+flush_interval = 5000
+flush_count = 10
+encoder = "ESJsonEncoder"
+
+[DashboardOutput]
+ticker_interval = 30
