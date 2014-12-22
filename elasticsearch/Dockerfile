@@ -1,11 +1,11 @@
-# VERSION 1.0
+# VERSION 1.1
 # AUTHOR:         Nicolas Lamirault <nicolas.lamirault@gmail.com>
 # DESCRIPTION:    vision/elasticsearch
 
 FROM java:7
 MAINTAINER Nicolas Lamirault <nicolas.lamirault@gmail.com>
 
-ENV ES_VERSION 1.4.0
+ENV ES_VERSION 1.4.2
 
 RUN apt-get -y update && apt-get install -y wget supervisor && apt-get clean
 

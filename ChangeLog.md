@@ -1,7 +1,12 @@
 Vision ChangeLog
 ================
 
-# Version 0.2.0 (22/12/2014)
+# Version 0.3.0 (22/12/2014)
+
+- Update to ElasticSearch 1.4.2
+- `FIX` fig.yml into release archive malformed
+
+# Version 0.2.0 (21/12/2014)
 
 - Add cAdvisor 0.7.0 for monitoring
 - Update build script for release
