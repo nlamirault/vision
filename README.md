@@ -12,7 +12,6 @@ It is based on :
 * [Grafana][] (v1.8.0) web interface : `http://xxx:9090/`
 * [Kibana][] (v4.0.0) web interface : `http://xxx:5601`
 * [InfluxDB][] (v0.8.0) web interface : `http://xxx:8083`
-* [Fluentd][] (v0.12.0) web interface : `http://xxx:9292`
 
 Some [Elasticsearch][] plugins are available:
 * [ElasticSearchHead][]: `http://xxx:9200/_plugin/head/`
@@ -34,9 +33,31 @@ Some [Elasticsearch][] plugins are available:
         $ curl -X POST 'http://localhost:8086/db?u=root&p=root' \
             -d '{"name": "vision"}'
 
-* You could test your installation using [sysinfo_influxdb][]:
+* Verify input datas from the InfluxDB UI (on 8083), using this query, after choosing `vision`
+  database:
+
+        select * from /.*/ limit 100
+
+
+## Usage
+
+### Monitoring
+
+* You could use [sysinfo_influxdb][] to send metrics :
 
         $ sysinfo_influxdb -host 127.0.0.1:8086 -P vision -d vision -v=text -D
+
+
+### Logging
+
+* You could use [Heka][] and this configuration file [addons/hekad.toml][]
+  to watch `local7.log` and send them to Elasticsearch:
+
+        $ sudo bin/hekad -config=addons/hekad.toml
+
+* Into [Kibana][], set the default index and visualize logs:
+
+        logfile-*
 
 
 ## Development
@@ -87,24 +108,19 @@ Nicolas Lamirault <nicolas.lamirault@gmail.com>
 
 [Docker]: https://www.docker.io
 [Docker documentation]: http://docs.docker.io
-[CoreOS]: http://coreos.com
-[Etcd]: http://coreos.com/using-coreos/etcd
-[Fleet]: http://coreos.com/using-coreos/clustering/
-[Nginx]: http://nginx.org
+
 [Elasticsearch]: http://www.elasticsearch.org
-[Redis]: http://www.redis.io
 [Grafana]: http://grafana.org/
 [Kibana]: http://www.elasticsearch.org/overview/kibana/
-[Carbon]: http://graphite.readthedocs.org/en/latest/carbon-daemons.html
-[Statsd]: https://github.com/etsy/statsd/wiki
 [ElasticSearchHead]: http://mobz.github.io/elasticsearch-head
 [ElasticHQ]: http://www.elastichq.org
 [Kopf]: https://github.com/lmenezes/elasticsearch-kopf
-[Virtualbox]: https://www.virtualbox.org
-[Vagrant]: http://downloads.vagrantup.com
 [Fluentd]: http://fluentd.org/
 [Heka]: http://hekad.readthedocs.org/en/latest/
 [Supervisor]: http://supervisord.org
 [sysinfo_influxdb]: https://github.com/novaquark/sysinfo_influxdb
 [InfluxDB]: http://influxdb.com
+
+[Virtualbox]: https://www.virtualbox.org
+[Vagrant]: http://downloads.vagrantup.com
 [SystemdD]: http://freedesktop.org/wiki/Software/systemd
