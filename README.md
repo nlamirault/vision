@@ -62,6 +62,10 @@ Some [Elasticsearch][] plugins are available:
 * You could use [Heka][] and this configuration file [addons/hekad.toml][]
   to watch `local7.log` and send them to Elasticsearch:
 
+        $ curl http://xx.xx.xx.xx:9200/hekad -X POST
+
+* Using binary :
+
         $ sudo bin/hekad -config=addons/hekad.toml
 
 * Into [Kibana][], set the default index and visualize logs:
