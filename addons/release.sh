@@ -57,6 +57,7 @@ release() {
     fi
     echo -e "$WARN_COLOR[$APP] Make archive for $OS $VERSION $NO_COLOR"
     cp addons/fig.yml $APP-$VERSION-$OS/fig.yml
+    cp addons/init.sh $APP-$VERSION-$OS/
     ES_VERSION=$(image_version "elasticsearch")
     KIBANA_VERSION=$(image_version "kibana")
     GRAFANA_VERSION=$(image_version "grafana")
