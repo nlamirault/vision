@@ -16,9 +16,11 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 VISION_DIR=/opt/vision
-
-mkdir -p $VISION_DIR/elasticsearch/{lib,log}
-mkdir -p $VISION_DIR/influxdb/{db,log,lib,wal}
-mkdir -p $VISION_DIR/grafana/log
-mkdir -p $VISION_DIR/kibana/log
-mkdir -p $VISION_DIR/fluentd/log
+echo $USER
+exit
+sudo mkdir -p $VISION_DIR/elasticsearch/{lib,log}
+sudo mkdir -p $VISION_DIR/influxdb/{db,log,lib,wal}
+sudo mkdir -p $VISION_DIR/grafana/log
+sudo mkdir -p $VISION_DIR/kibana/log
+sudo mkdir -p $VISION_DIR/fluentd/log
+sudo chown -R $USER.users $VISION_DIR
