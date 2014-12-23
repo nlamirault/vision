@@ -1,4 +1,4 @@
-# VERSION 1.1
+# VERSION 1.2
 # AUTHOR:         Nicolas Lamirault <nicolas.lamirault@gmail.com>
 # DESCRIPTION:    vision/influxdb
 
@@ -13,9 +13,13 @@ RUN mkdir -p /src/influxdb && \
     wget http://s3.amazonaws.com/influxdb/influxdb_${INFLUXDB_VERSION}_amd64.deb && \
     dpkg -i influxdb_${INFLUXDB_VERSION}_amd64.deb
 
-ADD ./config.toml /src/influxdb/config.toml
+ADD ./config.toml /opt/influxdb/shared/config.toml
 
 ADD ./supervisord.conf /etc/supervisor/supervisord.conf
+# RUN mkdir -p /var/lib/influxdb/db && \
+#     mkdir -p /var/lib/influxdb/raft && \
+#     mkdir -p /var/lib/influxdb/log && \
+#     mkdir -p /var/lib/influxdb/wal
 
 EXPOSE 8083
 EXPOSE 8086
