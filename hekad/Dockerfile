@@ -1,4 +1,4 @@
-# VERSION 1.0
+# VERSION 1.1
 # AUTHOR:         Nicolas Lamirault <nicolas.lamirault@gmail.com>
 # DESCRIPTION:    vision/hekad
 
@@ -8,7 +8,7 @@ MAINTAINER Nicolas Lamirault <nicolas.lamirault@gmail.com>
 RUN apt-get update && \
     apt-get -y install wget
 
-ENV HEKAD_VERSION 0.8.0
+ENV HEKAD_VERSION 0.8.1
 
 RUN mkdir /etc/hekad && \
     mkdir /var/cache/hekad

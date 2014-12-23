@@ -25,4 +25,6 @@ flush_count = 10
 encoder = "ESJsonEncoder"
 
 [DashboardOutput]
+type = "DashboardOutput"
+address = ":4352"
 ticker_interval = 30
