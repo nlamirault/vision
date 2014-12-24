@@ -19,7 +19,7 @@ Some [Elasticsearch][] plugins are available:
 * [ElasticHQ][]: `http://xxx:9200/_plugin/HQ/`
 * [Kopf][]: `http://xxx:9200/_plugin/kopf/`
 
-[cAdvisor][] (v0.7.0) is used (`http://xxx:8080`) to monitoring containers.
+[cAdvisor][] (v0.7.0) is used (`http://xxx:8081`) to monitoring containers.
 
 
 ## Deployment
