@@ -1,6 +1,7 @@
 # Vision
 
 [![License GPL 3][badge-license]][COPYING]
+![Version][badge-release]
 
 ## Description
 
@@ -8,17 +9,17 @@
 It is based on :
 
 * [Docker][] (>= 1.3)
-* [Elasticsearch][] (v1.4.0) web interface : `http://xxx:9200`
-* [Grafana][] (v1.8.0) web interface : `http://xxx:9090/`
-* [Kibana][] (v4.0.0) web interface : `http://xxx:5601`
-* [InfluxDB][] (v0.8.0) web interface : `http://xxx:8083`
+* [Elasticsearch][] (v1.4.2) web interface : `http://xxx:9200`
+* [Grafana][] (v1.9.0) web interface : `http://xxx:9090/`
+* [Kibana][] (v4.0.0-beta2) web interface : `http://xxx:5601`
+* [InfluxDB][] (v0.8.7) web interface : `http://xxx:8083`
 
 Some [Elasticsearch][] plugins are available:
 * [ElasticSearchHead][]: `http://xxx:9200/_plugin/head/`
 * [ElasticHQ][]: `http://xxx:9200/_plugin/HQ/`
 * [Kopf][]: `http://xxx:9200/_plugin/kopf/`
 
-[cAdvisor][] is used (`http://xxx:8080`) to monitoring containers.
+[cAdvisor][] (v0.7.0) is used (`http://xxx:8081`) to monitoring containers.
 
 
 ## Deployment
@@ -33,6 +34,7 @@ Some [Elasticsearch][] plugins are available:
 
 * Start it :
 
+        $ ./init.sh
         $ ./fig -d up
 
 * Creates the [InfluxDB][] database:
@@ -59,6 +61,10 @@ Some [Elasticsearch][] plugins are available:
 
 * You could use [Heka][] and this configuration file [addons/hekad.toml][]
   to watch `local7.log` and send them to Elasticsearch:
+
+        $ curl http://xx.xx.xx.xx:9200/hekad -X POST
+
+* Using binary :
 
         $ sudo bin/hekad -config=addons/hekad.toml
 
@@ -111,7 +117,8 @@ Nicolas Lamirault <nicolas.lamirault@gmail.com>
 [Vision]: https://github.com/nlamirault/vision
 [COPYING]: https://github.com/nlamirault/vision/blob/master/COPYING
 [Issue tracker]: https://github.com/nlamirault/vision/issues
-[badge-license]: https://img.shields.io/badge/license-GPL_3-green.svg?style=flat
+[badge-license]: https://img.shields.io/badge/license-GPL_3-green.svg
+[badge-release]: https://img.shields.io/github/release/nlamirault/vision.svg
 
 [Docker]: https://www.docker.io
 [Docker documentation]: http://docs.docker.io

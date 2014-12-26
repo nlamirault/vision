@@ -18,7 +18,7 @@ NAMESPACE=$(APP)
 
 OS = darwin linux
 
-VERSION=0.3.0
+VERSION=0.4.0
 
 NO_COLOR=\033[0m
 OK_COLOR=\033[32;01m
@@ -53,11 +53,9 @@ all: help
 help:
 	@echo -e "$(OK_COLOR)==== $(APP) [$(VERSION)] ====$(NO_COLOR)"
 	@echo -e "$(WARN_COLOR)- init      : Download dependencies used by Vision"
-	@echo -e "$(WARN_COLOR)- setup     : Creates directories used by Vision"
 	@echo -e "$(WARN_COLOR)- build     : Make the Docker image"
-	@echo -e "$(WARN_COLOR)- start     : Start a container"
-	@echo -e "$(WARN_COLOR)- stop      : Stop the container"
 	@echo -e "$(WARN_COLOR)- publish   : Publish the image"
+	@echo -e "$(WARN_COLOR)- release   : Make a new release"
 
 machine-linux:
 	@echo -e "$(OK_COLOR)[$(APP)] Installation Docker machine Linux $(NO_COLOR)"
