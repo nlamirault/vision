@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Copyright (C) 2014  Nicolas Lamirault <nicolas.lamirault@gmail.com>
+# Copyright (C) 2014, 2015  Nicolas Lamirault <nicolas.lamirault@gmail.com>
 
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -63,7 +63,7 @@ release() {
     GRAFANA_VERSION=$(image_version "grafana")
     INFLUXDB_VERSION=$(image_version "influxdb")
     FLUENTD_VERSION=$(image_version "fluentd")
-    CADVISOR_VERSION="0.7.0"
+    CADVISOR_VERSION="0.8.0"
     sed -i "s/ES_VERSION/$ES_VERSION/g" $APP-$VERSION-$OS/fig.yml
     sed -i "s/KIBANA_VERSION/$KIBANA_VERSION/g" $APP-$VERSION-$OS/fig.yml
     sed -i "s/GRAFANA_VERSION/$GRAFANA_VERSION/g" $APP-$VERSION-$OS/fig.yml
