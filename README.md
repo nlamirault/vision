@@ -11,7 +11,7 @@ It is based on :
 * [Docker][] (>= 1.3)
 * [Elasticsearch][] (v1.4.2) web interface : `http://xxx:9200`
 * [Grafana][] (v1.9.0) web interface : `http://xxx:9090/`
-* [Kibana][] (v4.0.0-beta2) web interface : `http://xxx:5601`
+* [Kibana][] (v4.0.0-beta3) web interface : `http://xxx:5601`
 * [InfluxDB][] (v0.8.7) web interface : `http://xxx:8083`
 
 Some [Elasticsearch][] plugins are available:
@@ -19,7 +19,7 @@ Some [Elasticsearch][] plugins are available:
 * [ElasticHQ][]: `http://xxx:9200/_plugin/HQ/`
 * [Kopf][]: `http://xxx:9200/_plugin/kopf/`
 
-[cAdvisor][] (v0.7.0) is used (`http://xxx:8081`) to monitoring containers.
+[cAdvisor][] (v0.8.0) is used (`http://xxx:8081`) to monitoring containers.
 
 
 ## Deployment
@@ -105,7 +105,7 @@ See [COPYING][] for the complete license.
 
 ## Changelog
 
-A changelog is available [here](ChangeLog.md).
+A [ChangeLog.md][] is available.
 
 
 ## Contact
