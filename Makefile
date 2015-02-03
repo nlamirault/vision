@@ -1,4 +1,4 @@
-# Copyright (C) 2014  Nicolas Lamirault <nicolas.lamirault@gmail.com>
+# Copyright (C) 2014, 2015  Nicolas Lamirault <nicolas.lamirault@gmail.com>
 
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -28,10 +28,10 @@ WARN_COLOR=\033[33;01m
 DOCKER = docker
 
 DOCKER_MACHINE_URI=https://github.com/docker/machine/releases/download
-DOCKER_MACHINE_VERSION=0.0.2
+DOCKER_MACHINE_VERSION=v0.1.0-rc2
 
-FIG_URI=https://github.com/docker/fig/releases/download
-FIG_VERSION=1.0.1
+DOCKER_COMPOSE_URI=https://github.com/docker/fig/releases/download
+DOCKER_COMPOSE_VERSION=1.1.0-rc2
 
 UNAME := $(shell uname)
 ifeq ($(UNAME),$(filter $(UNAME),Linux Darwin))
@@ -59,28 +59,30 @@ help:
 
 machine-linux:
 	@echo -e "$(OK_COLOR)[$(APP)] Installation Docker machine Linux $(NO_COLOR)"
-	@wget $(DOCKER_MACHINE_URI)/$(DOCKER_MACHINE_VERSION)/machine_linux_amd64 -O machine
+	@wget $(DOCKER_MACHINE_URI)/$(DOCKER_MACHINE_VERSION)/docker-machine_linux-amd64 -O machine
 	@chmod +x ./machine
 
 machine-darwin:
 	@echo -e "$(OK_COLOR)[$(APP)] Installation Docker machine OSX $(NO_COLOR)"
-	@wget $(DOCKER_MACHINE_URI)/$(DOCKER_MACHINE_VERSION)/machine_darwin_amd64 -O machine
+	@wget $(DOCKER_MACHINE_URI)/$(DOCKER_MACHINE_VERSION)/docker-machine_darwin-amd64 -O machine
 	@chmod +x ./machine
 
 machine-windows:
 	@echo -e "$(OK_COLOR)[$(APP)] Installation Docker machine Windows $(NO_COLOR)"
-	@wget $(DOCKER_MACHINE_URI)/$(DOCKER_MACHINE_VERSION)/machine_windows_amd64.exe -O machine
+	@wget $(DOCKER_MACHINE_URI)/$(DOCKER_MACHINE_VERSION)/docker-machine_windows-amd64.exe -O machine
 	@chmod +x ./machine
 
 fig-linux:
-	@echo -e "$(OK_COLOR)[$(APP)] Installation Fig Linux $(NO_COLOR)"
-	@curl -Ls $(FIG_URI)/$(FIG_VERSION)/fig-Linux-x86_64 > ./fig
-	@chmod +x ./fig
+	@echo -e "$(OK_COLOR)[$(APP)] Installation Docker compose Linux $(NO_COLOR)"
+#	@curl -Ls $(DOCKER_COMPOSE_URI)/$(DOCKER_COMPOSE_VERSION)/docker-compose-Linux-x86_64 > ./compose
+	@wget $(DOCKER_COMPOSE_URI)/$(DOCKER_COMPOSE_VERSION)/docker-compose-Linux-x86_64 -O compose
+	@chmod +x ./compose
 
 fig-darwin:
-	@echo -e "$(OK_COLOR)[$(APP)] Installation Fig $(NO_COLOR)"
-	@curl -Ls $(FIG_URI)/$(FIG_VERSION)/fig-Darwin_x86-64 > ./fig
-	@chmod +x ./fig
+	@echo -e "$(OK_COLOR)[$(APP)] Installation Docker compose $(NO_COLOR)"
+#	@curl -Ls $(DOCKER_COMPOSE_URI)/$(DOCKER_COMPOSE_VERSION)/docker-compose-Darwin_x86-64 > ./compose
+	@wget $(DOCKER_COMPOSE_URI)/$(DOCKER_COMPOSE_VERSION)/docker-compose-Darwin_x86-64 -O compose
+	@chmod +x ./compose
 
 .PHONY: init
 init: machine-$(OS) fig-$(OS)

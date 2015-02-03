@@ -35,7 +35,7 @@ Some [Elasticsearch][] plugins are available:
 * Start it :
 
         $ ./init.sh
-        $ ./fig -d up
+        $ ./compose -d up
 
 * Creates the [InfluxDB][] database:
 

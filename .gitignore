@@ -1,6 +1,6 @@
 *~
 .vagrant
-fig
+compose
 machine
 data
 vision-*.tar.gz
