@@ -5,7 +5,7 @@
 FROM java:7
 MAINTAINER Nicolas Lamirault <nicolas.lamirault@gmail.com>
 
-ENV KIBANA_VERSION 4.0.0-BETA2
+ENV KIBANA_VERSION 4.0.0-beta3
 
 RUN apt-get -y update && apt-get install -y wget supervisor && apt-get clean
 
