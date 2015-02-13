@@ -72,20 +72,20 @@ machine-windows:
 	@wget $(DOCKER_MACHINE_URI)/$(DOCKER_MACHINE_VERSION)/docker-machine_windows-amd64.exe -O machine
 	@chmod +x ./machine
 
-fig-linux:
+compose-linux:
 	@echo -e "$(OK_COLOR)[$(APP)] Installation Docker compose Linux $(NO_COLOR)"
 #	@curl -Ls $(DOCKER_COMPOSE_URI)/$(DOCKER_COMPOSE_VERSION)/docker-compose-Linux-x86_64 > ./compose
 	@wget $(DOCKER_COMPOSE_URI)/$(DOCKER_COMPOSE_VERSION)/docker-compose-Linux-x86_64 -O compose
 	@chmod +x ./compose
 
-fig-darwin:
+compose-darwin:
 	@echo -e "$(OK_COLOR)[$(APP)] Installation Docker compose $(NO_COLOR)"
 #	@curl -Ls $(DOCKER_COMPOSE_URI)/$(DOCKER_COMPOSE_VERSION)/docker-compose-Darwin_x86-64 > ./compose
 	@wget $(DOCKER_COMPOSE_URI)/$(DOCKER_COMPOSE_VERSION)/docker-compose-Darwin_x86-64 -O compose
 	@chmod +x ./compose
 
 .PHONY: init
-init: machine-$(OS) fig-$(OS)
+init: machine-$(OS) compose-$(OS)
 
 .PHONY: build
 build:
