@@ -5,7 +5,7 @@
 FROM java:7
 MAINTAINER Nicolas Lamirault <nicolas.lamirault@gmail.com>
 
-ENV ES_VERSION 1.4.2
+ENV ES_VERSION 1.5.0
 
 RUN apt-get -y update && apt-get install -y wget supervisor && apt-get clean
 
