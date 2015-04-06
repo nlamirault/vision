@@ -1,17 +1,17 @@
-# VERSION 1.1
+# VERSION 1.2
 # AUTHOR:         Nicolas Lamirault <nicolas.lamirault@gmail.com>
 # DESCRIPTION:    vision/influxdb
 
 FROM java:7
 MAINTAINER Nicolas Lamirault <nicolas.lamirault@gmail.com>
 
-ENV KIBANA_VERSION 4.0.2
+ENV KIBANA_VERSION 4.0.2-linux-x64
 
 RUN apt-get -y update && apt-get install -y wget supervisor && apt-get clean
 
 RUN mkdir -p /src/kibana && \
     cd /src/kibana && \
-    wget https://download.elasticsearch.org/kibana/kibana/kibana-$KIBANA_VERSION-linux-x64.tar.gz && \
+    wget https://download.elasticsearch.org/kibana/kibana/kibana-$KIBANA_VERSION.tar.gz && \
     tar xzf kibana-$KIBANA_VERSION.tar.gz --strip-components=1 && \
     rm kibana-$KIBANA_VERSION.tar.gz
 
