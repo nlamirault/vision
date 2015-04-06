@@ -6,21 +6,37 @@
 ## Description
 
 [Vision][] is a system monitoring and log collector.
-It is based on :
 
-* [Docker][] (>= 1.3)
+### Core
+
+Powered by the following tools:
+
+* [Docker][]: a portable, lightweight runtime and packaging tool.
+* [HAProxy][]: a TCP/HTTP load balancer.
+* [Consul][]: service discovering
+* [Consul-template][]: populate values from Consul on your filesystem.
+* [Registrator][]: automatically register/deregister Docker containers into Consul.
+
+### Logging
+
+Log collector service is provided using :
+
 * [Elasticsearch][] (v1.4.2) web interface : `http://xxx:9200`
-* [Grafana][] (v1.9.0) web interface : `http://xxx:9090/`
 * [Kibana][] (v4.0.0-beta3) web interface : `http://xxx:5601`
-* [InfluxDB][] (v0.8.7) web interface : `http://xxx:8083`
 
 Some [Elasticsearch][] plugins are available:
 * [ElasticSearchHead][]: `http://xxx:9200/_plugin/head/`
 * [ElasticHQ][]: `http://xxx:9200/_plugin/HQ/`
 * [Kopf][]: `http://xxx:9200/_plugin/kopf/`
 
-[cAdvisor][] (v0.8.0) is used (`http://xxx:8081`) to monitoring containers.
+### Monitoring
 
+Monitoring service is provided using :
+
+* [Prometheus][]: An open-source service monitoring system and time series database.
+* [Grafana][] (v1.9.0) web interface : `http://xxx:9090/`
+* [InfluxDB][] (v0.8.7) web interface : `http://xxx:8083`
+* [cAdvisor][] (v0.8.0) is used (`http://xxx:8081`) to monitoring containers.
 
 ## Deployment
 
@@ -135,6 +151,11 @@ Nicolas Lamirault <nicolas.lamirault@gmail.com>
 [sysinfo_influxdb]: https://github.com/novaquark/sysinfo_influxdb
 [InfluxDB]: http://influxdb.com
 [cAdvisor]: https://github.com/google/cadvisor
+[HAProxy]: http://www.haproxy.org/
+[Consul]: http://www.consul.io
+[Consul-template]: https://github.com/hashicorp/consul-template
+[Registrator]: https://github.com/gliderlabs/registrator
+[Prometheus]: See: http://prometheus.io
 
 [Virtualbox]: https://www.virtualbox.org
 [Vagrant]: http://downloads.vagrantup.com
