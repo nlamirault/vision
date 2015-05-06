@@ -1,13 +1,16 @@
-# VERSION 1.2
+# VERSION 1.3
 # AUTHOR:         Nicolas Lamirault <nicolas.lamirault@gmail.com>
 # DESCRIPTION:    vision/influxdb
 
-FROM java:7
+FROM dockerfile/java:oracle-java7
 MAINTAINER Nicolas Lamirault <nicolas.lamirault@gmail.com>
 
+ENV DEBIAN_FRONTEND noninteractive
 ENV KIBANA_VERSION 4.0.2-linux-x64
 
-RUN apt-get -y update && apt-get install -y wget supervisor && apt-get clean
+RUN apt-get -y update && \
+    apt-get install -y ca-certificates wget \
+    && apt-get clean
 
 RUN mkdir -p /src/kibana && \
     cd /src/kibana && \
@@ -15,16 +18,9 @@ RUN mkdir -p /src/kibana && \
     tar xzf kibana-$KIBANA_VERSION.tar.gz --strip-components=1 && \
     rm kibana-$KIBANA_VERSION.tar.gz
 
-# ADD ./config.js /src/kibana/config.js
-# ADD ./vision.json /src/kibana/app/dashboards/default.json
 ADD ./kibana.yml /src/kibana/config/kibana.yml
-
-# ADD ./nginx.conf /etc/nginx/nginx.conf
-
-ADD ./supervisord.conf /etc/supervisor/supervisord.conf
-
-VOLUME ["/var/log/supervisor"]
+ADD ./kibana.sh /src/kibana.sh
 
 EXPOSE 5601
 
-CMD ["/usr/bin/supervisord", "-c", "/etc/supervisor/supervisord.conf"]
+CMD ["/src/kibana.sh"]
