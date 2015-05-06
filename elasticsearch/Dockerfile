@@ -1,13 +1,13 @@
-# VERSION 1.2
+# VERSION 1.3
 # AUTHOR:         Nicolas Lamirault <nicolas.lamirault@gmail.com>
 # DESCRIPTION:    vision/elasticsearch
 
 FROM java:7
 MAINTAINER Nicolas Lamirault <nicolas.lamirault@gmail.com>
 
-ENV ES_VERSION 1.5.0
+ENV ES_VERSION 1.5.2
 
-RUN apt-get -y update && apt-get install -y wget supervisor && apt-get clean
+RUN apt-get -y update && apt-get install -y wget && apt-get clean
 
 # Install Elasticsearch
 RUN mkdir -p /src/elasticsearch && cd /src/elasticsearch && \
@@ -20,14 +20,13 @@ RUN mkdir -p /src/elasticsearch && cd /src/elasticsearch && \
 
 ADD ./elasticsearch.yml /src/elasticsearch/elasticsearch.yml
 
-ADD ./supervisord.conf /etc/supervisor/supervisord.conf
+# ADD ./supervisord.conf /etc/supervisor/supervisord.conf
 
 VOLUME ["/var/lib/elasticsearch"]
-VOLUME ["/var/log/supervisor"]
+# VOLUME ["/var/log/supervisor"]
 
 EXPOSE 9200
 EXPOSE 9300
 
-# CMD ["/src/elasticsearch/bin/elasticsearch"]
-
-CMD ["/usr/bin/supervisord", "-c", "/etc/supervisor/supervisord.conf"]
+CMD ["/src/elasticsearch/bin/elasticsearch"]
+# CMD ["/usr/bin/supervisord", "-c", "/etc/supervisor/supervisord.conf"]
