@@ -1,18 +1,13 @@
-
-
-haproxy:
-  build: haproxy
-  links:
-    - consul
-  ports:
-    - "80:80"
-    - "1936:1936"
+#
+# Servide discovery
+#
 
 consul:
-  command: -server -bootstrap -advertise ROUTABLE_IP
   build: consul
-  links:
-    - pushgateway
+  # image: progrium/consul
+  command: -server -bootstrap -advertise 192.168.1.100 -ui-dir /src/ui
+  # links:
+  #   - pushgateway
   ports:
     - "8300:8300"
     - "8400:8400"
@@ -24,12 +19,38 @@ consul:
     - "consul/handlers:/handlers"
 
 registrator:
+  image: gliderlabs/registrator:latest
   command: consul://consul:8500
-  image: progrium/registrator:latest
   links:
     - consul
   volumes:
     - "/var/run/docker.sock:/tmp/docker.sock"
+
+#
+# Load balancing
+#
+
+haproxy:
+  build: haproxy
+  links:
+    - consul
+  ports:
+    - "9898:80"
+    - "8936:1936"
+
+#
+# Monitoring
+#
+
+cadvisor:
+  image: google/cadvisor:0.14.0
+  volumes:
+   - /:/rootfs:ro
+   - /var/run:/var/run:rw
+   - /sys:/sys:ro
+   - /var/lib/docker/:/var/lib/docker:ro
+  ports:
+   - "9999:8080"
 
 prometheus:
   build: prometheus
@@ -47,10 +68,14 @@ pushgateway:
   - "9091:9091"
 
 haproxyexporter:
-  command: -haproxy.scrape-uri=http://haproxy:1936/;csv
   image: prom/haproxy-exporter:latest
+  command: -haproxy.scrape-uri="http://haproxy:8936/;csv"
   links:
     - haproxy
+
+#
+# Services
+#
 
 elasticsearch:
   build: elasticsearch
@@ -59,8 +84,6 @@ elasticsearch:
     - "9300:9300"
   volumes:
     - /opt/vision/elasticsearch/lib:/var/lib/elasticsearch
-    - /opt/vision/elasticsearch/log:/var/log/supervisor
-  hostname: elasticsearch
 
 influxdb:
   build: influxdb
@@ -71,43 +94,33 @@ influxdb:
     - "8099:8099"
   volumes:
     - /opt/vision/influxdb/lib:/var/lib/influxdb
-    - /opt/vision/influxdb/log:/var/log/supervisor
 
 grafana:
   build: grafana
   ports:
-    - "9090:80"
+    - "9191:80"
   volumes:
     - /opt/vision/grafana/log:/var/log/supervisor
+    - /opt/vision/grafana/nginx:/var/log/nginx
   links:
-    - elasticsearch:elasticsearch
-    - influxdb:influxdb
+    - elasticsearch
+    - influxdb
 
 kibana:
   build: kibana
   ports:
     - "5601:5601"
-  volumes:
-    - /opt/vision/kibana/log:/var/log/supervisor
+  # volumes:
+  #   - /opt/vision/kibana/log:/var/log/supervisor
   links:
-    - elasticsearch:elasticsearch
+    - elasticsearch
 
-fluentd:
-  build: fluentd
-  ports:
-    - "24224:24224"
-    - "9292:9292"
-  volumes:
-    - /opt/vision/fluentd/log:/var/log/supervisor
-  links:
-    - elasticsearch:elasticsearch
-
-cadvisor:
-  image: google/cadvisor
-  volumes:
-   - /:/rootfs:ro
-   - /var/run:/var/run:rw
-   - /sys:/sys:ro
-   - /var/lib/docker/:/var/lib/docker:ro
-  ports:
-   - "9999:8080"
+# fluentd:
+#   build: fluentd
+#   ports:
+#     - "24224:24224"
+#     - "9292:9292"
+#   volumes:
+#     - /opt/vision/fluentd/log:/var/log/supervisor
+#   links:
+#     - elasticsearch
