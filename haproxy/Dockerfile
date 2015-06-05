@@ -1,4 +1,9 @@
+# VERSION 1.0
+# AUTHOR:         Nicolas Lamirault <nicolas.lamirault@gmail.com>
+# DESCRIPTION:    vision/haproxy
+
 FROM haproxy:1.5
+MAINTAINER Nicolas Lamirault <nicolas.lamirault@gmail.com>
 
 RUN DEBIAN_FRONTEND=noninteractive \
     apt-get update -qq && \
