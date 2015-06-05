@@ -1,32 +1,29 @@
-# VERSION 1.1
+# VERSION 1.2
 # AUTHOR:         Nicolas Lamirault <nicolas.lamirault@gmail.com>
 # DESCRIPTION:    vision/grafana
 
-FROM ubuntu:14.04
+# FROM ubuntu:14.04
+FROM debian:jessie
 MAINTAINER Nicolas Lamirault <nicolas.lamirault@gmail.com>
 
-ENV GRAFANA_VERSION 1.9.0
+ENV GRAFANA_VERSION 2.0.2
 
 RUN apt-get update -q && \
     apt-get install -y wget nginx-light supervisor && \
     apt-get clean
 
-RUN mkdir -p /src/grafana && cd /src/grafana && \
-    wget http://grafanarel.s3.amazonaws.com/grafana-$GRAFANA_VERSION.tar.gz && \
-    tar xzvf grafana-$GRAFANA_VERSION.tar.gz --strip-components=1 && \
-    rm grafana-$GRAFANA_VERSION.tar.gz
+RUN mkdir -p /src/grafana && \
+    cd /src/grafana && \
+    curl -O -J -L https://grafanarel.s3.amazonaws.com/builds/grafana-$GRAFANA_VERSION.linux-x64.tar.gz && \
+    tar xzvf grafana-$GRAFANA_VERSION.linux-x64.tar.gz --strip-components=1 && \
+    rm grafana-$GRAFANA_VERSION.linux-x64.tar.gz
 
-ADD ./influxdb_config.js /src/grafana/config.js
-ADD ./vision.json /src/grafana/app/dashboards/default.json
+# ADD ./grafana_config.js /src/grafana/config.js
+# ADD ./vision.json /src/grafana/app/dashboards/default.json
 
-# Nginx
-ADD ./nginx.conf /etc/nginx/nginx.conf
+VOLUME ["/var/lib/grafana"]
+VOLUME ["/var/log/grafana"]
 
-ADD ./supervisord.conf /etc/supervisor/supervisord.conf
+EXPOSE 3000
 
-VOLUME ["/var/log/supervisor"]
-VOLUME ["/var/log/nginx"]
-
-EXPOSE 80
-
-CMD ["/usr/bin/supervisord", "-c", "/etc/supervisor/supervisord.conf"]
+CMD ["/usr/sbin/grafana-server", "-config=/etc/grafana/grafana.ini"]
