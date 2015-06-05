@@ -24,7 +24,5 @@ EXPOSE 8090
 EXPOSE 8099
 
 VOLUME ["/var/lib/influxdb"]
-# VOLUME ["/var/log/supervisor"]
 
-# CMD ["/usr/bin/supervisord", "-c", "/etc/supervisor/supervisord.conf"]
 CMD ["/src/influxdb/influxdb.sh"]
