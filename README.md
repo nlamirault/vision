@@ -5,38 +5,40 @@
 
 ## Description
 
-[Vision][] is a system monitoring and log collector.
+[Vision][] is a [Docker][] stack.
 
 ### Core
 
-Powered by the following tools:
+Services discovering of containers is provided by :
 
-* [Docker][]: a portable, lightweight runtime and packaging tool.
-* [HAProxy][]: a TCP/HTTP load balancer.
-* [Consul][]: service discovering
+* [HAProxy][]: a TCP/HTTP load balancer (Stats: `http://xxx:8936`)
+* [Consul][]: service discovering (`http://xxx:8500`)
 * [Consul-template][]: populate values from Consul on your filesystem.
 * [Registrator][]: automatically register/deregister Docker containers into Consul.
 
-### Logging
+Monitoring of containers is provided by :
+
+* [cAdvisor][] is used (`http://xxx:9999`) to monitoring containers.
+* [Prometheus][] the service monitoring system and time series database (`http://xxx:9090`)
+
+### Logging service
 
 Log collector service is provided using :
 
-* [Elasticsearch][] (v1.4.2) web interface : `http://xxx:9200`
-* [Kibana][] (v4.0.0-beta3) web interface : `http://xxx:5601`
+* [Elasticsearch][] web interface : `http://xxx:9200`
+* [Kibana][] web interface : `http://xxx:5601`
 
 Some [Elasticsearch][] plugins are available:
 * [ElasticSearchHead][]: `http://xxx:9200/_plugin/head/`
 * [ElasticHQ][]: `http://xxx:9200/_plugin/HQ/`
 * [Kopf][]: `http://xxx:9200/_plugin/kopf/`
 
-### Monitoring
+### Monitoring service
 
 Monitoring service is provided using :
 
-* [Prometheus][]: An open-source service monitoring system and time series database.
-* [Grafana][] (v1.9.0) web interface : `http://xxx:9090/`
-* [InfluxDB][] (v0.8.7) web interface : `http://xxx:8083`
-* [cAdvisor][] (v0.8.0) is used (`http://xxx:8081`) to monitoring containers.
+* [Grafana][] web interface : `http://xxx:9191/`
+* [InfluxDB][] web interface : `http://xxx:8083`
 
 ## Deployment
 
@@ -51,7 +53,7 @@ Monitoring service is provided using :
 * Start it :
 
         $ ./init.sh
-        $ ./compose -d up
+        $ docker-compose up
 
 * Creates the [InfluxDB][] database:
 
@@ -62,6 +64,55 @@ Monitoring service is provided using :
   database:
 
         select * from /.*/ limit 100
+
+* You could use the [Consul][] HTTP API to retrive services endpoints :
+
+        $ url -s http://localhost:8500/v1/catalog/nodes|jq .
+        [
+           {
+               "Node": "7c882a315dc9",
+               "Address": "192.168.1.100"
+           }
+        ]
+        $ curl -s http://localhost:8500/v1/catalog/node/7c882a315dc9|jq .
+        {
+             "Node": {
+                "Node": "7c882a315dc9",
+                "Address": "192.168.1.100"
+             },
+             "Services": {
+               "79b92466b6dc:vision_cadvisor_1:8080": {
+                   "ID": "79b92466b6dc:vision_cadvisor_1:8080",
+                   "Service": "cadvisor",
+                   "Tags": null,
+                   "Address": "",
+                   "Port": 9999
+               },
+               "79b92466b6dc:vision_consul_1:53:udp": {
+                   "ID": "79b92466b6dc:vision_consul_1:53:udp",
+                   "Service": "consul-53",
+                   "Tags": [
+                      "udp"
+                   ],
+                   "Address": "",
+                   "Port": 8600
+               },
+               [...]
+            }
+         }
+
+### Kubernetes
+
+Launch using [Kubernetes][]:
+
+    $ docker-compose -f k8s.yml up
+
+### Mesos
+
+Launch using [Mesos][]:
+
+    $ docker-compose -f mesos.yml up
+
 
 
 ## Usage
@@ -91,6 +142,8 @@ Monitoring service is provided using :
 
 ## Development
 
+### Simple
+
 * Build the images :
 
         $ make build image=xxx
@@ -98,6 +151,69 @@ Monitoring service is provided using :
 * Setup directories :
 
         $ make setup
+
+* Creates a virtual machine called *vision-dev* for the development environment :
+
+        $ ./docker-machine create -d virtualbox vision-dev
+        $ eval "$(./docker-machine env vision-dev)"
+
+* Check *vision* machine runnning :
+
+        $ ./docker-machine ls
+
+* Launch *vision* :
+
+        $ ./docker-compose up
+
+* Open your browser and navigate to the IP address associated with the
+*vision* virtual machine :
+
+        $ ./docker-machine ip
+
+* To see which environment variables are available to the **web** service,
+run:
+
+        $ ./docker-compose run web env
+
+
+### Kubernetes
+
+*  Run [Kubernetes][] on a single host :
+
+        $ docker-compose -f k8s.yml up -d
+
+
+## Deployment
+
+With our app running locally, we can now push this exact same environment
+to a cloud hosting provider with Docker Machine
+
+Set your credentials in your environment :
+
+    $ source XXXXXXX.sh
+
+Deploy a new instance :
+
+    $ docker-machine -D create -d digitalocean \
+        --digitalocean-access-token $DIGITALOCEAN_TOKEN \
+        vision-prod
+
+Now we have two Machines running, one locally and one on Digital Ocean:
+
+    $ docker-machine ls
+    NAME            ACTIVE     DRIVER         STATE     URL
+    vision-dev      *          virtualbox     Running   tcp://w.x.y.z:2376
+    vision-prod                digitalocean   Running   tcp://a.b.c.d:2376
+
+Set *vision-prod* as the active machine and load the Docker environment :
+
+    $ ./docker-machine active vision-prod
+    $ eval "$(./docker-machine env vision-prod)"
+
+Finally, let's build the application in the Cloud :
+
+    $ ./docker-compose build
+    $ ./docker-compose up -d -f production.yml
 
 
 ## Support
@@ -138,6 +254,11 @@ Nicolas Lamirault <nicolas.lamirault@gmail.com>
 
 [Docker]: https://www.docker.io
 [Docker documentation]: http://docs.docker.io
+[Docker Machine]:https://github.com/docker/machine
+[Docker Complete]: https://github.com/docker/compose
+
+[Kubernetes]: http://kubernetes.io
+[Mesos]: http://mesos.apache.org/
 
 [Elasticsearch]: http://www.elasticsearch.org
 [Grafana]: http://grafana.org/
