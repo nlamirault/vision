@@ -1,4 +1,9 @@
+# VERSION 1.0
+# AUTHOR:         Nicolas Lamirault <nicolas.lamirault@gmail.com>
+# DESCRIPTION:    vision/prometheus
+
 FROM prom/prometheus
+MAINTAINER Nicolas Lamirault <nicolas.lamirault@gmail.com>
 
 RUN mkdir /config
 
