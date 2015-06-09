@@ -2,41 +2,41 @@
 # Servide discovery
 #
 
-consul:
-  build: consul
-  # image: progrium/consul
-  command: -server -bootstrap -advertise 192.168.1.100 -ui-dir /src/ui
-  # links:
-  #   - pushgateway
-  ports:
-    - "8300:8300"
-    - "8400:8400"
-    - "8500:8500"
-    - "8600:53/udp"
-  volumes:
-    - "/var/run/docker.sock:/var/run/docker.sock"
-    - "consul/config:/etc/consul"
-    - "consul/handlers:/handlers"
+# consul:
+#   build: consul
+#   # image: progrium/consul
+#   command: -server -bootstrap -advertise 192.168.1.100 -ui-dir /src/ui
+#   # links:
+#   #   - pushgateway
+#   ports:
+#     - "8300:8300"
+#     - "8400:8400"
+#     - "8500:8500"
+#     - "8600:53/udp"
+#   volumes:
+#     - "/var/run/docker.sock:/var/run/docker.sock"
+#     - "consul/config:/etc/consul"
+#     - "consul/handlers:/handlers"
 
-registrator:
-  image: gliderlabs/registrator:latest
-  command: consul://consul:8500
-  links:
-    - consul
-  volumes:
-    - "/var/run/docker.sock:/tmp/docker.sock"
+# registrator:
+#   image: gliderlabs/registrator:latest
+#   command: consul://consul:8500
+#   links:
+#     - consul
+#   volumes:
+#     - "/var/run/docker.sock:/tmp/docker.sock"
 
 #
 # Load balancing
 #
 
-haproxy:
-  build: haproxy
-  links:
-    - consul
-  ports:
-    - "9898:80"
-    - "8936:1936"
+# haproxy:
+#   build: haproxy
+#   links:
+#     - consul
+#   ports:
+#     - "9898:80"
+#     - "8936:1936"
 
 #
 # Monitoring
@@ -52,26 +52,26 @@ cadvisor:
   ports:
    - "9999:8080"
 
-prometheus:
-  build: prometheus
-  links:
-    - pushgateway
-    - haproxyexporter
-  ports:
-    - "9090:9090"
-  volumes:
-    - "prometheus/config:/config"
+# prometheus:
+#   build: prometheus
+#   links:
+#     - pushgateway
+#     - haproxyexporter
+#   ports:
+#     - "9090:9090"
+#   volumes:
+#     - "prometheus/config:/config"
 
-pushgateway:
-  image: prom/pushgateway:latest
-  ports:
-  - "9091:9091"
+# pushgateway:
+#   image: prom/pushgateway:latest
+#   ports:
+#   - "9091:9091"
 
-haproxyexporter:
-  image: prom/haproxy-exporter:latest
-  command: -haproxy.scrape-uri="http://haproxy:8936/;csv"
-  links:
-    - haproxy
+# haproxyexporter:
+#   image: prom/haproxy-exporter:latest
+#   command: -haproxy.scrape-uri="http://haproxy:8936/;csv"
+#   links:
+#     - haproxy
 
 #
 # Services
@@ -98,10 +98,10 @@ influxdb:
 grafana:
   build: grafana
   ports:
-    - "9191:80"
+    - "9191:3000"
   volumes:
-    - /opt/vision/grafana/log:/var/log/supervisor
-    - /opt/vision/grafana/nginx:/var/log/nginx
+    - /opt/vision/grafana/lib:/var/lib/grafana
+    - /opt/vision/grafana/log:/var/log/grafana
   links:
     - elasticsearch
     - influxdb
@@ -109,9 +109,7 @@ grafana:
 kibana:
   build: kibana
   ports:
-    - "5601:5601"
-  # volumes:
-  #   - /opt/vision/kibana/log:/var/log/supervisor
+    - "9393:5601"
   links:
     - elasticsearch
 

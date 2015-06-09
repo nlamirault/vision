@@ -1,13 +1,14 @@
 Vision ChangeLog
 ================
 
-# Version 0.4.0 (IN PROGRESS)
+# Version 0.4.0 (06/09/2015)
 
-- Migrating from Fig to Docker compose
-- Update to Kibana 4.0.0-beta3
-- Update to cAdvisor 0.13.0
+- Update to Grafana 2.0.2
+- Update to Kibana 4.0.0-beta2
+- Update to cAdvisor 0.14.0
 - Update InfluxDB to 0.8.8
 - Update to ElasticSearch 1.5.2
+- Migrating from Fig to Docker compose
 
 # Version 0.3.0 (22/12/2014)
 
