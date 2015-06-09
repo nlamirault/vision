@@ -9,7 +9,7 @@ MAINTAINER Nicolas Lamirault <nicolas.lamirault@gmail.com>
 ENV GRAFANA_VERSION 2.0.2
 
 RUN apt-get update -q && \
-    apt-get install -y wget nginx-light supervisor && \
+    apt-get install -y curl && \
     apt-get clean
 
 RUN mkdir -p /src/grafana && \
@@ -20,10 +20,11 @@ RUN mkdir -p /src/grafana && \
 
 # ADD ./grafana_config.js /src/grafana/config.js
 # ADD ./vision.json /src/grafana/app/dashboards/default.json
+ADD ./grafana.ini /src/grafana/grafana.ini
 
 VOLUME ["/var/lib/grafana"]
 VOLUME ["/var/log/grafana"]
 
 EXPOSE 3000
 
-CMD ["/usr/sbin/grafana-server", "-config=/etc/grafana/grafana.ini"]
+CMD ["/src/grafana/bin/grafana-server", "-config=/src/grafana/grafana.ini", "-homepath=/src/grafana/"]
