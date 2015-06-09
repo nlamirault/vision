@@ -1,0 +1,124 @@
+#
+# Servide discovery
+#
+
+# consul:
+#   build: consul
+#   # image: progrium/consul
+#   command: -server -bootstrap -advertise 192.168.1.100 -ui-dir /src/ui
+#   # links:
+#   #   - pushgateway
+#   ports:
+#     - "8300:8300"
+#     - "8400:8400"
+#     - "8500:8500"
+#     - "8600:53/udp"
+#   volumes:
+#     - "/var/run/docker.sock:/var/run/docker.sock"
+#     - "consul/config:/etc/consul"
+#     - "consul/handlers:/handlers"
+
+# registrator:
+#   image: gliderlabs/registrator:latest
+#   command: consul://consul:8500
+#   links:
+#     - consul
+#   volumes:
+#     - "/var/run/docker.sock:/tmp/docker.sock"
+
+#
+# Load balancing
+#
+
+# haproxy:
+#   build: haproxy
+#   links:
+#     - consul
+#   ports:
+#     - "9898:80"
+#     - "8936:1936"
+
+#
+# Monitoring
+#
+
+cadvisor:
+  image: google/cadvisor:0.14.0
+  volumes:
+   - /:/rootfs:ro
+   - /var/run:/var/run:rw
+   - /sys:/sys:ro
+   - /var/lib/docker/:/var/lib/docker:ro
+  ports:
+   - "9999:8080"
+
+# prometheus:
+#   build: prometheus
+#   links:
+#     - pushgateway
+#     - haproxyexporter
+#   ports:
+#     - "9090:9090"
+#   volumes:
+#     - "prometheus/config:/config"
+
+# pushgateway:
+#   image: prom/pushgateway:latest
+#   ports:
+#   - "9091:9091"
+
+# haproxyexporter:
+#   image: prom/haproxy-exporter:latest
+#   command: -haproxy.scrape-uri="http://haproxy:8936/;csv"
+#   links:
+#     - haproxy
+
+#
+# Services
+#
+
+elasticsearch:
+  build: elasticsearch
+  ports:
+    - "9200:9200"
+    - "9300:9300"
+  volumes:
+    - /opt/vision/elasticsearch/lib:/var/lib/elasticsearch
+
+influxdb:
+  build: influxdb
+  ports:
+    - "8083:8083"
+    - "8086:8086"
+    - "8090:8090"
+    - "8099:8099"
+  volumes:
+    - /opt/vision/influxdb/lib:/var/lib/influxdb
+
+grafana:
+  build: grafana
+  ports:
+    - "9191:3000"
+  volumes:
+    - /opt/vision/grafana/lib:/var/lib/grafana
+    - /opt/vision/grafana/log:/var/log/grafana
+  links:
+    - elasticsearch
+    - influxdb
+
+kibana:
+  build: kibana
+  ports:
+    - "9393:5601"
+  links:
+    - elasticsearch
+
+# fluentd:
+#   build: fluentd
+#   ports:
+#     - "24224:24224"
+#     - "9292:9292"
+#   volumes:
+#     - /opt/vision/fluentd/log:/var/log/supervisor
+#   links:
+#     - elasticsearch

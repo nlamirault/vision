@@ -1,9 +1,21 @@
 [hekad]
 maxprocs=10
 
+#
+# Input
+# -------------------------------
+
 [LogstreamerInput]
 log_directory = "/var/log"
 file_match = 'local7\.log'
+
+[DockerLogInput]
+## Default Docker endpoint
+endpoint = "unix:///var/run/docker.sock"
+
+#
+# Encoder
+# -------------------------------
 
 [PayloadEncoder]
 append_newlines = false
@@ -12,6 +24,10 @@ append_newlines = false
 index = "%{Type}-%{2006.01.02}"
 es_index_from_timestamp = true
 type_name = "%{Type}"
+
+#
+# Output
+# -------------------------------
 
 [LogOutput]
 message_matcher = "TRUE"

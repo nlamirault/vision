@@ -1,6 +1,6 @@
 *~
 .vagrant
-fig
-machine
+docker-compose
+docker-machine
 data
 vision-*.tar.gz
