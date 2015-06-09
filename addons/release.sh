@@ -19,9 +19,6 @@ set -e
 
 APP="vision"
 
-FIG_URI=https://github.com/docker/fig/releases/download
-FIG_VERSION=1.0.1
-
 NO_COLOR="\033[0m"
 OK_COLOR="\033[32;01m"
 ERROR_COLOR="\033[31;01m"
@@ -32,29 +29,9 @@ image_version() {
     grep ' VERSION' $IMAGE/Dockerfile|awk -F" " '{ print $3 }'
 }
 
-download_fig_linux() {
-   mkdir -p $APP-$VERSION-linux
-   curl -Ls $FIG_URI/$FIG_VERSION/fig-Linux-x86_64 > $APP-$VERSION-linux/fig
-   chmod +x $APP-$VERSION-linux/fig
-}
-
-download_fig_darwin() {
-    mkdir -p $APP-$VERSION-darwin
-    curl -Ls $FIG_URI/$FIG_VERSION/fig-Darwin-x86_64 > $APP-$VERSION-darwin/fig
-    chmod +x $APP-$VERSION-darwin/fig
-}
-
 release() {
     OS=$1
     VERSION=$2
-    if [ "linux" == "$OS" ]; then
-        download_fig_linux
-    elif [ "darwin" == "$OS" ]; then
-        download_fig_darwin
-    else
-        echo -e "$ERROR_COLOR[$APP] Invalid OS $OS. Must be: darwin or linux."
-        exit 1
-    fi
     echo -e "$WARN_COLOR[$APP] Make archive for $OS $VERSION $NO_COLOR"
     cp addons/fig.yml $APP-$VERSION-$OS/fig.yml
     cp addons/init.sh $APP-$VERSION-$OS/

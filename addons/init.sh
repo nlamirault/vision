@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Copyright (C) 2014  Nicolas Lamirault <nicolas.lamirault@gmail.com>
+# Copyright (C) 2014, 2015  Nicolas Lamirault <nicolas.lamirault@gmail.com>
 
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -19,7 +19,7 @@ VISION_DIR=/opt/vision
 
 sudo mkdir -p $VISION_DIR/elasticsearch/{lib,log}
 sudo mkdir -p $VISION_DIR/influxdb/{db,log,lib,wal}
-sudo mkdir -p $VISION_DIR/grafana/log
+sudo mkdir -p $VISION_DIR/grafana/{lib,log}
 sudo mkdir -p $VISION_DIR/kibana/log
 sudo mkdir -p $VISION_DIR/fluentd/log
 sudo chown -R $USER.users $VISION_DIR
