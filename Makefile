@@ -58,32 +58,34 @@ help:
 	@echo -e "$(WARN_COLOR)- release   : Make a new release"
 
 machine-linux:
-	@echo -e "$(OK_COLOR)[$(APP)] Installation Docker machine Linux $(NO_COLOR)"
-	@wget $(DOCKER_MACHINE_URI)/$(DOCKER_MACHINE_VERSION)/docker-machine_linux-amd64 -O docker-machine
-	@chmod +x ./docker-machine
+	@echo -e "$(OK_COLOR)[$(APP)] Installation Docker machine Linux$(NO_COLOR)"
+	@wget --quiet $(DOCKER_MACHINE_URI)/$(DOCKER_MACHINE_VERSION)/docker-machine_linux-amd64 -O docker-machine-linux
+	@chmod +x ./docker-machine-linux
 
 machine-darwin:
-	@echo -e "$(OK_COLOR)[$(APP)] Installation Docker machine OSX $(NO_COLOR)"
-	@wget $(DOCKER_MACHINE_URI)/$(DOCKER_MACHINE_VERSION)/docker-machine_darwin-amd64 -O docker-machine
-	@chmod +x ./docker-machine
+	@echo -e "$(OK_COLOR)[$(APP)] Installation Docker machine OSX$(NO_COLOR)"
+	@wget --quiet $(DOCKER_MACHINE_URI)/$(DOCKER_MACHINE_VERSION)/docker-machine_darwin-amd64 -O docker-machine-darwin
+	@chmod +x ./docker-machine-darwin
 
-machine-windows:
-	@echo -e "$(OK_COLOR)[$(APP)] Installation Docker machine Windows $(NO_COLOR)"
-	@wget $(DOCKER_MACHINE_URI)/$(DOCKER_MACHINE_VERSION)/docker-machine_windows-amd64.exe -O docker-machine
-	@chmod +x ./docker-machine
+# machine-windows:
+# 	@echo -e "$(OK_COLOR)[$(APP)] Installation Docker machine Windows$(NO_COLOR)"
+# 	@wget --quiet $(DOCKER_MACHINE_URI)/$(DOCKER_MACHINE_VERSION)/docker-machine_windows-amd64.exe -O docker-machine-windows
+# 	@chmod +x ./docker-machine-windows
 
 compose-linux:
-	@echo -e "$(OK_COLOR)[$(APP)] Installation Docker compose Linux $(NO_COLOR)"
-	@wget $(DOCKER_COMPOSE_URI)/$(DOCKER_COMPOSE_VERSION)/docker-compose-Linux-x86_64 -O docker-compose
-	@chmod +x ./docker-compose
+	@echo -e "$(OK_COLOR)[$(APP)] Installation Docker compose Linux$(NO_COLOR)"
+	@wget --quiet $(DOCKER_COMPOSE_URI)/$(DOCKER_COMPOSE_VERSION)/docker-compose-Linux-x86_64 -O docker-compose-linux
+	@chmod +x ./docker-compose-linux
 
 compose-darwin:
-	@echo -e "$(OK_COLOR)[$(APP)] Installation Docker compose $(NO_COLOR)"
-	@wget $(DOCKER_COMPOSE_URI)/$(DOCKER_COMPOSE_VERSION)/docker-compose-Darwin_x86-64 -O docker-compose
-	@chmod +x ./docker-compose
+	@echo -e "$(OK_COLOR)[$(APP)] Installation Docker compose OSX$(NO_COLOR)"
+	@wget --quiet $(DOCKER_COMPOSE_URI)/$(DOCKER_COMPOSE_VERSION)/docker-compose-Darwin-x86_64 -O docker-compose-darwin
+	@chmod +x ./docker-compose-darwin
 
 .PHONY: init
 init: machine-$(OS) compose-$(OS)
+	@mv ./docker-compose-$(OS) ./docker-compose
+	@mv ./docker-machine-$(OS) ./docker-machine
 
 .PHONY: build
 build:
@@ -100,10 +102,11 @@ publish:
 	@$(DOCKER) push $(NAMESPACE)/$(image):$(IMAGE_VERSION)
 
 .PHONY: binaries
-binaries:
+binaries: machine-linux compose-linux machine-darwin compose-darwin
 	@echo -e "$(OK_COLOR)[$(APP)] Make binaries $(NO_COLOR)"
 	@addons/release.sh linux $(VERSION)
 	@addons/release.sh darwin $(VERSION)
+	@rm -f ./docker-compose-* ./docker-machine-*
 
 .PHONY: release
 release: binaries
@@ -112,4 +115,5 @@ release: binaries
 
 clean:
 	@echo -e "$(OK_COLOR)[$(APP)] Nettoyage de l'environnement$(NO_COLOR)"
-	@rm -fr *.tar.gz $(APP)-*
+	@rm -fr *.tar.gz $(APP)-* ./docker-compose ./docker-machine
+	@rm -f ./docker-compose-* ./docker-machine-*

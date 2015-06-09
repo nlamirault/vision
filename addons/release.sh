@@ -29,11 +29,25 @@ image_version() {
     grep ' VERSION' $IMAGE/Dockerfile|awk -F" " '{ print $3 }'
 }
 
+create_archive_directory() {
+    OS=$1
+    mkdir -p $APP-$VERSION-$OS
+    cp ./docker-compose-$OS $APP-$VERSION-$OS/docker-compose
+    cp ./docker-machine-linux $APP-$VERSION-$OS/docker-machine
+}
+
 release() {
     OS=$1
     VERSION=$2
-    echo -e "$WARN_COLOR[$APP] Make archive for $OS $VERSION $NO_COLOR"
-    cp addons/docker-compose.yml $APP-$VERSION-$OS/fig.yml
+    if [ "linux" == "$OS" ] || [ "darwin" == "$OS" ]; then
+        create_archive_directory $OS
+    else
+        echo -e "$ERROR_COLOR[$APP] Invalid OS $OS. Must be: darwin or linux."
+        exit 1
+    fi
+    echo -e "$OK_COLOR[$APP] Make archive for $OS $VERSION $NO_COLOR"
+    COMPOSE_FILE=$APP-$VERSION-$OS/docker-compose.yml
+    cp addons/docker-compose.yml $COMPOSE_FILE
     cp addons/init.sh $APP-$VERSION-$OS/
     ES_VERSION=$(image_version "elasticsearch")
     KIBANA_VERSION=$(image_version "kibana")
@@ -41,12 +55,12 @@ release() {
     INFLUXDB_VERSION=$(image_version "influxdb")
     FLUENTD_VERSION=$(image_version "fluentd")
     CADVISOR_VERSION="0.14.0"
-    sed -i "s/ES_VERSION/$ES_VERSION/g" $APP-$VERSION-$OS/fig.yml
-    sed -i "s/KIBANA_VERSION/$KIBANA_VERSION/g" $APP-$VERSION-$OS/fig.yml
-    sed -i "s/GRAFANA_VERSION/$GRAFANA_VERSION/g" $APP-$VERSION-$OS/fig.yml
-    sed -i "s/INFLUXDB_VERSION/$INFLUXDB_VERSION/g" $APP-$VERSION-$OS/fig.yml
-    sed -i "s/FLUENTD_VERSION/$FLUENTD_VERSION/g" $APP-$VERSION-$OS/fig.yml
-    sed -i "s/CADVISOR_VERSION/$CADVISOR_VERSION/g" $APP-$VERSION-$OS/fig.yml
+    sed -i "s/ES_VERSION/$ES_VERSION/g" $COMPOSE_FILE
+    sed -i "s/KIBANA_VERSION/$KIBANA_VERSION/g" $COMPOSE_FILE
+    sed -i "s/GRAFANA_VERSION/$GRAFANA_VERSION/g" $COMPOSE_FILE
+    sed -i "s/INFLUXDB_VERSION/$INFLUXDB_VERSION/g" $COMPOSE_FILE
+    sed -i "s/FLUENTD_VERSION/$FLUENTD_VERSION/g" $COMPOSE_FILE
+    sed -i "s/CADVISOR_VERSION/$CADVISOR_VERSION/g" $COMPOSE_FILE
     tar cf - $APP-$VERSION-$OS | gzip > $APP-$VERSION-$OS.tar.gz
     rm -fr $APP-$VERSION-$OS
 }
