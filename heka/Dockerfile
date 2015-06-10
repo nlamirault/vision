@@ -1,6 +1,6 @@
-# VERSION 1.3
+# VERSION 1.0
 # AUTHOR:         Nicolas Lamirault <nicolas.lamirault@gmail.com>
-# DESCRIPTION:    vision/hekad
+# DESCRIPTION:    vision/heka
 
 FROM debian:jessie
 MAINTAINER Nicolas Lamirault <nicolas.lamirault@gmail.com>
