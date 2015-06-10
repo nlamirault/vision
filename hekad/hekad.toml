@@ -40,7 +40,12 @@ flush_interval = 5000
 flush_count = 10
 encoder = "ESJsonEncoder"
 
-[DashboardOutput]
+#
+# Misc
+# -------------------------------
+
+# Heka Dashboard for internal metrics and time series graphs
+[Dashboard]
 type = "DashboardOutput"
 address = ":4352"
 ticker_interval = 30
