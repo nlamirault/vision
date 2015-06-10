@@ -11,22 +11,18 @@ RUN apt-get update && \
 
 ENV HEKAD_VERSION 0.9.2
 
-RUN mkdir /etc/hekad && \
-    mkdir /var/cache/hekad
-
 RUN useradd -d / -M -U -c "hekad user" -s /usr/sbin/nologin heka && \
-    mkdir /etc/hekad && \
-    mkdir /var/cache/hekad && \
+    mkdir -p /etc/hekad && \
+    mkdir -p /var/cache/hekad && \
     chown heka:heka /var/cache/hekad && \
     wget https://github.com/mozilla-services/heka/releases/download/v${HEKAD_VERSION}/heka_${HEKAD_VERSION}_amd64.deb && \
     dpkg -i heka_${HEKAD_VERSION}_amd64.deb && \
     rm heka_${HEKAD_VERSION}_amd64.deb
 
-ADD ./hekad.toml /etc/hekad/hekad.toml
-# ADD ./run.sh /usr/bin/visionhekad.sh
+ADD ./hekad.toml /etc/hekad/hekad-vision.toml
 
 USER heka
 
 EXPOSE 4352
 
-CMD ["/usr/bin/hekad", "-config", "=", "/etc/hekad.hekad.toml"]
+CMD ["/usr/bin/hekad", "-config", "=", "/etc/hekad/hekad-vision.toml"]
