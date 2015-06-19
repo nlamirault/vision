@@ -58,48 +58,34 @@ Monitoring service is provided using :
 * Creates the [InfluxDB][] database:
 
         $ curl -X POST 'http://localhost:8086/db?u=root&p=root' \
-            -d '{"name": "vision"}'
+            -d '{"name": "cadvisor"}'
 
 * Verify input datas from the InfluxDB UI (on 8083), using this query, after choosing `vision`
   database:
 
         select * from /.*/ limit 100
 
-* You could use the [Consul][] HTTP API to retrive services endpoints :
+* Open your browser to the Grafana dashboard (on 9191). Log into, then click on
+`Data Sources` > `Add New`. Enter this content :
 
-        $ url -s http://localhost:8500/v1/catalog/nodes|jq .
-        [
-           {
-               "Node": "7c882a315dc9",
-               "Address": "192.168.1.100"
-           }
-        ]
-        $ curl -s http://localhost:8500/v1/catalog/node/7c882a315dc9|jq .
-        {
-             "Node": {
-                "Node": "7c882a315dc9",
-                "Address": "192.168.1.100"
-             },
-             "Services": {
-               "79b92466b6dc:vision_cadvisor_1:8080": {
-                   "ID": "79b92466b6dc:vision_cadvisor_1:8080",
-                   "Service": "cadvisor",
-                   "Tags": null,
-                   "Address": "",
-                   "Port": 9999
-               },
-               "79b92466b6dc:vision_consul_1:53:udp": {
-                   "ID": "79b92466b6dc:vision_consul_1:53:udp",
-                   "Service": "consul-53",
-                   "Tags": [
-                      "udp"
-                   ],
-                   "Address": "",
-                   "Port": 8600
-               },
-               [...]
-            }
-         }
+        Data Source Settings
+
+        Name: influxdb
+        Type: InfluxDB 0.8.x
+        Ddefault : YES
+
+        Http settings
+        Url: http://influxdb:8086
+        Access: proxy
+        Basic Auth: Enabled
+        User: admin
+        Password: admin
+
+        InfluxDB Details
+        Database: cadvisor
+        User: root
+        Password: root
+
 
 ### Kubernetes
 
@@ -214,6 +200,13 @@ Finally, let's build the application in the Cloud :
 
     $ ./docker-compose build
     $ ./docker-compose up -d -f production.yml
+
+
+
+
+
+
+
 
 
 ## Support
