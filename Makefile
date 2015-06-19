@@ -33,6 +33,9 @@ DOCKER_MACHINE_VERSION=v0.2.0
 DOCKER_COMPOSE_URI=https://github.com/docker/compose/releases/download
 DOCKER_COMPOSE_VERSION=1.2.0
 
+K8S_KUBECTL_URI=https://storage.googleapis.com/kubernetes-release/release
+K8S_VERSION=v0.19.0
+
 UNAME := $(shell uname)
 ifeq ($(UNAME),$(filter $(UNAME),Linux Darwin))
 ifeq ($(UNAME),$(filter $(UNAME),Darwin))
@@ -58,27 +61,27 @@ help:
 	@echo -e "$(WARN_COLOR)- release   : Make a new release"
 
 machine-linux:
-	@echo -e "$(OK_COLOR)[$(APP)] Installation Docker machine Linux$(NO_COLOR)"
+	@echo -e "$(OK_COLOR)[$(APP)] Install Docker machine Linux$(NO_COLOR)"
 	@wget --quiet $(DOCKER_MACHINE_URI)/$(DOCKER_MACHINE_VERSION)/docker-machine_linux-amd64 -O docker-machine-linux
 	@chmod +x ./docker-machine-linux
 
 machine-darwin:
-	@echo -e "$(OK_COLOR)[$(APP)] Installation Docker machine OSX$(NO_COLOR)"
+	@echo -e "$(OK_COLOR)[$(APP)] Install Docker machine OSX$(NO_COLOR)"
 	@wget --quiet $(DOCKER_MACHINE_URI)/$(DOCKER_MACHINE_VERSION)/docker-machine_darwin-amd64 -O docker-machine-darwin
 	@chmod +x ./docker-machine-darwin
 
 # machine-windows:
-# 	@echo -e "$(OK_COLOR)[$(APP)] Installation Docker machine Windows$(NO_COLOR)"
+# 	@echo -e "$(OK_COLOR)[$(APP)] Install Docker machine Windows$(NO_COLOR)"
 # 	@wget --quiet $(DOCKER_MACHINE_URI)/$(DOCKER_MACHINE_VERSION)/docker-machine_windows-amd64.exe -O docker-machine-windows
 # 	@chmod +x ./docker-machine-windows
 
 compose-linux:
-	@echo -e "$(OK_COLOR)[$(APP)] Installation Docker compose Linux$(NO_COLOR)"
+	@echo -e "$(OK_COLOR)[$(APP)] Install Docker compose Linux$(NO_COLOR)"
 	@wget --quiet $(DOCKER_COMPOSE_URI)/$(DOCKER_COMPOSE_VERSION)/docker-compose-Linux-x86_64 -O docker-compose-linux
 	@chmod +x ./docker-compose-linux
 
 compose-darwin:
-	@echo -e "$(OK_COLOR)[$(APP)] Installation Docker compose OSX$(NO_COLOR)"
+	@echo -e "$(OK_COLOR)[$(APP)] Install Docker compose OSX$(NO_COLOR)"
 	@wget --quiet $(DOCKER_COMPOSE_URI)/$(DOCKER_COMPOSE_VERSION)/docker-compose-Darwin-x86_64 -O docker-compose-darwin
 	@chmod +x ./docker-compose-darwin
 
@@ -86,6 +89,22 @@ compose-darwin:
 init: machine-$(OS) compose-$(OS)
 	@mv ./docker-compose-$(OS) ./docker-compose
 	@mv ./docker-machine-$(OS) ./docker-machine
+
+.PHONY: kubectl-linux
+kubectl-linux:
+	@echo -e "$(OK_COLOR)[$(APP)] Install Kubectl Linux$(NO_COLOR)"
+	@wget --quiet $(K8S_KUBECTL_URI)/$(K8S_VERSION)/bin/linux/amd64/kubectl -O kubectl-linux
+	@chmod +x ./kubectl-linux
+
+.PHONY: kubectl-darwin
+kubectl-darwin:
+	@echo -e "$(OK_COLOR)[$(APP)] Install Kubectl OSX$(NO_COLOR)"
+	@wget --quiet $(K8S_KUBECTL_URI)/$(K8S_VERSION)/bin/darwin/amd64/kubectl -O kubectl-darwin
+	@chmod +x ./kubectl-darwin
+
+.PHONY: k8s
+k8s: kubectl-$(OS)
+	@mv ./kubectl-$(OS) ./kubectl
 
 .PHONY: build
 build:
