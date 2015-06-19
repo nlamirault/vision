@@ -1,4 +1,4 @@
-# VERSION 1.3
+# VERSION 1.4
 # AUTHOR:         Nicolas Lamirault <nicolas.lamirault@gmail.com>
 # DESCRIPTION:    vision/influxdb
 
@@ -8,7 +8,7 @@ MAINTAINER Nicolas Lamirault <nicolas.lamirault@gmail.com>
 ENV INFLUXDB_VERSION 0.8.8
 
 RUN apt-get update && \
-    apt-get install -y wget && \
+    apt-get install -y wget curl && \
     apt-get clean
 
 RUN mkdir -p /src/influxdb && \
