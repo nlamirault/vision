@@ -28,10 +28,10 @@ WARN_COLOR=\033[33;01m
 DOCKER = docker
 
 DOCKER_MACHINE_URI=https://github.com/docker/machine/releases/download
-DOCKER_MACHINE_VERSION=v0.2.0
+DOCKER_MACHINE_VERSION=v0.3.0
 
 DOCKER_COMPOSE_URI=https://github.com/docker/compose/releases/download
-DOCKER_COMPOSE_VERSION=1.2.0
+DOCKER_COMPOSE_VERSION=1.3.0
 
 K8S_KUBECTL_URI=https://storage.googleapis.com/kubernetes-release/release
 K8S_VERSION=v0.19.0
