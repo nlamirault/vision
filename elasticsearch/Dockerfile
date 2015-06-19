@@ -1,11 +1,15 @@
-# VERSION 1.3
+# VERSION 1.4
 # AUTHOR:         Nicolas Lamirault <nicolas.lamirault@gmail.com>
 # DESCRIPTION:    vision/elasticsearch
 
 FROM java:7
 MAINTAINER Nicolas Lamirault <nicolas.lamirault@gmail.com>
 
-ENV ES_VERSION 1.5.2
+LABEL ELASTICSEARCH_VERSION 1.6
+LABEL IMAGE_DESCRIPTION Elasticsearch 1.6.x
+LABEL IMAGE_EXPOSE_SERVICES 9200,9300
+
+ENV ES_VERSION 1.6.0
 
 RUN apt-get -y update && apt-get install -y wget && apt-get clean
 
