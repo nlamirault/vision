@@ -89,9 +89,36 @@ Monitoring service is provided using :
 
 ### Kubernetes
 
-Launch using [Kubernetes][]:
+* Launch using [Kubernetes][]:
 
-    $ docker-compose -f k8s.yml up
+        $ docker-compose -f k8s.yml up
+
+* Check cluster status :
+
+        $ curl http://127.0.0.1:4001/version
+        etcd 2.0.9
+
+        $ curl http://localhost:8080/
+        {
+            "paths": [
+                "/api",
+                "/api/v1beta1",
+                "/api/v1beta2",
+                "/api/v1beta3",
+                "/healthz",
+                "/healthz/ping",
+                "/logs/",
+                "/metrics",
+                "/static/",
+                "/swagger-ui/",
+                "/swaggerapi/",
+                "/version"
+            ]
+        }
+
+
+
+
 
 ### Mesos
 

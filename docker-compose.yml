@@ -72,6 +72,7 @@ elasticsearch:
     - "9300:9300"
   volumes:
     - /opt/vision/elasticsearch/lib:/var/lib/elasticsearch
+  log_driver: "syslog"
 
 influxdb:
   build: influxdb
@@ -84,6 +85,7 @@ influxdb:
     - "8099"
   volumes:
     - /opt/vision/influxdb/lib:/var/lib/influxdb
+  log_driver: "syslog"
 
 grafana:
   build: grafana
@@ -95,6 +97,7 @@ grafana:
     - /opt/vision/grafana/log:/var/log/grafana
   links:
     - influxdb:influxdb
+  log_driver: "syslog"
 
 kibana:
   build: kibana
@@ -103,6 +106,7 @@ kibana:
     - "9393:5601"
   links:
     - elasticsearch
+  log_driver: "syslog"
 
 # fluentd:
 #   build: fluentd
@@ -132,3 +136,4 @@ cadvisor:
    - "9999:8080"
   links:
     - influxdb:influxdb
+  log_driver: "syslog"

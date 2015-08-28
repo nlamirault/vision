@@ -1,4 +1,4 @@
-# VERSION 1.3
+# VERSION 1.4
 # AUTHOR:         Nicolas Lamirault <nicolas.lamirault@gmail.com>
 # DESCRIPTION:    vision/influxdb
 
@@ -6,7 +6,7 @@ FROM dockerfile/java:oracle-java7
 MAINTAINER Nicolas Lamirault <nicolas.lamirault@gmail.com>
 
 ENV DEBIAN_FRONTEND noninteractive
-ENV KIBANA_VERSION 4.0.2-linux-x64
+ENV KIBANA_VERSION 4.1.1-linux-x64
 
 RUN apt-get -y update && \
     apt-get install -y ca-certificates wget \

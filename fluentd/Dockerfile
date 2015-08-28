@@ -1,6 +1,6 @@
-# VERSION 1.0
+# VERSION 1.1
 # AUTHOR:         Nicolas Lamirault <nicolas.lamirault@gmail.com>
-# DESCRIPTION:    vision/influxdb
+# DESCRIPTION:    vision/fluentd
 
 FROM ubuntu:14.04
 MAINTAINER Nicolas Lamirault <nicolas.lamirault@gmail.com>
