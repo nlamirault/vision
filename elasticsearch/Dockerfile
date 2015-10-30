@@ -5,11 +5,11 @@
 FROM java:7
 MAINTAINER Nicolas Lamirault <nicolas.lamirault@gmail.com>
 
-LABEL ELASTICSEARCH_VERSION 1.6
-LABEL IMAGE_DESCRIPTION Elasticsearch 1.6.x
+LABEL ELASTICSEARCH_VERSION 2.0
+LABEL IMAGE_DESCRIPTION Elasticsearch 2.0.x
 LABEL IMAGE_EXPOSE_SERVICES 9200,9300
 
-ENV ES_VERSION 1.6.0
+ENV ES_VERSION 2.0.0
 
 RUN apt-get -y update && apt-get install -y wget && apt-get clean
 
@@ -20,7 +20,9 @@ RUN mkdir -p /src/elasticsearch && cd /src/elasticsearch && \
     rm elasticsearch-$ES_VERSION.tar.gz && \
     /src/elasticsearch/bin/plugin -v -i mobz/elasticsearch-head && \
     /src/elasticsearch/bin/plugin -v -i royrusso/elasticsearch-HQ && \
-    /src/elasticsearch/bin/plugin -v -i lmenezes/elasticsearch-kopf
+    /src/elasticsearch/bin/plugin -v -i lmenezes/elasticsearch-kopf && \
+    /src/elasticsearch/bin/plugin -v -i license && \
+    /src/elasticsearch/bin/plugin -v -i marvel-agent
 
 ADD ./elasticsearch.yml /src/elasticsearch/elasticsearch.yml
 
