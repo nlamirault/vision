@@ -55,10 +55,10 @@ all: help
 
 help:
 	@echo -e "$(OK_COLOR)==== $(APP) [$(VERSION)] ====$(NO_COLOR)"
-	@echo -e "$(WARN_COLOR)- init      : Download dependencies used by Vision"
-	@echo -e "$(WARN_COLOR)- build     : Make the Docker image"
-	@echo -e "$(WARN_COLOR)- publish   : Publish the image"
-	@echo -e "$(WARN_COLOR)- release   : Make a new release"
+	@echo -e "$(WARN_COLOR)- init              : Download dependencies used by Vision"
+	@echo -e "$(WARN_COLOR)- build image=xx    : Make the Docker image"
+	@echo -e "$(WARN_COLOR)- publish image=xx  : Publish the image"
+	@echo -e "$(WARN_COLOR)- release           : Make a new release"
 
 machine-linux:
 	@echo -e "$(OK_COLOR)[$(APP)] Install Docker machine Linux$(NO_COLOR)"
