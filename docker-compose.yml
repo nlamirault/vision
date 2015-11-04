@@ -65,7 +65,8 @@
 #
 
 elasticsearch:
-  build: elasticsearch
+  # build: elasticsearch
+  image: portefaix/elasticsearch:2.0.0
   name: elasticsearch
   ports:
     - "9200:9200"
@@ -88,7 +89,8 @@ influxdb:
   log_driver: "syslog"
 
 grafana:
-  build: grafana
+  # build: grafana
+  image: portefaix/grafana:2.5.0
   name: grafana
   ports:
     - "9191:3000"
@@ -100,7 +102,8 @@ grafana:
   log_driver: "syslog"
 
 kibana:
-  build: kibana
+  # build: kibana
+  image: portefaix/kibana:4.2.0
   name: kibana
   ports:
     - "9393:5601"
@@ -124,7 +127,7 @@ kibana:
 #
 
 cadvisor:
-  image: google/cadvisor:0.14.0
+  image: google/cadvisor:0.18.0
   name: cadvisor
   command: -storage_driver=influxdb -storage_driver_db=cadvisor -storage_driver_host=influxdb:8086
   volumes:
