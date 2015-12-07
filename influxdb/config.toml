@@ -1,168 +1,121 @@
-# Welcome to the InfluxDB configuration file.
+reporting-disabled = false
 
-# If hostname (on the OS) doesn't return a name that can be resolved by the other
-# systems in the cluster, you'll have to set the hostname to an IP or something
-# that can be resolved here.
-# hostname = ""
+[meta]
+  dir = "/data/meta"
+  hostname = "localhost"
+  bind-address = ":8088"
+  retention-autocreate = true
+  election-timeout = "1s"
+  heartbeat-timeout = "1s"
+  leader-lease-timeout = "500ms"
+  commit-timeout = "50ms"
+  cluster-tracing = false
+  raft-promotion-enabled = true
 
-bind-address = "0.0.0.0"
-
-[logging]
-# logging level can be one of "debug", "info", "warn" or "error"
-level  = "debug"
-file   = "/var/lib/influxdb/log/influxdb.log"         # stdout to log to standard out
-
-# Configure the admin server
-[admin]
-port   = 8083              # binding is disabled if the port isn't set
-assets = "./admin"
-
-# Configure the http api
-[api]
-port     = 8086    # binding is disabled if the port isn't set
-# ssl-port = 8084    # SSL support is enabled if you set a port and cert
-# ssl-cert = "/path/to/cert.pem"
-
-# connections will timeout after this amount of time. Ensures that clients that misbehave
-# and keep alive connections they don't use won't end up connection a million times.
-# However, if a request is taking longer than this to complete, could be a problem.
-read-timeout = "5s"
-
-[input_plugins]
-
-  # Configure the graphite api
-  [input_plugins.graphite]
-  enabled = false
-  # port = 2003
-  # database = ""  # store graphite data in this database
-
-# Raft configuration
-[raft]
-# The raft port should be open between all servers in a cluster.
-# However, this port shouldn't be accessible from the internet.
-
-port = 8090
-
-# Where the raft logs are stored. The user running InfluxDB will need read/write access.
-dir  = "/var/lib/influxdb/raft"
-
-# election-timeout = "1s"
-
-[storage]
-dir = "/var/lib/influxdb/db"
-# How many requests to potentially buffer in memory. If the buffer gets filled then writes
-# will still be logged and once the local storage has caught up (or compacted) the writes
-# will be replayed from the WAL
-write-buffer-size = 10000
+[data]
+  dir = "/root/.influxdb/data"
+  engine = "bz1"
+  max-wal-size = 104857600
+  wal-flush-interval = "10m0s"
+  wal-partition-flush-delay = "2s"
+  wal-dir = "/root/.influxdb/wal"
+  wal-logging-enabled = true
+  wal-ready-series-size = 30720
+  wal-compaction-threshold = 0.5
+  wal-max-series-size = 1048576
+  wal-flush-cold-interval = "5s"
+  wal-partition-size-threshold = 52428800
+  wal-flush-memory-size-threshold = 5242880
+  wal-max-memory-size-threshold = 104857600
+  index-compaction-age = 60000000000
+  index-min-compaction-interval = 60000000000
+  index-compaction-min-file-count = 5
+  index-compaction-full-age = 300000000000
+  query-log-enabled = true
 
 [cluster]
-# A comma separated list of servers to seed
-# this server. this is only relevant when the
-# server is joining a new cluster. Otherwise
-# the server will use the list of known servers
-# prior to shutting down. Any server can be pointed to
-# as a seed. It will find the Raft leader automatically.
+  force-remote-mapping = false
+  write-timeout = "5s"
+  shard-writer-timeout = "5s"
+  shard-mapper-timeout = "5s"
 
-# Here's an example. Note that the port on the host is the same as the raft port.
-# seed-servers = ["hosta:8090","hostb:8090"]
+[retention]
+  enabled = true
+  check-interval = "30m0s"
 
-# Replication happens over a TCP connection with a Protobuf protocol.
-# This port should be reachable between all servers in a cluster.
-# However, this port shouldn't be accessible from the internet.
+[registration]
+  enabled = true
+  url = "https://enterprise.influxdata.com"
+  token = ""
+  stats-interval = "1m0s"
 
-protobuf_port = 8099
-protobuf_timeout = "2s" # the write timeout on the protobuf conn any duration parseable by time.ParseDuration
-protobuf_heartbeat = "200ms" # the heartbeat interval between the servers. must be parseable by time.ParseDuration
-protobuf_min_backoff = "1s" # the minimum backoff after a failed heartbeat attempt
-protobuf_max_backoff = "10s" # the maximum backoff after a failed heartbeat attempt
+[shard-precreation]
+  enabled = true
+  check-interval = "10m0s"
+  advance-period = "30m0s"
 
-# How many write requests to potentially buffer in memory per server. If the buffer gets filled then writes
-# will still be logged and once the server has caught up (or come back online) the writes
-# will be replayed from the WAL
-write-buffer-size = 10000
+[admin]
+  enabled = true
+  bind-address = ":8083"
+  https-enabled = false
+  https-certificate = "/etc/ssl/influxdb.pem"
 
-# the maximum number of responses to buffer from remote nodes, if the
-# expected number of responses exceed this number then querying will
-# happen sequentially and the buffer size will be limited to this
-# number
-max-response-buffer-size = 100000
+[monitor]
+  store-enabled = true
+  store-database = "_internal"
+  store-interval = "10s"
 
-# When queries get distributed out to shards, they go in parallel. This means that results can get buffered
-# in memory since results will come in any order, but have to be processed in the correct time order.
-# Setting this higher will give better performance, but you'll need more memory. Setting this to 1 will ensure
-# that you don't need to buffer in memory, but you won't get the best performance.
-concurrent-shard-query-limit = 10
+[subscriber]
+  enabled = true
 
-[leveldb]
+[http]
+  enabled = true
+  bind-address = ":8086"
+  auth-enabled = false
+  log-enabled = true
+  write-tracing = false
+  pprof-enabled = false
+  https-enabled = false
+  https-certificate = "/etc/ssl/influxdb.pem"
 
-# Maximum mmap open files, this will affect the virtual memory used by
-# the process
-max-open-files = 40
+[collectd]
+  enabled = false
+  bind-address = ":25826"
+  database = "collectd"
+  retention-policy = ""
+  batch-size = 5000
+  batch-pending = 10
+  batch-timeout = "10s"
+  read-buffer = 0
+  typesdb = "/usr/share/collectd/types.db"
 
-# LRU cache size, LRU is used by leveldb to store contents of the
-# uncompressed sstables. You can use `m` or `g` prefix for megabytes
-# and gigabytes, respectively.
-lru-cache-size = "200m"
+[opentsdb]
+  enabled = false
+  bind-address = ":4242"
+  database = "opentsdb"
+  retention-policy = ""
+  consistency-level = "one"
+  tls-enabled = false
+  certificate = "/etc/ssl/influxdb.pem"
+  batch-size = 1000
+  batch-pending = 5
+  batch-timeout = "1s"
+  log-point-errors = true
 
-# The default setting on this is 0, which means unlimited. Set this to something if you want to
-# limit the max number of open files. max-open-files is per shard so this * that will be max.
-max-open-shards = 0
+[continuous_queries]
+  log-enabled = true
+  enabled = true
+  recompute-previous-n = 2
+  recompute-no-older-than = "10m0s"
+  compute-runs-per-interval = 10
+  compute-no-more-than = "2m0s"
 
-# The default setting is 100. This option tells how many points will be fetched from LevelDb before
-# they get flushed into backend.
-point-batch-size = 100
-
-# These options specify how data is sharded across the cluster. There are two
-# shard configurations that have the same knobs: short term and long term.
-# Any series that begins with a capital letter like Exceptions will be written
-# into the long term storage. Any series beginning with a lower case letter
-# like exceptions will be written into short term. The idea being that you
-# can write high precision data into short term and drop it after a couple
-# of days. Meanwhile, continuous queries can run downsampling on the short term
-# data and write into the long term area.
-[sharding]
-  # how many servers in the cluster should have a copy of each shard.
-  # this will give you high availability and scalability on queries
-  replication-factor = 1
-
-  [sharding.short-term]
-  # each shard will have this period of time. Note that it's best to have
-  # group by time() intervals on all queries be < than this setting. If they are
-  # then the aggregate is calculated locally. Otherwise, all that data gets sent
-  # over the network when doing a query.
-  duration = "7d"
-
-  # split will determine how many shards to split each duration into. For example,
-  # if we created a shard for 2014-02-10 and split was set to 2. Then two shards
-  # would be created that have the data for 2014-02-10. By default, data will
-  # be split into those two shards deterministically by hashing the (database, series)
-  # tuple. That means that data for a given series will be written to a single shard
-  # making querying efficient. That can be overridden with the next option.
-  split = 1
-
-  # You can override the split behavior to have the data for series that match a
-  # given regex be randomly distributed across the shards for a given interval.
-  # You can use this if you have a hot spot for a given time series writing more
-  # data than a single server can handle. Most people won't have to resort to this
-  # option. Also note that using this option means that queries will have to send
-  # all data over the network so they won't be as efficient.
-  # split-random = "/^hf.*/"
-
-  [sharding.long-term]
-  duration = "30d"
-  split = 1
-  # split-random = "/^Hf.*/"
-
-[wal]
-
-dir   = "/var/lib/influxdb/wal"
-flush-after = 1000 # the number of writes after which wal will be flushed, 0 for flushing on every write
-bookmark-after = 1000 # the number of writes after which a bookmark will be created
-
-# the number of writes after which an index entry is created pointing
-# to the offset of the first request, default to 1k
-index-after = 1000
-
-# the number of requests per one log file, if new requests came in a
-# new log file will be created
-requests-per-logfile = 10000
+[hinted-handoff]
+  enabled = true
+  dir = "/root/.influxdb/hh"
+  max-size = 1073741824
+  max-age = "168h0m0s"
+  retry-rate-limit = 0
+  retry-interval = "1s"
+  retry-max-interval = "1m0s"
+  purge-interval = "1h0m0s"

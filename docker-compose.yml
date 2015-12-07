@@ -66,24 +66,25 @@
 
 elasticsearch:
   # build: elasticsearch
-  image: portefaix/elasticsearch:2.0.0
-  name: elasticsearch
+  image: portefaix/elasticsearch:2.1.0.1
   ports:
     - "9200:9200"
     - "9300:9300"
   volumes:
-    - /opt/vision/elasticsearch/lib:/var/lib/elasticsearch
+    - /opt/vision/elasticsearch/data:/usr/share/elasticsearch/data
   log_driver: "syslog"
 
 influxdb:
-  build: influxdb
-  name: influxdb
+  # build: influxdb
+  # cAdvisor doesn't support influxdb 0.9.x
+  # https://github.com/google/cadvisor/issues/743
+  # image: portefaix/influxdb:0.9.5
+  image: tutum/influxdb:0.8.8
   ports:
     - "8083:8083"
     - "8086:8086"
-  expose:
-    - "8090"
-    - "8099"
+  environment:
+    - PRE_CREATE_DB=cadvisor
   volumes:
     - /opt/vision/influxdb/lib:/var/lib/influxdb
   log_driver: "syslog"
@@ -91,9 +92,14 @@ influxdb:
 grafana:
   # build: grafana
   image: portefaix/grafana:2.5.0
-  name: grafana
   ports:
     - "9191:3000"
+  environment:
+    - INFLUXDB_HOST=localhost
+    - INFLUXDB_PORT=8086
+    - INFLUXDB_NAME=cadvisor
+    - INFLUXDB_USER=root
+    - INFLUXDB_PASS=root
   volumes:
     - /opt/vision/grafana/lib:/var/lib/grafana
     - /opt/vision/grafana/log:/var/log/grafana
@@ -103,8 +109,7 @@ grafana:
 
 kibana:
   # build: kibana
-  image: portefaix/kibana:4.2.0
-  name: kibana
+  image: portefaix/kibana:4.3.0
   ports:
     - "9393:5601"
   links:
@@ -127,8 +132,7 @@ kibana:
 #
 
 cadvisor:
-  image: google/cadvisor:0.18.0
-  name: cadvisor
+  image: google/cadvisor:0.19.3
   command: -storage_driver=influxdb -storage_driver_db=cadvisor -storage_driver_host=influxdb:8086
   volumes:
    - /:/rootfs:ro

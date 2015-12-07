@@ -5,40 +5,17 @@
 
 ## Description
 
-[Vision][] is a [Docker][] stack.
-
-### Core
-
-Services discovering of containers is provided by :
-
-* [HAProxy][]: a TCP/HTTP load balancer (Stats: `http://xxx:8936`)
-* [Consul][]: service discovering (`http://xxx:8500`)
-* [Consul-template][]: populate values from Consul on your filesystem.
-* [Registrator][]: automatically register/deregister Docker containers into Consul.
-
-Monitoring of containers is provided by :
-
-* [cAdvisor][] is used (`http://xxx:9999`) to monitoring containers.
-* [Prometheus][] the service monitoring system and time series database (`http://xxx:9090`)
-
-### Logging service
-
-Log collector service is provided using :
+[Vision][] is a stack for monitoring and logging. It provides :
 
 * [Elasticsearch][] web interface : `http://xxx:9200`
-* [Kibana][] web interface : `http://xxx:5601`
-
-Some [Elasticsearch][] plugins are available:
-* [ElasticSearchHead][]: `http://xxx:9200/_plugin/head/`
-* [ElasticHQ][]: `http://xxx:9200/_plugin/HQ/`
-* [Kopf][]: `http://xxx:9200/_plugin/kopf/`
-
-### Monitoring service
-
-Monitoring service is provided using :
-
-* [Grafana][] web interface : `http://xxx:9191/`
+* [Kibana][] web interface : `http://xxx:9393`
+* [Grafana][] web interface : `http://xxx:9999/`
 * [InfluxDB][] web interface : `http://xxx:8083`
+* [cAdvisor][] is used (`http://xxx:9999`) to monitoring containers.
+
+
+* *TODO* [Prometheus][] the service monitoring system and time series database (`http://xxx:9090`)
+
 
 ## Deployment
 
@@ -60,12 +37,14 @@ Monitoring service is provided using :
         $ curl -X POST 'http://localhost:8086/db?u=root&p=root' \
             -d '{"name": "cadvisor"}'
 
-* Verify input datas from the InfluxDB UI (on 8083), using this query, after choosing `vision`
-  database:
+* Verify input datas from the InfluxDB UI (on *8083*), using these queries, after choosing
+`vision` database:
+
+        list series
 
         select * from /.*/ limit 100
 
-* Open your browser to the Grafana dashboard (on 9191). Log into, then click on
+* Open your browser to the Grafana dashboard (on *9999*). Log into, then click on
 `Data Sources` > `Add New`. Enter this content :
 
         Data Source Settings
@@ -87,70 +66,37 @@ Monitoring service is provided using :
         Password: root
 
 
-### Kubernetes
-
-* Launch using [Kubernetes][]:
-
-        $ docker-compose -f k8s.yml up
-
-* Check cluster status :
-
-        $ curl http://127.0.0.1:4001/version
-        etcd 2.0.9
-
-        $ curl http://localhost:8080/
-        {
-            "paths": [
-                "/api",
-                "/api/v1beta1",
-                "/api/v1beta2",
-                "/api/v1beta3",
-                "/healthz",
-                "/healthz/ping",
-                "/logs/",
-                "/metrics",
-                "/static/",
-                "/swagger-ui/",
-                "/swaggerapi/",
-                "/version"
-            ]
-        }
-
-
-
-
-
-### Mesos
-
-Launch using [Mesos][]:
-
-    $ docker-compose -f mesos.yml up
-
-
-
 ## Usage
 
-### Monitoring
+### Monitoring servers : Elasticsearch/Kibana/Beats
 
-* You could use [sysinfo_influxdb][] to send metrics :
+* Install [Topbeat][]
 
-        $ sysinfo_influxdb -host 127.0.0.1:8086 -P vision -d vision -v=text -D
+* Launch Elasticsearch and Kibana services :
 
+        $ docker-compose up elasticsearch kibana
 
-### Logging
+* Loading the Index Template into Elasticsearch
 
-* You could use [Heka][] and this configuration file [addons/hekad.toml][]
-  to watch `local7.log` and send them to Elasticsearch:
+        $ curl -XPUT 'http://localhost:9200/_template/packetbeat' \
+            -d@addons/topbeat.template.json
 
-        $ curl http://xx.xx.xx.xx:9200/hekad -X POST
+* Running Topbeat:
 
-* Using binary :
+        $ topbeat -c addons/topbeat.yml
 
-        $ sudo bin/hekad -config=addons/hekad.toml
+* Testing the Topbeat installation:
 
-* Into [Kibana][], set the default index and visualize logs:
+        $ curl -XGET 'http://localhost:9200/topbeat-*/_search?pretty'
 
-        logfile-*
+* Loading Kibana dashboards:
+
+        $ curl -L -O http://download.elastic.co/beats/dashboards/beats-dashboards-1.0.0.tar.gz
+        $ cd beats-dashboards-1.0.0
+        $ ./load.sh
+
+* Then open the Kibana website (`http://localhost:9393`), then select Topbeat index, and open Topbeat dashboard.
+
 
 
 ## Development
@@ -189,13 +135,6 @@ run:
         $ ./docker-compose run web env
 
 
-### Kubernetes
-
-*  Run [Kubernetes][] on a single host :
-
-        $ docker-compose -f k8s.yml up -d
-
-
 ## Deployment
 
 With our app running locally, we can now push this exact same environment
@@ -226,13 +165,7 @@ Set *vision-prod* as the active machine and load the Docker environment :
 Finally, let's build the application in the Cloud :
 
     $ ./docker-compose build
-    $ ./docker-compose up -d -f production.yml
-
-
-
-
-
-
+    $ ./docker-compose up -d
 
 
 
@@ -281,11 +214,14 @@ Nicolas Lamirault <nicolas.lamirault@gmail.com>
 [Mesos]: http://mesos.apache.org/
 
 [Elasticsearch]: http://www.elasticsearch.org
-[Grafana]: http://grafana.org/
 [Kibana]: http://www.elasticsearch.org/overview/kibana/
+[Topbeat]: https://www.elastic.co/downloads/beats/topbeat
 [ElasticSearchHead]: http://mobz.github.io/elasticsearch-head
 [ElasticHQ]: http://www.elastichq.org
 [Kopf]: https://github.com/lmenezes/elasticsearch-kopf
+
+[Grafana]: http://grafana.org/
+
 [Fluentd]: http://fluentd.org/
 [Heka]: http://hekad.readthedocs.org/en/latest/
 [Supervisor]: http://supervisord.org
