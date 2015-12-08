@@ -11,7 +11,7 @@
 * [Kibana][] web interface : `http://xxx:9393`
 * [Grafana][] web interface : `http://xxx:9999/`
 * [InfluxDB][] web interface : `http://xxx:8083`
-
+* [Heka][] dashboard : `http://xxx:4352`
 
 ## Local Installation
 
@@ -76,6 +76,32 @@
 
         SHOW MEASUREMENTS
 
+
+### Log analysis (Elasticsearch/Filebeat/Kibana)
+
+* Install [Filebeat][]
+
+* Launch [Elasticsearch][] and [Kibana][] services :
+
+        $ docker-compose up -d elasticsearch kibana
+
+* Loading the Index Template into Elasticsearch
+
+        $ curl -XPUT 'http://localhost:9200/_template/packetbeat' \
+            -d@beats/filebeat.template.json
+
+* Running *filebeat* metrics :
+
+        $ filebeat -c beats/filebeat.yml
+
+
+### Log analysis (Elasticsearch/Heka/Kibana)
+
+* Install [Heka][]
+
+* Launch [Elasticsearch][], [Heka][] and [Kibana][] services :
+
+        $ docker-compose up -d elasticsearch grafana heka
 
 
 ## Development
@@ -181,9 +207,7 @@ Nicolas Lamirault <nicolas.lamirault@gmail.com>
 [Elasticsearch]: http://www.elasticsearch.org
 [Kibana]: http://www.elasticsearch.org/overview/kibana/
 [Topbeat]: https://www.elastic.co/downloads/beats/topbeat
-[ElasticSearchHead]: http://mobz.github.io/elasticsearch-head
-[ElasticHQ]: http://www.elastichq.org
-[Kopf]: https://github.com/lmenezes/elasticsearch-kopf
+[Filebeat]: https://www.elastic.co/downloads/beats/filebeat
 
 [Grafana]: http://grafana.org/
 
