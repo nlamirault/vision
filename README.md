@@ -5,44 +5,15 @@
 
 ## Description
 
-[Vision][] is a [Docker][] stack.
-
-### Core
-
-Services discovering of containers is provided by :
-
-* [HAProxy][]: a TCP/HTTP load balancer (Stats: `http://xxx:8936`)
-* [Consul][]: service discovering (`http://xxx:8500`)
-* [Consul-template][]: populate values from Consul on your filesystem.
-* [Registrator][]: automatically register/deregister Docker containers into Consul.
-
-Monitoring of containers is provided by :
-
-* [cAdvisor][] is used (`http://xxx:9999`) to monitoring containers.
-* [Prometheus][] the service monitoring system and time series database (`http://xxx:9090`)
-
-### Logging service
-
-Log collector service is provided using :
+[Vision][] is a stack for monitoring and logging. It provides :
 
 * [Elasticsearch][] web interface : `http://xxx:9200`
-* [Kibana][] web interface : `http://xxx:5601`
-
-Some [Elasticsearch][] plugins are available:
-* [ElasticSearchHead][]: `http://xxx:9200/_plugin/head/`
-* [ElasticHQ][]: `http://xxx:9200/_plugin/HQ/`
-* [Kopf][]: `http://xxx:9200/_plugin/kopf/`
-
-### Monitoring service
-
-Monitoring service is provided using :
-
-* [Grafana][] web interface : `http://xxx:9191/`
+* [Kibana][] web interface : `http://xxx:9393`
+* [Grafana][] web interface : `http://xxx:9999/`
 * [InfluxDB][] web interface : `http://xxx:8083`
 
-## Deployment
 
-### Local
+## Local Installation
 
 * Download and install a release :
 
@@ -53,91 +24,58 @@ Monitoring service is provided using :
 * Start it :
 
         $ ./init.sh
-        $ docker-compose up
-
-* Creates the [InfluxDB][] database:
-
-        $ curl -X POST 'http://localhost:8086/db?u=root&p=root' \
-            -d '{"name": "vision"}'
-
-* Verify input datas from the InfluxDB UI (on 8083), using this query, after choosing `vision`
-  database:
-
-        select * from /.*/ limit 100
-
-* You could use the [Consul][] HTTP API to retrive services endpoints :
-
-        $ url -s http://localhost:8500/v1/catalog/nodes|jq .
-        [
-           {
-               "Node": "7c882a315dc9",
-               "Address": "192.168.1.100"
-           }
-        ]
-        $ curl -s http://localhost:8500/v1/catalog/node/7c882a315dc9|jq .
-        {
-             "Node": {
-                "Node": "7c882a315dc9",
-                "Address": "192.168.1.100"
-             },
-             "Services": {
-               "79b92466b6dc:vision_cadvisor_1:8080": {
-                   "ID": "79b92466b6dc:vision_cadvisor_1:8080",
-                   "Service": "cadvisor",
-                   "Tags": null,
-                   "Address": "",
-                   "Port": 9999
-               },
-               "79b92466b6dc:vision_consul_1:53:udp": {
-                   "ID": "79b92466b6dc:vision_consul_1:53:udp",
-                   "Service": "consul-53",
-                   "Tags": [
-                      "udp"
-                   ],
-                   "Address": "",
-                   "Port": 8600
-               },
-               [...]
-            }
-         }
-
-### Kubernetes
-
-Launch using [Kubernetes][]:
-
-    $ docker-compose -f k8s.yml up
-
-### Mesos
-
-Launch using [Mesos][]:
-
-    $ docker-compose -f mesos.yml up
-
-
+        $ docker-compose up -d
 
 ## Usage
 
-### Monitoring
+### Monitoring servers : Elasticsearch/Kibana/Beats
 
-* You could use [sysinfo_influxdb][] to send metrics :
+* Install [Topbeat][]
 
-        $ sysinfo_influxdb -host 127.0.0.1:8086 -P vision -d vision -v=text -D
+* Launch [Elasticsearch][] and [Kibana][] services :
+
+        $ docker-compose up -d elasticsearch kibana
+
+* Loading the Index Template into Elasticsearch
+
+        $ curl -XPUT 'http://localhost:9200/_template/packetbeat' \
+            -d@addons/topbeat.template.json
+
+* Running *topbeat* metrics :
+
+        $ topbeat -c addons/topbeat.yml
+
+* Testing the Topbeat installation:
+
+        $ curl -XGET 'http://localhost:9200/topbeat-*/_search?pretty'
+
+* Loading Kibana dashboards:
+
+        $ curl -L -O http://download.elastic.co/beats/dashboards/beats-dashboards-1.0.0.tar.gz
+        $ cd beats-dashboards-1.0.0
+        $ ./load.sh
+
+* Then open the Kibana website (`http://localhost:9393`), then select Topbeat index, and open Topbeat dashboard.
 
 
-### Logging
+### Monitoring servers : Telegraf/InfluxDB/Grafana
 
-* You could use [Heka][] and this configuration file [addons/hekad.toml][]
-  to watch `local7.log` and send them to Elasticsearch:
+* Install [Telegraf][]
 
-        $ curl http://xx.xx.xx.xx:9200/hekad -X POST
+* Launch [InfluxDB][] and [Grafana][] services :
 
-* Using binary :
+        $ docker-compose up -d influxdb grafana
 
-        $ sudo bin/hekad -config=addons/hekad.toml
+* Running *telegraf* metrics :
 
-* Into [Kibana][], set the default index and visualize logs:
+        $ telegraf -config addons/telegraf.conf
 
-        logfile-*
+* Then open the Grafana dashboard (`http://localhost:9191`) and import the *Vision Telegraf* dashboard from (`addons/grafana-telegraf.json`)
+
+* You could explore metrics into the InfluxDB UI on `http://localhost:8083` with the query :
+
+        SHOW MEASUREMENTS
+
 
 
 ## Development
@@ -176,13 +114,6 @@ run:
         $ ./docker-compose run web env
 
 
-### Kubernetes
-
-*  Run [Kubernetes][] on a single host :
-
-        $ docker-compose -f k8s.yml up -d
-
-
 ## Deployment
 
 With our app running locally, we can now push this exact same environment
@@ -213,7 +144,8 @@ Set *vision-prod* as the active machine and load the Docker environment :
 Finally, let's build the application in the Cloud :
 
     $ ./docker-compose build
-    $ ./docker-compose up -d -f production.yml
+    $ ./docker-compose up -d
+
 
 
 ## Support
@@ -261,23 +193,19 @@ Nicolas Lamirault <nicolas.lamirault@gmail.com>
 [Mesos]: http://mesos.apache.org/
 
 [Elasticsearch]: http://www.elasticsearch.org
-[Grafana]: http://grafana.org/
 [Kibana]: http://www.elasticsearch.org/overview/kibana/
+[Topbeat]: https://www.elastic.co/downloads/beats/topbeat
 [ElasticSearchHead]: http://mobz.github.io/elasticsearch-head
 [ElasticHQ]: http://www.elastichq.org
 [Kopf]: https://github.com/lmenezes/elasticsearch-kopf
+
+[Grafana]: http://grafana.org/
+
+[InfluxDB]: http://influxdb.com
+[Telegraf]: https://github.com/influxdb/telegraf
+
 [Fluentd]: http://fluentd.org/
 [Heka]: http://hekad.readthedocs.org/en/latest/
-[Supervisor]: http://supervisord.org
-[sysinfo_influxdb]: https://github.com/novaquark/sysinfo_influxdb
-[InfluxDB]: http://influxdb.com
-[cAdvisor]: https://github.com/google/cadvisor
-[HAProxy]: http://www.haproxy.org/
-[Consul]: http://www.consul.io
-[Consul-template]: https://github.com/hashicorp/consul-template
-[Registrator]: https://github.com/gliderlabs/registrator
-[Prometheus]: See: http://prometheus.io
 
 [Virtualbox]: https://www.virtualbox.org
 [Vagrant]: http://downloads.vagrantup.com
-[SystemdD]: http://freedesktop.org/wiki/Software/systemd

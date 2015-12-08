@@ -21,5 +21,4 @@ sudo mkdir -p $VISION_DIR/elasticsearch/{lib,log}
 sudo mkdir -p $VISION_DIR/influxdb/{db,log,lib,wal}
 sudo mkdir -p $VISION_DIR/grafana/{lib,log}
 sudo mkdir -p $VISION_DIR/kibana/log
-sudo mkdir -p $VISION_DIR/fluentd/log
 sudo chown -R $USER.users $VISION_DIR

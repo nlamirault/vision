@@ -1,6 +1,13 @@
 Vision ChangeLog
 ================
 
+# Version 1.0.0 (12/08/2015)
+
+- Update to Elasticsearch 2.1.0
+- Update to InfluxDB 0.9.5
+- Update to Grafana 2.5.0
+- Update to Kibana 4.3.0
+
 # Version 0.5.0 (06/09/2015)
 
 - Update to Grafana 2.0.2

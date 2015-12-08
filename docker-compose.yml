@@ -1,124 +1,41 @@
 #
-# Servide discovery
-#
-
-# consul:
-#   build: consul
-#   # image: progrium/consul
-#   command: -server -bootstrap -advertise 192.168.1.100 -ui-dir /src/ui
-#   # links:
-#   #   - pushgateway
-#   ports:
-#     - "8300:8300"
-#     - "8400:8400"
-#     - "8500:8500"
-#     - "8600:53/udp"
-#   volumes:
-#     - "/var/run/docker.sock:/var/run/docker.sock"
-#     - "consul/config:/etc/consul"
-#     - "consul/handlers:/handlers"
-
-# registrator:
-#   image: gliderlabs/registrator:latest
-#   command: consul://consul:8500
-#   links:
-#     - consul
-#   volumes:
-#     - "/var/run/docker.sock:/tmp/docker.sock"
-
-#
-# Load balancing
-#
-
-# haproxy:
-#   build: haproxy
-#   links:
-#     - consul
-#   ports:
-#     - "9898:80"
-#     - "8936:1936"
-
-#
-# Monitoring
-#
-
-cadvisor:
-  image: google/cadvisor:0.14.0
-  volumes:
-   - /:/rootfs:ro
-   - /var/run:/var/run:rw
-   - /sys:/sys:ro
-   - /var/lib/docker/:/var/lib/docker:ro
-  ports:
-   - "9999:8080"
-
-# prometheus:
-#   build: prometheus
-#   links:
-#     - pushgateway
-#     - haproxyexporter
-#   ports:
-#     - "9090:9090"
-#   volumes:
-#     - "prometheus/config:/config"
-
-# pushgateway:
-#   image: prom/pushgateway:latest
-#   ports:
-#   - "9091:9091"
-
-# haproxyexporter:
-#   image: prom/haproxy-exporter:latest
-#   command: -haproxy.scrape-uri="http://haproxy:8936/;csv"
-#   links:
-#     - haproxy
-
-#
 # Services
 #
 
 elasticsearch:
-  build: elasticsearch
+  image: portefaix/elasticsearch:2.1.0.1
   ports:
     - "9200:9200"
     - "9300:9300"
   volumes:
-    - /opt/vision/elasticsearch/lib:/var/lib/elasticsearch
+    - /opt/vision/elasticsearch/data:/usr/share/elasticsearch/data
+  log_driver: "syslog"
 
 influxdb:
-  build: influxdb
+  image: portefaix/influxdb:0.9.5
   ports:
     - "8083:8083"
     - "8086:8086"
-    - "8090:8090"
-    - "8099:8099"
   volumes:
     - /opt/vision/influxdb/lib:/var/lib/influxdb
+  log_driver: "syslog"
 
 grafana:
-  build: grafana
+  image: portefaix/grafana:2.5.0
   ports:
     - "9191:3000"
   volumes:
     - /opt/vision/grafana/lib:/var/lib/grafana
     - /opt/vision/grafana/log:/var/log/grafana
+    - /opt/vision/grafana/etc:/etc/grafana
   links:
-    - elasticsearch
-    - influxdb
+    - influxdb:influxdb
+  log_driver: "syslog"
 
 kibana:
-  build: kibana
+  image: portefaix/kibana:4.3.0
   ports:
     - "9393:5601"
   links:
     - elasticsearch
-
-# fluentd:
-#   build: fluentd
-#   ports:
-#     - "24224:24224"
-#     - "9292:9292"
-#   volumes:
-#     - /opt/vision/fluentd/log:/var/log/supervisor
-#   links:
-#     - elasticsearch
+  log_driver: "syslog"
