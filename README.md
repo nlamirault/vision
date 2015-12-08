@@ -11,15 +11,9 @@
 * [Kibana][] web interface : `http://xxx:9393`
 * [Grafana][] web interface : `http://xxx:9999/`
 * [InfluxDB][] web interface : `http://xxx:8083`
-* [cAdvisor][] is used (`http://xxx:9999`) to monitoring containers.
 
 
-* *TODO* [Prometheus][] the service monitoring system and time series database (`http://xxx:9090`)
-
-
-## Deployment
-
-### Local
+## Installation
 
 * Download and install a release :
 
@@ -32,56 +26,22 @@
         $ ./init.sh
         $ docker-compose up
 
-* Creates the [InfluxDB][] database:
-
-        $ curl -X POST 'http://localhost:8086/db?u=root&p=root' \
-            -d '{"name": "cadvisor"}'
-
-* Verify input datas from the InfluxDB UI (on *8083*), using these queries, after choosing
-`vision` database:
-
-        list series
-
-        select * from /.*/ limit 100
-
-* Open your browser to the Grafana dashboard (on *9999*). Log into, then click on
-`Data Sources` > `Add New`. Enter this content :
-
-        Data Source Settings
-
-        Name: influxdb
-        Type: InfluxDB 0.8.x
-        Ddefault : YES
-
-        Http settings
-        Url: http://influxdb:8086
-        Access: proxy
-        Basic Auth: Enabled
-        User: admin
-        Password: admin
-
-        InfluxDB Details
-        Database: cadvisor
-        User: root
-        Password: root
-
-
 ## Usage
 
 ### Monitoring servers : Elasticsearch/Kibana/Beats
 
 * Install [Topbeat][]
 
-* Launch Elasticsearch and Kibana services :
+* Launch [Elasticsearch][] and [Kibana][] services :
 
-        $ docker-compose up elasticsearch kibana
+        $ docker-compose up -d elasticsearch kibana
 
 * Loading the Index Template into Elasticsearch
 
         $ curl -XPUT 'http://localhost:9200/_template/packetbeat' \
             -d@addons/topbeat.template.json
 
-* Running Topbeat:
+* Running *topbeat* metrics :
 
         $ topbeat -c addons/topbeat.yml
 
@@ -96,6 +56,25 @@
         $ ./load.sh
 
 * Then open the Kibana website (`http://localhost:9393`), then select Topbeat index, and open Topbeat dashboard.
+
+
+### Monitoring servers : Telegraf/InfluxDB/Grafana
+
+* Install [Telegraf][]
+
+* Launch [InfluxDB][] and [Grafana][] services :
+
+        $ docker-compose up -d influxdb grafana
+
+* Running *telegraf* metrics :
+
+        $ telegraf -config addons/telegraf.conf
+
+* Then open the Grafana dashboard (`http://localhost:9191`) and import the *Vision Telegraf* dashboard from (`addons/grafana-telegraf.json`)
+
+* You could explore metrics into the InfluxDB UI on `http://localhost:8083` with the query :
+
+        SHOW MEASUREMENTS
 
 
 
@@ -222,18 +201,11 @@ Nicolas Lamirault <nicolas.lamirault@gmail.com>
 
 [Grafana]: http://grafana.org/
 
+[InfluxDB]: http://influxdb.com
+[Telegraf]: https://github.com/influxdb/telegraf
+
 [Fluentd]: http://fluentd.org/
 [Heka]: http://hekad.readthedocs.org/en/latest/
-[Supervisor]: http://supervisord.org
-[sysinfo_influxdb]: https://github.com/novaquark/sysinfo_influxdb
-[InfluxDB]: http://influxdb.com
-[cAdvisor]: https://github.com/google/cadvisor
-[HAProxy]: http://www.haproxy.org/
-[Consul]: http://www.consul.io
-[Consul-template]: https://github.com/hashicorp/consul-template
-[Registrator]: https://github.com/gliderlabs/registrator
-[Prometheus]: See: http://prometheus.io
 
 [Virtualbox]: https://www.virtualbox.org
 [Vagrant]: http://downloads.vagrantup.com
-[SystemdD]: http://freedesktop.org/wiki/Software/systemd

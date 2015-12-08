@@ -18,7 +18,7 @@ NAMESPACE=$(APP)
 
 OS = darwin linux
 
-VERSION=0.5.0
+VERSION=1.0.0
 
 NO_COLOR=\033[0m
 OK_COLOR=\033[32;01m
@@ -28,13 +28,10 @@ WARN_COLOR=\033[33;01m
 DOCKER = docker
 
 DOCKER_MACHINE_URI=https://github.com/docker/machine/releases/download
-DOCKER_MACHINE_VERSION=v0.3.0
+DOCKER_MACHINE_VERSION=v0.5.2
 
 DOCKER_COMPOSE_URI=https://github.com/docker/compose/releases/download
-DOCKER_COMPOSE_VERSION=1.3.0
-
-K8S_KUBECTL_URI=https://storage.googleapis.com/kubernetes-release/release
-K8S_VERSION=v0.19.0
+DOCKER_COMPOSE_VERSION=1.5.2
 
 UNAME := $(shell uname)
 ifeq ($(UNAME),$(filter $(UNAME),Linux Darwin))
@@ -89,22 +86,6 @@ compose-darwin:
 init: machine-$(OS) compose-$(OS)
 	@mv ./docker-compose-$(OS) ./docker-compose
 	@mv ./docker-machine-$(OS) ./docker-machine
-
-.PHONY: kubectl-linux
-kubectl-linux:
-	@echo -e "$(OK_COLOR)[$(APP)] Install Kubectl Linux$(NO_COLOR)"
-	@wget --quiet $(K8S_KUBECTL_URI)/$(K8S_VERSION)/bin/linux/amd64/kubectl -O kubectl-linux
-	@chmod +x ./kubectl-linux
-
-.PHONY: kubectl-darwin
-kubectl-darwin:
-	@echo -e "$(OK_COLOR)[$(APP)] Install Kubectl OSX$(NO_COLOR)"
-	@wget --quiet $(K8S_KUBECTL_URI)/$(K8S_VERSION)/bin/darwin/amd64/kubectl -O kubectl-darwin
-	@chmod +x ./kubectl-darwin
-
-.PHONY: k8s
-k8s: kubectl-$(OS)
-	@mv ./kubectl-$(OS) ./kubectl
 
 .PHONY: build
 build:
