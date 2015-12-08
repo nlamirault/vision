@@ -39,11 +39,11 @@
 * Loading the Index Template into Elasticsearch
 
         $ curl -XPUT 'http://localhost:9200/_template/packetbeat' \
-            -d@addons/topbeat.template.json
+            -d@beats/topbeat.template.json
 
 * Running *topbeat* metrics :
 
-        $ topbeat -c addons/topbeat.yml
+        $ topbeat -c beats/topbeat.yml
 
 * Testing the Topbeat installation:
 
@@ -68,9 +68,9 @@
 
 * Running *telegraf* metrics :
 
-        $ telegraf -config addons/telegraf.conf
+        $ telegraf -config telegraf/telegraf.conf
 
-* Then open the Grafana dashboard (`http://localhost:9191`) and import the *Vision Telegraf* dashboard from (`addons/grafana-telegraf.json`)
+* Then open the Grafana dashboard (`http://localhost:9191`) and import the *Vision Telegraf* dashboard from (`grafana/grafana-telegraf.json`)
 
 * You could explore metrics into the InfluxDB UI on `http://localhost:8083` with the query :
 
