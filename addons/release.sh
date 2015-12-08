@@ -33,7 +33,7 @@ create_archive_directory() {
     OS=$1
     mkdir -p $APP-$VERSION-$OS
     cp ./docker-compose-$OS $APP-$VERSION-$OS/docker-compose
-    cp ./docker-machine-linux $APP-$VERSION-$OS/docker-machine
+    unzip ./docker-machine_$OS -d $APP-$VERSION-$OS/
 }
 
 release() {
@@ -47,20 +47,8 @@ release() {
     fi
     echo -e "$OK_COLOR[$APP] Make archive for $OS $VERSION $NO_COLOR"
     COMPOSE_FILE=$APP-$VERSION-$OS/docker-compose.yml
-    cp addons/docker-compose.yml $COMPOSE_FILE
+    cp docker-compose.yml $COMPOSE_FILE
     cp addons/init.sh $APP-$VERSION-$OS/
-    ES_VERSION=$(image_version "elasticsearch")
-    KIBANA_VERSION=$(image_version "kibana")
-    GRAFANA_VERSION=$(image_version "grafana")
-    INFLUXDB_VERSION=$(image_version "influxdb")
-    FLUENTD_VERSION=$(image_version "fluentd")
-    CADVISOR_VERSION="0.14.0"
-    sed -i "s/ES_VERSION/$ES_VERSION/g" $COMPOSE_FILE
-    sed -i "s/KIBANA_VERSION/$KIBANA_VERSION/g" $COMPOSE_FILE
-    sed -i "s/GRAFANA_VERSION/$GRAFANA_VERSION/g" $COMPOSE_FILE
-    sed -i "s/INFLUXDB_VERSION/$INFLUXDB_VERSION/g" $COMPOSE_FILE
-    sed -i "s/FLUENTD_VERSION/$FLUENTD_VERSION/g" $COMPOSE_FILE
-    sed -i "s/CADVISOR_VERSION/$CADVISOR_VERSION/g" $COMPOSE_FILE
     tar cf - $APP-$VERSION-$OS | gzip > $APP-$VERSION-$OS.tar.gz
     rm -fr $APP-$VERSION-$OS
 }

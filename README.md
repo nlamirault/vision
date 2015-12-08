@@ -13,7 +13,7 @@
 * [InfluxDB][] web interface : `http://xxx:8083`
 
 
-## Installation
+## Local Installation
 
 * Download and install a release :
 
@@ -24,7 +24,7 @@
 * Start it :
 
         $ ./init.sh
-        $ docker-compose up
+        $ docker-compose up -d
 
 ## Usage
 
