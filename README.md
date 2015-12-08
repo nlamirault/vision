@@ -1,7 +1,7 @@
 # Vision
 
-[![License GPL 3][badge-license]][COPYING]
-![Version][badge-release]
+[![License Apache 2][badge-license]](LICENSE)
+[![GitHub version](https://badge.fury.io/gh/nlamirault%2Fvision.svg)](https://badge.fury.io/gh/nlamirault%2Fvision)
 
 ## Description
 
@@ -155,21 +155,12 @@ Feel free to ask question or make suggestions in our [Issue Tracker][].
 
 ## License
 
-Vision is free software: you can redistribute it and/or modify it under the
-terms of the GNU General Public License as published by the Free Software
-Foundation, either version 3 of the License, or (at your option) any later
-version.
-
-Vision is distributed in the hope that it will be useful, but WITHOUT ANY
-WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
-PARTICULAR PURPOSE.  See the GNU General Public License for more details.
-
-See [COPYING][] for the complete license.
+See [LICENSE](LICENSE) for the complete license.
 
 
 ## Changelog
 
-A [ChangeLog.md][] is available.
+A [changelog](ChangeLog.md) is available.
 
 
 ## Contact
@@ -179,10 +170,6 @@ Nicolas Lamirault <nicolas.lamirault@gmail.com>
 
 
 [Vision]: https://github.com/nlamirault/vision
-[COPYING]: https://github.com/nlamirault/vision/blob/master/COPYING
-[Issue tracker]: https://github.com/nlamirault/vision/issues
-[badge-license]: https://img.shields.io/badge/license-GPL_3-green.svg
-[badge-release]: https://img.shields.io/github/release/nlamirault/vision.svg
 
 [Docker]: https://www.docker.io
 [Docker documentation]: http://docs.docker.io
