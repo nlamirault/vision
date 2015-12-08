@@ -171,13 +171,12 @@ Nicolas Lamirault <nicolas.lamirault@gmail.com>
 
 [Vision]: https://github.com/nlamirault/vision
 
+[badge-license]: https://img.shields.io/badge/license-Apache2-green.svg?style=flat
+
 [Docker]: https://www.docker.io
 [Docker documentation]: http://docs.docker.io
 [Docker Machine]:https://github.com/docker/machine
 [Docker Complete]: https://github.com/docker/compose
-
-[Kubernetes]: http://kubernetes.io
-[Mesos]: http://mesos.apache.org/
 
 [Elasticsearch]: http://www.elasticsearch.org
 [Kibana]: http://www.elasticsearch.org/overview/kibana/
@@ -191,7 +190,6 @@ Nicolas Lamirault <nicolas.lamirault@gmail.com>
 [InfluxDB]: http://influxdb.com
 [Telegraf]: https://github.com/influxdb/telegraf
 
-[Fluentd]: http://fluentd.org/
 [Heka]: http://hekad.readthedocs.org/en/latest/
 
 [Virtualbox]: https://www.virtualbox.org
