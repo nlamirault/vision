@@ -210,7 +210,7 @@ logging:
 
   # Send all logging output to syslog. On Windows default is false, otherwise
   # default is true.
-  #to_syslog: true
+  to_syslog: true
 
   # Write all logging output to files. Beats automatically rotate files if rotateeverybytes
   # limit is reached.
@@ -238,6 +238,4 @@ logging:
 
   # Sets log level. The default log level is error.
   # Available log levels are: critical, error, warning, info, debug
-  #level: error
-
-
+  level: info
