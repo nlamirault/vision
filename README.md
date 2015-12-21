@@ -30,24 +30,32 @@
 
 ### Monitoring servers : Elasticsearch/Kibana/Beats
 
-* Install [Topbeat][]
+* Install [Topbeat][] and [Packetbeat][]
 
 * Launch [Elasticsearch][] and [Kibana][] services :
 
         $ docker-compose up -d elasticsearch kibana
 
-* Loading the Index Template into Elasticsearch
+* Loading the templates into Elasticsearch
 
         $ curl -XPUT 'http://localhost:9200/_template/packetbeat' \
             -d@beats/topbeat.template.json
+
+        $ curl -XPUT 'http://localhost:9200/_template/packetbeat' \
+            -d@beats/packetbeat.template.json
 
 * Running *topbeat* metrics :
 
         $ topbeat -c beats/topbeat.yml
 
-* Testing the Topbeat installation:
+* Running *packetbeat* metrics :
+
+        $ packetbeat -c beats/packetbeat.yml
+
+* Testing the installation:
 
         $ curl -XGET 'http://localhost:9200/topbeat-*/_search?pretty'
+        $ curl -XGET 'http://localhost:9200/packetbeat-*/_search?pretty'
 
 * Loading Kibana dashboards:
 
@@ -55,7 +63,8 @@
         $ cd beats-dashboards-1.0.0
         $ ./load.sh
 
-* Then open the Kibana website (`http://localhost:9393`), then select Topbeat index, and open Topbeat dashboard.
+* Then open the Kibana website (`http://localhost:9393`), then select Topbeat index,
+and open Topbeat dashboard. Do same with Packetbeat index and dashboard.
 
 
 ### Monitoring servers : Telegraf/InfluxDB/Grafana
@@ -93,15 +102,6 @@
 * Running *filebeat* metrics :
 
         $ filebeat -c beats/filebeat.yml
-
-
-### Log analysis (Elasticsearch/Heka/Kibana)
-
-* Install [Heka][]
-
-* Launch [Elasticsearch][], [Heka][] and [Kibana][] services :
-
-        $ docker-compose up -d elasticsearch grafana heka
 
 
 ## Development
