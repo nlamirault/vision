@@ -1,5 +1,5 @@
 {
-  "id": 2,
+  "id": 3,
   "title": "Vision Elasticsearch [Telegraf]",
   "originalTitle": "Vision Elasticsearch [Telegraf]",
   "tags": [],
@@ -17,7 +17,7 @@
         {
           "aliasColors": {},
           "bars": false,
-          "datasource": null,
+          "datasource": "Vision InfluxDB",
           "editable": true,
           "error": false,
           "fill": 1,
@@ -60,7 +60,7 @@
               "fields": [
                 {
                   "func": "mean",
-                  "name": "value"
+                  "name": "total_free_in_bytes"
                 }
               ],
               "groupBy": [
@@ -69,8 +69,8 @@
                   "type": "time"
                 }
               ],
-              "measurement": "elasticsearch_fs_total_total_in_bytes",
-              "query": "SELECT mean(\"value\") AS \"value\" FROM \"elasticsearch_fs_total_total_in_bytes\" WHERE $timeFilter GROUP BY time($interval)",
+              "measurement": "elasticsearch_fs",
+              "query": "SELECT mean(\"total_free_in_bytes\") AS \"total_free_in_bytes\" FROM \"elasticsearch_fs\" WHERE $timeFilter GROUP BY time($interval)",
               "refId": "A",
               "tags": []
             },
@@ -78,7 +78,7 @@
               "fields": [
                 {
                   "func": "mean",
-                  "name": "value"
+                  "name": "total_total_in_bytes"
                 }
               ],
               "groupBy": [
@@ -87,8 +87,8 @@
                   "type": "time"
                 }
               ],
-              "measurement": "elasticsearch_fs_total_free_in_bytes",
-              "query": "SELECT mean(\"value\") AS \"value\" FROM \"elasticsearch_fs_total_free_in_bytes\" WHERE $timeFilter GROUP BY time($interval)",
+              "measurement": "elasticsearch_fs",
+              "query": "SELECT mean(\"total_total_in_bytes\") AS \"total_total_in_bytes\" FROM \"elasticsearch_fs\" WHERE $timeFilter GROUP BY time($interval)",
               "refId": "B",
               "tags": []
             },
@@ -96,7 +96,7 @@
               "fields": [
                 {
                   "func": "mean",
-                  "name": "value"
+                  "name": "total_available_in_bytes"
                 }
               ],
               "groupBy": [
@@ -105,8 +105,8 @@
                   "type": "time"
                 }
               ],
-              "measurement": "elasticsearch_fs_total_available_in_bytes",
-              "query": "SELECT mean(\"value\") AS \"value\" FROM \"elasticsearch_fs_total_available_in_bytes\" WHERE $timeFilter GROUP BY time($interval)",
+              "measurement": "elasticsearch_fs",
+              "query": "SELECT mean(\"total_available_in_bytes\") AS \"total_available_in_bytes\" FROM \"elasticsearch_fs\" WHERE $timeFilter GROUP BY time($interval)",
               "refId": "C",
               "tags": []
             }
@@ -129,7 +129,7 @@
         {
           "aliasColors": {},
           "bars": false,
-          "datasource": null,
+          "datasource": "Vision InfluxDB",
           "editable": true,
           "error": false,
           "fill": 1,
@@ -172,7 +172,7 @@
               "fields": [
                 {
                   "func": "mean",
-                  "name": "value"
+                  "name": "cpu_percent"
                 }
               ],
               "groupBy": [
@@ -181,51 +181,15 @@
                   "type": "time"
                 }
               ],
-              "measurement": "elasticsearch_indices_get_total",
-              "query": "SELECT mean(\"value\") AS \"value\" FROM \"elasticsearch_indices_get_total\" WHERE $timeFilter GROUP BY time($interval)",
+              "measurement": "elasticsearch_process",
+              "query": "SELECT mean(\"cpu_percent\") AS \"cpu_percent\" FROM \"elasticsearch_process\" WHERE $timeFilter GROUP BY time($interval)",
               "refId": "A",
-              "tags": []
-            },
-            {
-              "fields": [
-                {
-                  "func": "mean",
-                  "name": "value"
-                }
-              ],
-              "groupBy": [
-                {
-                  "interval": "auto",
-                  "type": "time"
-                }
-              ],
-              "measurement": "elasticsearch_indices_get_current",
-              "query": "SELECT mean(\"value\") AS \"value\" FROM \"elasticsearch_indices_get_current\" WHERE $timeFilter GROUP BY time($interval)",
-              "refId": "B",
-              "tags": []
-            },
-            {
-              "fields": [
-                {
-                  "func": "mean",
-                  "name": "value"
-                }
-              ],
-              "groupBy": [
-                {
-                  "interval": "auto",
-                  "type": "time"
-                }
-              ],
-              "measurement": "elasticsearch_indices_get_missing_total",
-              "query": "SELECT mean(\"value\") AS \"value\" FROM \"elasticsearch_indices_get_missing_total\" WHERE $timeFilter GROUP BY time($interval)",
-              "refId": "C",
               "tags": []
             }
           ],
           "timeFrom": null,
           "timeShift": null,
-          "title": "Indices get",
+          "title": "Process",
           "tooltip": {
             "shared": true,
             "value_type": "cumulative"
@@ -234,7 +198,7 @@
           "x-axis": true,
           "y-axis": true,
           "y_formats": [
-            "short",
+            "percent",
             "short"
           ]
         }
@@ -243,7 +207,7 @@
     }
   ],
   "time": {
-    "from": "now-6h",
+    "from": "now-30m",
     "to": "now"
   },
   "timepicker": {
@@ -269,7 +233,8 @@
       "2d",
       "7d",
       "30d"
-    ]
+    ],
+    "now": true
   },
   "templating": {
     "list": []
@@ -278,6 +243,6 @@
     "list": []
   },
   "schemaVersion": 7,
-  "version": 3,
+  "version": 1,
   "links": []
 }
