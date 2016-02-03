@@ -27,7 +27,6 @@ grafana:
   volumes:
     - /opt/vision/grafana/lib:/var/lib/grafana
     - /opt/vision/grafana/log:/var/log/grafana
-    - /opt/vision/grafana/etc:/etc/grafana
   links:
     - influxdb:influxdb
   log_driver: "syslog"
