@@ -17,7 +17,7 @@
         {
           "aliasColors": {},
           "bars": false,
-          "datasource": null,
+          "datasource": "Vision InfluxDB",
           "editable": true,
           "error": false,
           "fill": 1,
@@ -57,79 +57,41 @@
           "steppedLine": false,
           "targets": [
             {
-              "measurement": "mem_available",
-              "query": "SELECT mean(\"value\") AS \"value\" FROM \"mem_available\" WHERE $timeFilter GROUP BY time($interval)",
-              "refId": "A",
-              "tags": {},
               "fields": [
                 {
-                  "name": "value",
-                  "func": "mean"
+                  "func": "mean",
+                  "name": "available_percent"
                 }
               ],
               "groupBy": [
                 {
-                  "type": "time",
-                  "interval": "auto"
+                  "interval": "auto",
+                  "type": "time"
                 }
-              ]
+              ],
+              "measurement": "mem",
+              "query": "SELECT mean(\"available_percent\") AS \"available_percent\" FROM \"mem\" WHERE $timeFilter GROUP BY time($interval)",
+              "refId": "A",
+              "tags": {}
             },
             {
-              "measurement": "mem_buffers",
-              "query": "SELECT mean(\"value\") AS \"value\" FROM \"mem_buffers\" WHERE $timeFilter GROUP BY time($interval)",
+              "fields": [
+                {
+                  "func": "mean",
+                  "name": "used_percent"
+                }
+              ],
+              "groupBy": [
+                {
+                  "interval": "auto",
+                  "type": "time"
+                }
+              ],
+              "measurement": "mem",
+              "query": "SELECT mean(\"used_percent\") AS \"used_percent\" FROM \"mem\" WHERE $timeFilter GROUP BY time($interval)",
               "refId": "B",
               "tags": {},
-              "target": "",
-              "groupBy": [
-                {
-                  "type": "time",
-                  "interval": "auto"
-                }
-              ],
-              "fields": [
-                {
-                  "name": "value",
-                  "func": "mean"
-                }
-              ]
-            },
-            {
-              "measurement": "mem_cached",
-              "query": "SELECT mean(\"value\") AS \"value\" FROM \"mem_cached\" WHERE $timeFilter GROUP BY time($interval)",
-              "refId": "C",
-              "tags": {},
-              "target": "",
-              "groupBy": [
-                {
-                  "type": "time",
-                  "interval": "auto"
-                }
-              ],
-              "fields": [
-                {
-                  "name": "value",
-                  "func": "mean"
-                }
-              ]
-            },
-            {
-              "measurement": "mem_free",
-              "query": "SELECT mean(\"value\") AS \"value\" FROM \"mem_free\" WHERE $timeFilter GROUP BY time($interval)",
-              "refId": "D",
-              "tags": {},
-              "target": "",
-              "groupBy": [
-                {
-                  "type": "time",
-                  "interval": "auto"
-                }
-              ],
-              "fields": [
-                {
-                  "name": "value",
-                  "func": "mean"
-                }
-              ]
+              "target": ""
             }
           ],
           "timeFrom": null,
@@ -143,14 +105,14 @@
           "x-axis": true,
           "y-axis": true,
           "y_formats": [
-            "short",
-            "short"
+            "percent",
+            "percent"
           ]
         },
         {
           "aliasColors": {},
           "bars": false,
-          "datasource": null,
+          "datasource": "Vision InfluxDB",
           "editable": true,
           "error": false,
           "fill": 1,
@@ -190,41 +152,41 @@
           "steppedLine": false,
           "targets": [
             {
-              "measurement": "cpu_usage_user",
-              "query": "SELECT mean(\"value\") AS \"value\" FROM \"cpu_usage_user\" WHERE $timeFilter GROUP BY time($interval)",
-              "refId": "A",
-              "tags": {},
               "fields": [
                 {
-                  "name": "value",
-                  "func": "mean"
+                  "func": "mean",
+                  "name": "usage_user"
                 }
               ],
               "groupBy": [
                 {
-                  "type": "time",
-                  "interval": "auto"
+                  "interval": "auto",
+                  "type": "time"
                 }
-              ]
+              ],
+              "measurement": "cpu",
+              "query": "SELECT mean(\"usage_user\") AS \"usage_user\" FROM \"cpu\" WHERE $timeFilter GROUP BY time($interval)",
+              "refId": "A",
+              "tags": {}
             },
             {
-              "measurement": "cpu_usage_system",
-              "query": "SELECT mean(\"value\") AS \"value\" FROM \"cpu_usage_system\" WHERE $timeFilter GROUP BY time($interval)",
-              "refId": "B",
-              "tags": {},
-              "target": "",
-              "groupBy": [
-                {
-                  "type": "time",
-                  "interval": "auto"
-                }
-              ],
               "fields": [
                 {
-                  "name": "value",
-                  "func": "mean"
+                  "func": "mean",
+                  "name": "usage_system"
                 }
-              ]
+              ],
+              "groupBy": [
+                {
+                  "interval": "auto",
+                  "type": "time"
+                }
+              ],
+              "measurement": "cpu",
+              "query": "SELECT mean(\"usage_system\") AS \"usage_system\" FROM \"cpu\" WHERE $timeFilter GROUP BY time($interval)",
+              "refId": "B",
+              "tags": {},
+              "target": ""
             }
           ],
           "timeFrom": null,
@@ -251,210 +213,174 @@
       "height": "250px",
       "panels": [
         {
-          "title": "Disk",
-          "error": false,
-          "span": 6,
+          "aliasColors": {},
+          "bars": false,
+          "datasource": "Vision InfluxDB",
           "editable": true,
-          "type": "graph",
+          "error": false,
+          "fill": 1,
+          "grid": {
+            "leftLogBase": 1,
+            "leftMax": 100,
+            "leftMin": 0,
+            "rightLogBase": 1,
+            "rightMax": null,
+            "rightMin": null,
+            "threshold1": null,
+            "threshold1Color": "rgba(216, 200, 27, 0.27)",
+            "threshold2": null,
+            "threshold2Color": "rgba(234, 112, 112, 0.22)"
+          },
           "id": 3,
-          "datasource": null,
+          "legend": {
+            "avg": false,
+            "current": false,
+            "max": false,
+            "min": false,
+            "show": true,
+            "total": false,
+            "values": false
+          },
+          "lines": true,
+          "linewidth": 2,
+          "links": [],
+          "nullPointMode": "connected",
+          "percentage": false,
+          "pointradius": 5,
+          "points": false,
           "renderer": "flot",
+          "seriesOverrides": [],
+          "span": 6,
+          "stack": false,
+          "steppedLine": false,
+          "targets": [
+            {
+              "fields": [
+                {
+                  "func": "first",
+                  "name": "used_percent"
+                }
+              ],
+              "groupBy": [
+                {
+                  "interval": "auto",
+                  "type": "time"
+                }
+              ],
+              "measurement": "disk",
+              "query": "SELECT first(\"used_percent\") AS \"used_percent\" FROM \"disk\" WHERE $timeFilter GROUP BY time($interval)",
+              "refId": "A",
+              "tags": []
+            }
+          ],
+          "timeFrom": null,
+          "timeShift": null,
+          "title": "Disk",
+          "tooltip": {
+            "shared": true,
+            "value_type": "cumulative"
+          },
+          "type": "graph",
           "x-axis": true,
           "y-axis": true,
           "y_formats": [
-            "short",
-            "short"
-          ],
-          "grid": {
-            "leftLogBase": 1,
-            "leftMax": null,
-            "rightMax": null,
-            "leftMin": null,
-            "rightMin": null,
-            "rightLogBase": 1,
-            "threshold1": null,
-            "threshold2": null,
-            "threshold1Color": "rgba(216, 200, 27, 0.27)",
-            "threshold2Color": "rgba(234, 112, 112, 0.22)"
-          },
-          "lines": true,
-          "fill": 1,
-          "linewidth": 2,
-          "points": false,
-          "pointradius": 5,
-          "bars": false,
-          "stack": false,
-          "percentage": false,
-          "legend": {
-            "show": true,
-            "values": false,
-            "min": false,
-            "max": false,
-            "current": false,
-            "total": false,
-            "avg": false
-          },
-          "nullPointMode": "connected",
-          "steppedLine": false,
-          "tooltip": {
-            "value_type": "cumulative",
-            "shared": true
-          },
-          "timeFrom": null,
-          "timeShift": null,
-          "targets": [
-            {
-              "refId": "A",
-              "tags": [],
-              "groupBy": [
-                {
-                  "type": "time",
-                  "interval": "auto"
-                }
-              ],
-              "fields": [
-                {
-                  "name": "value",
-                  "func": "mean"
-                }
-              ],
-              "measurement": "disk_free",
-              "query": "SELECT mean(\"value\") AS \"value\" FROM \"disk_free\" WHERE $timeFilter GROUP BY time($interval)"
-            },
-            {
-              "refId": "B",
-              "tags": [],
-              "groupBy": [
-                {
-                  "type": "time",
-                  "interval": "auto"
-                }
-              ],
-              "fields": [
-                {
-                  "name": "value",
-                  "func": "mean"
-                }
-              ],
-              "measurement": "disk_total",
-              "query": "SELECT mean(\"value\") AS \"value\" FROM \"disk_total\" WHERE $timeFilter GROUP BY time($interval)"
-            },
-            {
-              "refId": "C",
-              "tags": [],
-              "groupBy": [
-                {
-                  "type": "time",
-                  "interval": "auto"
-                }
-              ],
-              "fields": [
-                {
-                  "name": "value",
-                  "func": "mean"
-                }
-              ],
-              "measurement": "disk_used",
-              "query": "SELECT mean(\"value\") AS \"value\" FROM \"disk_used\" WHERE $timeFilter GROUP BY time($interval)"
-            }
-          ],
-          "aliasColors": {},
-          "seriesOverrides": [],
-          "links": []
+            "percent",
+            "bytes"
+          ]
         },
         {
-          "title": "I/O",
-          "error": false,
-          "span": 6,
+          "aliasColors": {},
+          "bars": false,
+          "datasource": "Vision InfluxDB",
           "editable": true,
-          "type": "graph",
-          "id": 4,
-          "datasource": null,
-          "renderer": "flot",
-          "x-axis": true,
-          "y-axis": true,
-          "y_formats": [
-            "short",
-            "short"
-          ],
+          "error": false,
+          "fill": 1,
           "grid": {
             "leftLogBase": 1,
             "leftMax": null,
-            "rightMax": null,
             "leftMin": null,
-            "rightMin": null,
             "rightLogBase": 1,
+            "rightMax": null,
+            "rightMin": null,
             "threshold1": null,
-            "threshold2": null,
             "threshold1Color": "rgba(216, 200, 27, 0.27)",
+            "threshold2": null,
             "threshold2Color": "rgba(234, 112, 112, 0.22)"
           },
-          "lines": true,
-          "fill": 1,
-          "linewidth": 2,
-          "points": false,
-          "pointradius": 5,
-          "bars": false,
-          "stack": false,
-          "percentage": false,
+          "id": 4,
           "legend": {
-            "show": true,
-            "values": false,
-            "min": false,
-            "max": false,
+            "avg": false,
             "current": false,
+            "max": false,
+            "min": false,
+            "show": true,
             "total": false,
-            "avg": false
+            "values": false
           },
+          "lines": true,
+          "linewidth": 2,
+          "links": [],
           "nullPointMode": "connected",
+          "percentage": false,
+          "pointradius": 5,
+          "points": false,
+          "renderer": "flot",
+          "seriesOverrides": [],
+          "span": 6,
+          "stack": false,
           "steppedLine": false,
-          "tooltip": {
-            "value_type": "cumulative",
-            "shared": true
-          },
-          "timeFrom": null,
-          "timeShift": null,
           "targets": [
             {
-              "refId": "A",
-              "tags": [],
-              "groupBy": [
-                {
-                  "type": "time",
-                  "interval": "auto"
-                }
-              ],
               "fields": [
                 {
-                  "name": "value",
-                  "func": "mean"
+                  "func": "mean",
+                  "name": "read_bytes"
                 }
               ],
-              "measurement": "io_reads",
-              "query": "SELECT mean(\"value\") AS \"value\" FROM \"io_reads\" WHERE $timeFilter GROUP BY time($interval)"
+              "groupBy": [
+                {
+                  "interval": "auto",
+                  "type": "time"
+                }
+              ],
+              "measurement": "diskio",
+              "query": "SELECT mean(\"read_bytes\") AS \"read_bytes\" FROM \"diskio\" WHERE $timeFilter GROUP BY time($interval)",
+              "refId": "A",
+              "tags": []
             },
             {
-              "refId": "B",
-              "tags": [],
-              "groupBy": [
-                {
-                  "type": "time",
-                  "interval": "auto"
-                }
-              ],
               "fields": [
                 {
-                  "name": "value",
-                  "func": "mean"
+                  "func": "mean",
+                  "name": "write_bytes"
                 }
               ],
-              "measurement": "io_writes",
-              "query": "SELECT mean(\"value\") AS \"value\" FROM \"io_writes\" WHERE $timeFilter GROUP BY time($interval)"
+              "groupBy": [
+                {
+                  "interval": "auto",
+                  "type": "time"
+                }
+              ],
+              "measurement": "diskio",
+              "query": "SELECT mean(\"write_bytes\") AS \"write_bytes\" FROM \"diskio\" WHERE $timeFilter GROUP BY time($interval)",
+              "refId": "B",
+              "tags": []
             }
           ],
-          "aliasColors": {},
-          "seriesOverrides": [],
-          "links": []
+          "timeFrom": null,
+          "timeShift": null,
+          "title": "I/O",
+          "tooltip": {
+            "shared": true,
+            "value_type": "cumulative"
+          },
+          "type": "graph",
+          "x-axis": true,
+          "y-axis": true,
+          "y_formats": [
+            "bytes",
+            "bytes"
+          ]
         }
       ],
       "title": "New row"
@@ -465,253 +391,281 @@
       "height": "250px",
       "panels": [
         {
-          "title": "Netstat",
-          "error": false,
-          "span": 6,
+          "aliasColors": {},
+          "bars": false,
+          "datasource": "Vision InfluxDB",
           "editable": true,
-          "type": "graph",
-          "id": 5,
-          "datasource": null,
+          "error": false,
+          "fill": 1,
+          "grid": {
+            "leftLogBase": 1,
+            "leftMax": null,
+            "leftMin": null,
+            "rightLogBase": 1,
+            "rightMax": null,
+            "rightMin": null,
+            "threshold1": null,
+            "threshold1Color": "rgba(216, 200, 27, 0.27)",
+            "threshold2": null,
+            "threshold2Color": "rgba(234, 112, 112, 0.22)"
+          },
+          "id": 6,
+          "legend": {
+            "avg": false,
+            "current": false,
+            "max": false,
+            "min": false,
+            "show": true,
+            "total": false,
+            "values": false
+          },
+          "lines": true,
+          "linewidth": 2,
+          "links": [],
+          "nullPointMode": "connected",
+          "percentage": false,
+          "pointradius": 5,
+          "points": false,
           "renderer": "flot",
+          "seriesOverrides": [],
+          "span": 6,
+          "stack": false,
+          "steppedLine": false,
+          "targets": [
+            {
+              "fields": [
+                {
+                  "func": "mean",
+                  "name": "load1"
+                }
+              ],
+              "groupBy": [
+                {
+                  "interval": "auto",
+                  "type": "time"
+                }
+              ],
+              "measurement": "system",
+              "query": "SELECT mean(\"load1\") AS \"load1\" FROM \"system\" WHERE $timeFilter GROUP BY time($interval)",
+              "refId": "B",
+              "tags": []
+            },
+            {
+              "fields": [
+                {
+                  "func": "mean",
+                  "name": "load5"
+                }
+              ],
+              "groupBy": [
+                {
+                  "interval": "auto",
+                  "type": "time"
+                }
+              ],
+              "measurement": "system",
+              "query": "SELECT mean(\"load5\") AS \"load5\" FROM \"system\" WHERE $timeFilter GROUP BY time($interval)",
+              "refId": "A",
+              "tags": []
+            },
+            {
+              "fields": [
+                {
+                  "func": "mean",
+                  "name": "load15"
+                }
+              ],
+              "groupBy": [
+                {
+                  "interval": "auto",
+                  "type": "time"
+                }
+              ],
+              "measurement": "system",
+              "query": "SELECT mean(\"load15\") AS \"load15\" FROM \"system\" WHERE $timeFilter GROUP BY time($interval)",
+              "refId": "C",
+              "tags": []
+            }
+          ],
+          "timeFrom": null,
+          "timeShift": null,
+          "title": "Load",
+          "tooltip": {
+            "shared": true,
+            "value_type": "cumulative"
+          },
+          "type": "graph",
           "x-axis": true,
           "y-axis": true,
           "y_formats": [
             "short",
             "short"
-          ],
-          "grid": {
-            "leftLogBase": 1,
-            "leftMax": null,
-            "rightMax": null,
-            "leftMin": null,
-            "rightMin": null,
-            "rightLogBase": 1,
-            "threshold1": null,
-            "threshold2": null,
-            "threshold1Color": "rgba(216, 200, 27, 0.27)",
-            "threshold2Color": "rgba(234, 112, 112, 0.22)"
-          },
-          "lines": true,
-          "fill": 1,
-          "linewidth": 2,
-          "points": false,
-          "pointradius": 5,
-          "bars": false,
-          "stack": false,
-          "percentage": false,
-          "legend": {
-            "show": true,
-            "values": false,
-            "min": false,
-            "max": false,
-            "current": false,
-            "total": false,
-            "avg": false
-          },
-          "nullPointMode": "connected",
-          "steppedLine": false,
-          "tooltip": {
-            "value_type": "cumulative",
-            "shared": true
-          },
-          "timeFrom": null,
-          "timeShift": null,
-          "targets": [
-            {
-              "refId": "C",
-              "tags": [],
-              "groupBy": [
-                {
-                  "type": "time",
-                  "interval": "auto"
-                }
-              ],
-              "fields": [
-                {
-                  "name": "value",
-                  "func": "mean"
-                }
-              ],
-              "measurement": "netstat_tcp_listen",
-              "query": "SELECT mean(\"value\") AS \"value\" FROM \"netstat_tcp_listen\" WHERE $timeFilter GROUP BY time($interval)"
-            },
-            {
-              "refId": "A",
-              "tags": [],
-              "groupBy": [
-                {
-                  "type": "time",
-                  "interval": "auto"
-                }
-              ],
-              "fields": [
-                {
-                  "name": "value",
-                  "func": "mean"
-                }
-              ],
-              "measurement": "netstat_tcp_established",
-              "query": "SELECT mean(\"value\") AS \"value\" FROM \"netstat_tcp_established\" WHERE $timeFilter GROUP BY time($interval)"
-            },
-            {
-              "refId": "B",
-              "tags": [],
-              "groupBy": [
-                {
-                  "type": "time",
-                  "interval": "auto"
-                }
-              ],
-              "fields": [
-                {
-                  "name": "value",
-                  "func": "mean"
-                }
-              ],
-              "measurement": "netstat_tcp_close_wait",
-              "query": "SELECT mean(\"value\") AS \"value\" FROM \"netstat_tcp_close_wait\" WHERE $timeFilter GROUP BY time($interval)"
-            },
-            {
-              "refId": "D",
-              "tags": [],
-              "groupBy": [
-                {
-                  "type": "time",
-                  "interval": "auto"
-                }
-              ],
-              "fields": [
-                {
-                  "name": "value",
-                  "func": "mean"
-                }
-              ],
-              "measurement": "netst",
-              "query": "SELECT mean(\"value\") AS \"value\" FROM \"netst\" WHERE $timeFilter GROUP BY time($interval)"
-            }
-          ],
-          "aliasColors": {},
-          "seriesOverrides": [],
-          "links": []
+          ]
         },
         {
-          "title": "Load",
-          "error": false,
-          "span": 6,
+          "aliasColors": {},
+          "bars": false,
+          "datasource": "Vision InfluxDB",
           "editable": true,
-          "type": "graph",
-          "id": 6,
-          "datasource": null,
-          "renderer": "flot",
-          "x-axis": true,
-          "y-axis": true,
-          "y_formats": [
-            "short",
-            "short"
-          ],
+          "error": false,
+          "fill": 1,
           "grid": {
             "leftLogBase": 1,
             "leftMax": null,
-            "rightMax": null,
             "leftMin": null,
-            "rightMin": null,
             "rightLogBase": 1,
+            "rightMax": null,
+            "rightMin": null,
             "threshold1": null,
-            "threshold2": null,
             "threshold1Color": "rgba(216, 200, 27, 0.27)",
+            "threshold2": null,
             "threshold2Color": "rgba(234, 112, 112, 0.22)"
           },
-          "lines": true,
-          "fill": 1,
-          "linewidth": 2,
-          "points": false,
-          "pointradius": 5,
-          "bars": false,
-          "stack": false,
-          "percentage": false,
+          "id": 7,
           "legend": {
-            "show": true,
-            "values": false,
-            "min": false,
-            "max": false,
+            "avg": false,
             "current": false,
+            "max": false,
+            "min": false,
+            "show": true,
             "total": false,
-            "avg": false
+            "values": false
           },
+          "lines": true,
+          "linewidth": 2,
+          "links": [],
           "nullPointMode": "connected",
+          "percentage": false,
+          "pointradius": 5,
+          "points": false,
+          "renderer": "flot",
+          "seriesOverrides": [],
+          "span": 6,
+          "stack": false,
           "steppedLine": false,
-          "tooltip": {
-            "value_type": "cumulative",
-            "shared": true
-          },
-          "timeFrom": null,
-          "timeShift": null,
           "targets": [
             {
-              "refId": "B",
-              "tags": [],
-              "groupBy": [
-                {
-                  "type": "time",
-                  "interval": "auto"
-                }
-              ],
+              "alias": "wlp3s0.bytes_recv",
               "fields": [
                 {
-                  "name": "value",
-                  "func": "mean"
+                  "func": "mean",
+                  "name": "bytes_recv"
                 }
               ],
-              "measurement": "system_load1",
-              "query": "SELECT mean(\"value\") AS \"value\" FROM \"system_load1\" WHERE $timeFilter GROUP BY time($interval)"
-            },
-            {
+              "groupBy": [
+                {
+                  "interval": "auto",
+                  "type": "time"
+                }
+              ],
+              "measurement": "net",
+              "query": "SELECT mean(\"bytes_recv\") AS \"bytes_recv\" FROM \"net\" WHERE \"interface\" = 'wlp3s0' AND $timeFilter GROUP BY time($interval)",
               "refId": "A",
-              "tags": [],
-              "groupBy": [
+              "tags": [
                 {
-                  "type": "time",
-                  "interval": "auto"
+                  "key": "interface",
+                  "operator": "=",
+                  "value": "wlp3s0"
                 }
-              ],
-              "fields": [
-                {
-                  "name": "value",
-                  "func": "mean"
-                }
-              ],
-              "measurement": "system_load5",
-              "query": "SELECT mean(\"value\") AS \"value\" FROM \"system_load5\" WHERE $timeFilter GROUP BY time($interval)"
+              ]
             },
             {
-              "refId": "C",
-              "tags": [],
-              "groupBy": [
-                {
-                  "type": "time",
-                  "interval": "auto"
-                }
-              ],
+              "alias": "eno1.bytes_recv",
               "fields": [
                 {
-                  "name": "value",
-                  "func": "mean"
+                  "func": "mean",
+                  "name": "bytes_recv"
                 }
               ],
-              "measurement": "system_load15",
-              "query": "SELECT mean(\"value\") AS \"value\" FROM \"system_load15\" WHERE $timeFilter GROUP BY time($interval)"
+              "groupBy": [
+                {
+                  "interval": "auto",
+                  "type": "time"
+                }
+              ],
+              "measurement": "net",
+              "query": "SELECT mean(\"bytes_recv\") AS \"bytes_recv\" FROM \"net\" WHERE \"interface\" = 'eno1' AND $timeFilter GROUP BY time($interval)",
+              "refId": "B",
+              "tags": [
+                {
+                  "key": "interface",
+                  "operator": "=",
+                  "value": "eno1"
+                }
+              ]
+            },
+            {
+              "alias": "wlp3s0.bytes_sent",
+              "fields": [
+                {
+                  "func": "mean",
+                  "name": "bytes_sent"
+                }
+              ],
+              "groupBy": [
+                {
+                  "interval": "auto",
+                  "type": "time"
+                }
+              ],
+              "measurement": "net",
+              "query": "SELECT mean(\"bytes_sent\") AS \"bytes_sent\" FROM \"net\" WHERE \"interface\" = 'wlp3s0' AND $timeFilter GROUP BY time($interval)",
+              "refId": "C",
+              "tags": [
+                {
+                  "key": "interface",
+                  "operator": "=",
+                  "value": "wlp3s0"
+                }
+              ]
+            },
+            {
+              "alias": "eno1.bytes_sent",
+              "fields": [
+                {
+                  "func": "mean",
+                  "name": "bytes_sent"
+                }
+              ],
+              "groupBy": [
+                {
+                  "interval": "auto",
+                  "type": "time"
+                }
+              ],
+              "measurement": "net",
+              "query": "SELECT mean(\"bytes_sent\") AS \"bytes_sent\" FROM \"net\" WHERE \"interface\" = 'eno1' AND $timeFilter GROUP BY time($interval)",
+              "refId": "D",
+              "tags": [
+                {
+                  "key": "interface",
+                  "operator": "=",
+                  "value": "eno1"
+                }
+              ]
             }
           ],
-          "aliasColors": {},
-          "seriesOverrides": [],
-          "links": []
+          "timeFrom": null,
+          "timeShift": null,
+          "title": "Network",
+          "tooltip": {
+            "shared": true,
+            "value_type": "cumulative"
+          },
+          "type": "graph",
+          "x-axis": true,
+          "y-axis": true,
+          "y_formats": [
+            "bytes",
+            "bytes"
+          ]
         }
       ],
       "title": "New row"
     }
   ],
   "time": {
-    "from": "now-1h",
+    "from": "now-30m",
     "to": "now"
   },
   "timepicker": {
@@ -753,6 +707,6 @@
   },
   "refresh": false,
   "schemaVersion": 7,
-  "version": 1,
+  "version": 15,
   "links": []
 }
