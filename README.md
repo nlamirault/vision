@@ -224,6 +224,7 @@ Nicolas Lamirault <nicolas.lamirault@gmail.com>
 [Kibana]: http://www.elasticsearch.org/overview/kibana/
 [Topbeat]: https://www.elastic.co/downloads/beats/topbeat
 [Filebeat]: https://www.elastic.co/downloads/beats/filebeat
+[Packetbeat]: https://www.elastic.co/downloads/beats/packetbeat
 
 [Grafana]: http://grafana.org/
 
@@ -231,6 +232,10 @@ Nicolas Lamirault <nicolas.lamirault@gmail.com>
 [Telegraf]: https://github.com/influxdb/telegraf
 
 [Heka]: http://hekad.readthedocs.org/en/latest/
+
+[Prometheus]: https://github.com/prometheus/prometheus
+[Prometheus node exporter]: https://github.com/prometheus/node_exporter
+
 
 [Virtualbox]: https://www.virtualbox.org
 [Vagrant]: http://downloads.vagrantup.com
