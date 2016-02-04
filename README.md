@@ -79,11 +79,27 @@ and open Topbeat dashboard. Do same with Packetbeat index and dashboard.
 
         $ telegraf -config telegraf/telegraf.conf
 
-* Then open the Grafana dashboard (`http://localhost:9191`) and import the *Vision Telegraf* dashboard from (`grafana/grafana-telegraf.json`)
+* Then open the Grafana dashboard (`http://localhost:9191`) and import the
+   *Vision Telegraf* dashboard from (`grafana/grafana-telegraf.json`)
 
 * You could explore metrics into the InfluxDB UI on `http://localhost:8083` with the query :
 
         SHOW MEASUREMENTS
+
+### Monitoring servers : Prometheus/Grafana
+
+* Install [Prometheus][] and [Prometheus node exporter][]
+
+* Launch services :
+
+        $ ./prometheus -config.file=prometheus/vision.yml
+        $ ./node_exporter
+
+* Check Prometheus installation on : `http://localhost:9090` and 
+  `http://localhost:9090/consoles/node.html`
+
+* hen open the Grafana dashboard (`http://localhost:9191`) and import the 
+  *Vision Prometheus* dashboard from (`grafana/grafana-prometheus.json`)
 
 
 ### Log analysis (Elasticsearch/Filebeat/Kibana)
