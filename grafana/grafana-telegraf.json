@@ -255,6 +255,7 @@
           "steppedLine": false,
           "targets": [
             {
+              "alias": "/",
               "fields": [
                 {
                   "func": "first",
@@ -265,12 +266,72 @@
                 {
                   "interval": "auto",
                   "type": "time"
+                },
+                {
+                  "key": "path",
+                  "type": "tag"
                 }
               ],
               "measurement": "disk",
-              "query": "SELECT first(\"used_percent\") AS \"used_percent\" FROM \"disk\" WHERE $timeFilter GROUP BY time($interval)",
+              "query": "SELECT first(\"used_percent\") AS \"used_percent\" FROM \"disk\" WHERE \"path\" = '/' AND $timeFilter GROUP BY time($interval), \"path\"",
               "refId": "A",
-              "tags": []
+              "tags": [
+                {
+                  "key": "path",
+                  "operator": "=",
+                  "value": "/"
+                }
+              ]
+            },
+            {
+              "alias": "/boot",
+              "fields": [
+                {
+                  "func": "mean",
+                  "name": "used_percent"
+                }
+              ],
+              "groupBy": [
+                {
+                  "interval": "auto",
+                  "type": "time"
+                }
+              ],
+              "measurement": "disk",
+              "query": "SELECT mean(\"used_percent\") AS \"used_percent\" FROM \"disk\" WHERE \"path\" = '/boot' AND $timeFilter GROUP BY time($interval)",
+              "refId": "B",
+              "tags": [
+                {
+                  "key": "path",
+                  "operator": "=",
+                  "value": "/boot"
+                }
+              ]
+            },
+            {
+              "alias": "/home",
+              "fields": [
+                {
+                  "func": "mean",
+                  "name": "used_percent"
+                }
+              ],
+              "groupBy": [
+                {
+                  "interval": "auto",
+                  "type": "time"
+                }
+              ],
+              "measurement": "disk",
+              "query": "SELECT mean(\"used_percent\") AS \"used_percent\" FROM \"disk\" WHERE \"path\" = '/home' AND $timeFilter GROUP BY time($interval)",
+              "refId": "C",
+              "tags": [
+                {
+                  "key": "path",
+                  "operator": "=",
+                  "value": "/home"
+                }
+              ]
             }
           ],
           "timeFrom": null,
@@ -570,7 +631,7 @@
               ]
             },
             {
-              "alias": "eno1.bytes_recv",
+              "alias": "enp0s25.bytes_recv",
               "fields": [
                 {
                   "func": "mean",
@@ -584,13 +645,13 @@
                 }
               ],
               "measurement": "net",
-              "query": "SELECT mean(\"bytes_recv\") AS \"bytes_recv\" FROM \"net\" WHERE \"interface\" = 'eno1' AND $timeFilter GROUP BY time($interval)",
+              "query": "SELECT mean(\"bytes_recv\") AS \"bytes_recv\" FROM \"net\" WHERE \"interface\" = 'enp0s25' AND $timeFilter GROUP BY time($interval)",
               "refId": "B",
               "tags": [
                 {
                   "key": "interface",
                   "operator": "=",
-                  "value": "eno1"
+                  "value": "enp0s25"
                 }
               ]
             },
@@ -620,7 +681,7 @@
               ]
             },
             {
-              "alias": "eno1.bytes_sent",
+              "alias": "enp0s25.bytes_sent",
               "fields": [
                 {
                   "func": "mean",
@@ -634,13 +695,13 @@
                 }
               ],
               "measurement": "net",
-              "query": "SELECT mean(\"bytes_sent\") AS \"bytes_sent\" FROM \"net\" WHERE \"interface\" = 'eno1' AND $timeFilter GROUP BY time($interval)",
+              "query": "SELECT mean(\"bytes_sent\") AS \"bytes_sent\" FROM \"net\" WHERE \"interface\" = 'enp0s25' AND $timeFilter GROUP BY time($interval)",
               "refId": "D",
               "tags": [
                 {
                   "key": "interface",
                   "operator": "=",
-                  "value": "eno1"
+                  "value": "enp0s25"
                 }
               ]
             }
@@ -707,6 +768,6 @@
   },
   "refresh": false,
   "schemaVersion": 7,
-  "version": 15,
+  "version": 17,
   "links": []
 }
