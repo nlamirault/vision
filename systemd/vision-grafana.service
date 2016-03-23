@@ -2,7 +2,7 @@
 Description=Grafana for Vision
 Requires=docker.service
 After=docker.service
-Requires=docker.vision-influxdb.service
+Requires=vision-influxdb.service
 
 [Service]
 Restart=always
