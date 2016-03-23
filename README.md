@@ -13,18 +13,22 @@
 * [InfluxDB][] web interface : `http://xxx:8083`
 * [Heka][] dashboard : `http://xxx:4352`
 
-## Local Installation
+## Installation
 
 * Download and install a release :
 
         $ curl https://github.com/nlamirault/vision/releases/download/x.y.z/vision-x.y.z-linux.tar.gz
         $ tar zxvf vision-x.y.z
         $ cd vision-x.y.z
-
-* Start it :
-
         $ ./init.sh
+
+* Start services using [Docker Compose][]:
+
         $ docker-compose up -d
+
+* Start services using [SystemD][]:
+
+        $ cp -r vision-*.service /lib/systemd/system/
 
 ## Usage
 
@@ -32,9 +36,7 @@
 
 * Install [Topbeat][] and [Packetbeat][]
 
-* Launch [Elasticsearch][] and [Kibana][] services :
-
-        $ docker-compose up -d elasticsearch kibana
+* Launch [Elasticsearch][] and [Kibana][] services
 
 * Loading the templates into Elasticsearch
 
@@ -60,6 +62,7 @@
 * Loading Kibana dashboards:
 
         $ curl -L -O http://download.elastic.co/beats/dashboards/beats-dashboards-1.0.0.tar.gz
+        $ tar zxvf beats-dashboards-1.0.0.tar.gz
         $ cd beats-dashboards-1.0.0
         $ ./load.sh
 
@@ -71,9 +74,7 @@ and open Topbeat dashboard. Do same with Packetbeat index and dashboard.
 
 * Install [Telegraf][]
 
-* Launch [InfluxDB][] and [Grafana][] services :
-
-        $ docker-compose up -d influxdb grafana
+* Launch [InfluxDB][] and [Grafana][] services
 
 * Running *telegraf* metrics :
 
@@ -106,9 +107,7 @@ and open Topbeat dashboard. Do same with Packetbeat index and dashboard.
 
 * Install [Filebeat][]
 
-* Launch [Elasticsearch][] and [Kibana][] services :
-
-        $ docker-compose up -d elasticsearch kibana
+* Launch [Elasticsearch][] and [Kibana][] services
 
 * Loading the Index Template into Elasticsearch
 
@@ -131,16 +130,6 @@ You could use services files to launch *Vision* monitoring tools using *SystemD*
 
 
 ## Development
-
-### Simple
-
-* Build the images :
-
-        $ make build image=xxx
-
-* Setup directories :
-
-        $ make setup
 
 * Creates a virtual machine called *vision-dev* for the development environment :
 
@@ -228,7 +217,9 @@ Nicolas Lamirault <nicolas.lamirault@gmail.com>
 [Docker]: https://www.docker.io
 [Docker documentation]: http://docs.docker.io
 [Docker Machine]:https://github.com/docker/machine
-[Docker Complete]: https://github.com/docker/compose
+[Docker Compose]: https://github.com/docker/compose
+
+[SystemD]: https://freedesktop.org/wiki/Software/systemd/
 
 [Elasticsearch]: http://www.elasticsearch.org
 [Kibana]: http://www.elasticsearch.org/overview/kibana/
