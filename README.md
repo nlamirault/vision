@@ -120,7 +120,6 @@ and open Topbeat dashboard. Do same with Packetbeat index and dashboard.
         $ filebeat -c beats/filebeat.yml
 
 
-
 ### SystemD
 
 You could use services files to launch *Vision* monitoring tools using *SystemD*.
