@@ -11,84 +11,125 @@
 * [Kibana][] web interface : `http://xxx:9393`
 * [Grafana][] web interface : `http://xxx:9999/`
 * [InfluxDB][] web interface : `http://xxx:8083`
+* [Heka][] dashboard : `http://xxx:4352`
 
-
-## Local Installation
+## Installation
 
 * Download and install a release :
 
         $ curl https://github.com/nlamirault/vision/releases/download/x.y.z/vision-x.y.z-linux.tar.gz
         $ tar zxvf vision-x.y.z
         $ cd vision-x.y.z
-
-* Start it :
-
         $ ./init.sh
+
+* Start services using [Docker Compose][]:
+
         $ docker-compose up -d
+
+* Start services using [SystemD][]:
+
+        $ cp -r vision-*.service /lib/systemd/system/
 
 ## Usage
 
 ### Monitoring servers : Elasticsearch/Kibana/Beats
 
-* Install [Topbeat][]
+* Install [Topbeat][] and [Packetbeat][]
 
-* Launch [Elasticsearch][] and [Kibana][] services :
+* Launch [Elasticsearch][] and [Kibana][] services
 
-        $ docker-compose up -d elasticsearch kibana
-
-* Loading the Index Template into Elasticsearch
+* Loading the templates into Elasticsearch
 
         $ curl -XPUT 'http://localhost:9200/_template/packetbeat' \
             -d@beats/topbeat.template.json
+
+        $ curl -XPUT 'http://localhost:9200/_template/packetbeat' \
+            -d@beats/packetbeat.template.json
 
 * Running *topbeat* metrics :
 
         $ topbeat -c beats/topbeat.yml
 
-* Testing the Topbeat installation:
+* Running *packetbeat* metrics :
+
+        $ packetbeat -c beats/packetbeat.yml
+
+* Testing the installation:
 
         $ curl -XGET 'http://localhost:9200/topbeat-*/_search?pretty'
+        $ curl -XGET 'http://localhost:9200/packetbeat-*/_search?pretty'
 
 * Loading Kibana dashboards:
 
         $ curl -L -O http://download.elastic.co/beats/dashboards/beats-dashboards-1.0.0.tar.gz
+        $ tar zxvf beats-dashboards-1.0.0.tar.gz
         $ cd beats-dashboards-1.0.0
         $ ./load.sh
 
-* Then open the Kibana website (`http://localhost:9393`), then select Topbeat index, and open Topbeat dashboard.
+* Then open the Kibana website (`http://localhost:9393`), then select Topbeat index,
+and open Topbeat dashboard. Do same with Packetbeat index and dashboard.
 
 
 ### Monitoring servers : Telegraf/InfluxDB/Grafana
 
 * Install [Telegraf][]
 
-* Launch [InfluxDB][] and [Grafana][] services :
-
-        $ docker-compose up -d influxdb grafana
+* Launch [InfluxDB][] and [Grafana][] services
 
 * Running *telegraf* metrics :
 
         $ telegraf -config telegraf/telegraf.conf
 
-* Then open the Grafana dashboard (`http://localhost:9191`) and import the *Vision Telegraf* dashboard from (`grafana/grafana-telegraf.json`)
+* Then open the Grafana dashboard (`http://localhost:9191`) and import the
+   *Vision Telegraf* dashboard from (`grafana/grafana-telegraf.json`)
 
 * You could explore metrics into the InfluxDB UI on `http://localhost:8083` with the query :
 
         SHOW MEASUREMENTS
 
+### Monitoring servers : Prometheus/Grafana
+
+* Install [Prometheus][] and [Prometheus node exporter][]
+
+* Launch services :
+
+        $ ./prometheus -config.file=prometheus/vision.yml
+        $ ./node_exporter
+
+* Check Prometheus installation on : `http://localhost:9090` and
+  `http://localhost:9090/consoles/node.html`
+
+* hen open the Grafana dashboard (`http://localhost:9191`) and import the
+  *Vision Prometheus* dashboard from (`grafana/grafana-prometheus.json`)
+
+
+### Log analysis (Elasticsearch/Filebeat/Kibana)
+
+* Install [Filebeat][]
+
+* Launch [Elasticsearch][] and [Kibana][] services
+
+* Loading the Index Template into Elasticsearch
+
+        $ curl -XPUT 'http://localhost:9200/_template/packetbeat' \
+            -d@beats/filebeat.template.json
+
+* Running *filebeat* metrics :
+
+        $ filebeat -c beats/filebeat.yml
+
+
+### SystemD
+
+You could use services files to launch *Vision* monitoring tools using *SystemD*.
+
+    $ sudo cp systemd/*.service /lib/systemd/system/
+    $ sudo systemctl enable vision-telegraf
+    $ sudo systemctl enable vision-topbeat
+    $ sudo systemctl enable vision-packetbeat
 
 
 ## Development
-
-### Simple
-
-* Build the images :
-
-        $ make build image=xxx
-
-* Setup directories :
-
-        $ make setup
 
 * Creates a virtual machine called *vision-dev* for the development environment :
 
@@ -176,14 +217,15 @@ Nicolas Lamirault <nicolas.lamirault@gmail.com>
 [Docker]: https://www.docker.io
 [Docker documentation]: http://docs.docker.io
 [Docker Machine]:https://github.com/docker/machine
-[Docker Complete]: https://github.com/docker/compose
+[Docker Compose]: https://github.com/docker/compose
+
+[SystemD]: https://freedesktop.org/wiki/Software/systemd/
 
 [Elasticsearch]: http://www.elasticsearch.org
 [Kibana]: http://www.elasticsearch.org/overview/kibana/
 [Topbeat]: https://www.elastic.co/downloads/beats/topbeat
-[ElasticSearchHead]: http://mobz.github.io/elasticsearch-head
-[ElasticHQ]: http://www.elastichq.org
-[Kopf]: https://github.com/lmenezes/elasticsearch-kopf
+[Filebeat]: https://www.elastic.co/downloads/beats/filebeat
+[Packetbeat]: https://www.elastic.co/downloads/beats/packetbeat
 
 [Grafana]: http://grafana.org/
 
@@ -191,6 +233,10 @@ Nicolas Lamirault <nicolas.lamirault@gmail.com>
 [Telegraf]: https://github.com/influxdb/telegraf
 
 [Heka]: http://hekad.readthedocs.org/en/latest/
+
+[Prometheus]: https://github.com/prometheus/prometheus
+[Prometheus node exporter]: https://github.com/prometheus/node_exporter
+
 
 [Virtualbox]: https://www.virtualbox.org
 [Vagrant]: http://downloads.vagrantup.com

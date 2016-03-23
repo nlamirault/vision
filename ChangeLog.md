@@ -1,6 +1,12 @@
 Vision ChangeLog
 ================
 
+# Version 1.1.0 (03/23/2016)
+
+- Add SystemD services files
+- Add Grafana dashboards
+- Add monitoring documentation
+
 # Version 1.0.0 (12/08/2015)
 
 - Update to Elasticsearch 2.1.0

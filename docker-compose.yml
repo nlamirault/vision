@@ -27,7 +27,6 @@ grafana:
   volumes:
     - /opt/vision/grafana/lib:/var/lib/grafana
     - /opt/vision/grafana/log:/var/log/grafana
-    - /opt/vision/grafana/etc:/etc/grafana
   links:
     - influxdb:influxdb
   log_driver: "syslog"
@@ -38,4 +37,11 @@ kibana:
     - "9393:5601"
   links:
     - elasticsearch
+  log_driver: "syslog"
+
+heka:
+  image: portefaix/heka:0.10.0b2
+  ports:
+    - "4881:4881"
+    - "4352:4352"
   log_driver: "syslog"

@@ -1,5 +1,5 @@
 # Creates index:
-# $ curl http://10.33.1.174:9200/hekad -X POST
+# $ curl http://x.x.x.x:9200/hekad -X POST
 # {"acknowledged":true}
 
 [hekad]
@@ -7,7 +7,7 @@ maxprocs=10
 
 [LogstreamerInput]
 log_directory = "/var/log"
-file_match = 'local7\.log'
+file_match = '*\.log'
 
 [PayloadEncoder]
 append_newlines = false
@@ -23,7 +23,7 @@ type_name = "%{Type}"
 
 [ElasticSearchOutput]
 message_matcher = "TRUE"
-server = "http://ww.xx.yy.zz:9200"
+server = "http://localhost:9200"
 flush_interval = 5000
 flush_count = 10
 encoder = "ESJsonEncoder"

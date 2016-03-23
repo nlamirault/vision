@@ -1,0 +1,14 @@
+[Unit]
+Description=Telegraf for Vision
+Documentation=https://github.com/nlamirault/vision
+After=network.target
+
+[Service]
+ExecStart=/usr/bin/telegraf -config /etc/vision/telegraf.conf
+ExecReload=/bin/kill -HUP $MAINPID
+Restart=on-failure
+KillMode=process
+
+[Install]
+WantedBy=multi-user.target
+Alias=vision-telegraf.service

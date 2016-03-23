@@ -1,4 +1,4 @@
-# Copyright (C) 2014, 2015  Nicolas Lamirault <nicolas.lamirault@gmail.com>
+# Copyright (C) 2014, 2016 Nicolas Lamirault <nicolas.lamirault@gmail.com>
 
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -86,11 +86,9 @@ compose-windows:
 .PHONY: init
 init: machine-$(OS) compose-$(OS)
 
-archives: machine-linux compose-linux machine-darwin compose-darwin
+archives:
 	@echo -e "$(OK_COLOR)[$(APP)] Make binaries $(NO_COLOR)"
-	@addons/release.sh linux $(VERSION)
-	@addons/release.sh darwin $(VERSION)
-	@rm -f ./docker-compose-* ./docker-machine-*.zip
+	@addons/release.sh $(VERSION)
 
 .PHONY: release
 release: binaries
