@@ -76,16 +76,24 @@ and open Topbeat dashboard. Do same with Packetbeat index and dashboard.
 
 * Launch [InfluxDB][] and [Grafana][] services
 
+* Creates the database (go to the InfluxDB UI):
+
+        CREATE DATABASE telegraf
+
+or
+
+        $ curl -G 'http://localhost:8086/query' --data-urlencode "q=CREATE DATABASE telegraf"
+
 * Running *telegraf* metrics :
 
         $ telegraf -config telegraf/telegraf.conf
 
-* Then open the Grafana dashboard (`http://localhost:9191`) and import the
-   *Vision Telegraf* dashboard from (`grafana/grafana-telegraf.json`)
+* Then open the Grafana dashboard (`http://localhost:9191`), add a data sources (InfluxDB 0.9.x) and import the *Vision Telegraf* dashboard from (`grafana/grafana-telegraf.json`)
 
 * You could explore metrics into the InfluxDB UI on `http://localhost:8083` with the query :
 
         SHOW MEASUREMENTS
+
 
 ### Monitoring servers : Prometheus/Grafana
 

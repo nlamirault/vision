@@ -3,7 +3,7 @@
 #
 
 elasticsearch:
-  image: portefaix/elasticsearch:2.1.0.1
+  image: portefaix/elasticsearch:2.2.0
   ports:
     - "9200:9200"
     - "9300:9300"
