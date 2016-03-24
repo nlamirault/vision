@@ -1,5 +1,5 @@
 {
-  "id": 6,
+  "id": 1,
   "title": "Vision cAdvisor",
   "originalTitle": "Vision cAdvisor",
   "tags": [],
@@ -17,7 +17,7 @@
         {
           "aliasColors": {},
           "bars": false,
-          "datasource": "cadvisor",
+          "datasource": "Vision cAdvisor",
           "editable": true,
           "error": false,
           "fill": 1,
@@ -119,7 +119,7 @@
         {
           "aliasColors": {},
           "bars": false,
-          "datasource": "cadvisor",
+          "datasource": "Vision cAdvisor",
           "editable": true,
           "error": false,
           "fill": 1,
@@ -166,10 +166,27 @@
               "alias": "",
               "column": "cpu_cumulative_usage",
               "condition": "cpu_cumulative_usage > 0 and container_name !~ /\\//",
+              "fields": [
+                {
+                  "func": "count",
+                  "name": "value"
+                }
+              ],
               "fill": "",
               "function": "derivative",
+              "groupBy": [
+                {
+                  "interval": "auto",
+                  "type": "time"
+                },
+                {
+                  "key": "container_name",
+                  "type": "tag"
+                }
+              ],
               "groupby_field": "container_name",
               "interval": "5s",
+              "measurement": "load_average",
               "query": "SELECT count(\"value\") AS \"value\" FROM \"load_average\" WHERE \"container_name\" <> '/' AND $timeFilter GROUP BY time($interval), \"container_name\"",
               "refId": "A",
               "series": "stats",
@@ -179,24 +196,7 @@
                   "operator": "<>",
                   "value": "/"
                 }
-              ],
-              "groupBy": [
-                {
-                  "type": "time",
-                  "interval": "auto"
-                },
-                {
-                  "type": "tag",
-                  "key": "container_name"
-                }
-              ],
-              "fields": [
-                {
-                  "name": "value",
-                  "func": "count"
-                }
-              ],
-              "measurement": "load_average"
+              ]
             }
           ],
           "timeFrom": null,
@@ -218,7 +218,7 @@
         {
           "aliasColors": {},
           "bars": false,
-          "datasource": "cadvisor",
+          "datasource": "Vision cAdvisor",
           "editable": true,
           "error": false,
           "fill": 1,
@@ -261,30 +261,30 @@
             {
               "column": "rx_bytes",
               "condition": "rx_bytes > 0 and container_name !~ /\\//",
+              "fields": [
+                {
+                  "func": "mean",
+                  "name": "value"
+                }
+              ],
               "function": "derivative",
+              "groupBy": [
+                {
+                  "interval": "auto",
+                  "type": "time"
+                },
+                {
+                  "key": "container_name",
+                  "type": "tag"
+                }
+              ],
               "groupby_field": "container_name",
               "interval": "1m",
+              "measurement": "rx_bytes",
               "query": "SELECT mean(\"value\") AS \"value\" FROM \"rx_bytes\" WHERE $timeFilter GROUP BY time($interval), \"container_name\"",
               "refId": "A",
               "series": "stats",
-              "tags": [],
-              "groupBy": [
-                {
-                  "type": "time",
-                  "interval": "auto"
-                },
-                {
-                  "type": "tag",
-                  "key": "container_name"
-                }
-              ],
-              "fields": [
-                {
-                  "name": "value",
-                  "func": "mean"
-                }
-              ],
-              "measurement": "rx_bytes"
+              "tags": []
             }
           ],
           "timeFrom": null,
@@ -305,7 +305,7 @@
         {
           "aliasColors": {},
           "bars": false,
-          "datasource": "cadvisor",
+          "datasource": "Vision cAdvisor",
           "editable": true,
           "error": false,
           "fill": 1,
@@ -348,30 +348,30 @@
             {
               "column": "tx_bytes",
               "condition": "tx_bytes > 0 and container_name !~ /\\//",
+              "fields": [
+                {
+                  "func": "mean",
+                  "name": "value"
+                }
+              ],
               "function": "derivative",
+              "groupBy": [
+                {
+                  "interval": "auto",
+                  "type": "time"
+                },
+                {
+                  "key": "container_name",
+                  "type": "tag"
+                }
+              ],
               "groupby_field": "container_name",
               "interval": "1m",
+              "measurement": "tx_bytes",
               "query": "SELECT mean(\"value\") AS \"value\" FROM \"tx_bytes\" WHERE $timeFilter GROUP BY time($interval), \"container_name\"",
               "refId": "A",
               "series": "stats",
-              "tags": [],
-              "groupBy": [
-                {
-                  "type": "time",
-                  "interval": "auto"
-                },
-                {
-                  "type": "tag",
-                  "key": "container_name"
-                }
-              ],
-              "fields": [
-                {
-                  "name": "value",
-                  "func": "mean"
-                }
-              ],
-              "measurement": "tx_bytes"
+              "tags": []
             }
           ],
           "timeFrom": null,
@@ -435,6 +435,6 @@
     "list": []
   },
   "schemaVersion": 7,
-  "version": 7,
+  "version": 4,
   "links": []
 }
