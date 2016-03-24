@@ -30,6 +30,8 @@
 
         $ cp -r vision-*.service /lib/systemd/system/
 
+* To monitoring services using [cAdvisor][], you must start it as the first container.
+
 ## Usage
 
 ### Monitoring servers : Elasticsearch/Kibana/Beats
@@ -61,9 +63,9 @@
 
 * Loading Kibana dashboards:
 
-        $ curl -L -O http://download.elastic.co/beats/dashboards/beats-dashboards-1.0.0.tar.gz
-        $ tar zxvf beats-dashboards-1.0.0.tar.gz
-        $ cd beats-dashboards-1.0.0
+        $ curl -L -O http://download.elastic.co/beats/dashboards/beats-dashboards-1.1.1.zip
+        $ unzip beats-dashboards-1.1.1.zip
+        $ cd beats-dashboards-1.1.1/
         $ ./load.sh
 
 * Then open the Kibana website (`http://localhost:9393`), then select Topbeat index,
