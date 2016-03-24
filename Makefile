@@ -27,10 +27,10 @@ WARN_COLOR=\033[33;01m
 DOCKER = docker
 
 DOCKER_MACHINE_URI=https://github.com/docker/machine/releases/download
-DOCKER_MACHINE_VERSION=v0.5.2
+DOCKER_MACHINE_VERSION=v0.6.0
 
 DOCKER_COMPOSE_URI=https://github.com/docker/compose/releases/download
-DOCKER_COMPOSE_VERSION=1.5.2
+DOCKER_COMPOSE_VERSION=1.6.2
 
 UNAME := $(shell uname)
 ifeq ($(UNAME),$(filter $(UNAME),Linux Darwin))
