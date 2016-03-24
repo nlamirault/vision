@@ -2,6 +2,8 @@
 # Services
 #
 
+version: '2'
+
 elasticsearch:
   image: portefaix/elasticsearch:2.2.0
   ports:
@@ -27,16 +29,12 @@ grafana:
   volumes:
     - /opt/vision/grafana/lib:/var/lib/grafana
     - /opt/vision/grafana/log:/var/log/grafana
-  links:
-    - influxdb:influxdb
   log_driver: "syslog"
 
 kibana:
   image: portefaix/kibana:4.3.0
   ports:
     - "9393:5601"
-  links:
-    - elasticsearch
   log_driver: "syslog"
 
 heka:
@@ -45,3 +43,16 @@ heka:
     - "4881:4881"
     - "4352:4352"
   log_driver: "syslog"
+
+cadvisor:
+  image: google/cadvisor:v0.22.0
+  command: -storage_driver=influxdb -storage_driver_db=cadvisor -storage_driver_host=influxsrv:8086
+  ports:
+    - "9090:8080"
+  volumes:
+    - /:/rootfs:ro
+    - /var/run:/var/run:rw
+    - /sys:/sys:ro
+    - /var/lib/docker/:/var/lib/docker:ro
+  links:
+    - influxdb:influxdb

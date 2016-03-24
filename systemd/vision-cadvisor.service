@@ -1,0 +1,15 @@
+[Unit]
+Description=cAdvisor for Vision
+Requires=docker.service
+After=docker.service
+Requires=vision-influxdb.service
+
+[Service]
+Restart=always
+ExecStartPre=-/usr/bin/docker stop vision-cadvisor
+ExecStartPre=-/usr/bin/docker rm vision-cadvisor
+ExecStartPre=/usr/bin/docker pull google/cadvisor:v0.22.0
+ExecStart=/usr/bin/docker run --rm -p 8888:8080 --volume=/:/rootfs:ro --volume=/var/run:/var/run:rw --volume=/sys:/sys:ro --volume=/var/lib/docker/:/var/lib/docker:ro --name vision-cadvisor google/cadvisor:v0.22.0 -storage_driver=influxdb -storage_driver_db=cadvisor -storage_driver_host=influxdb:8086
+
+[Install]
+WantedBy=local.target
