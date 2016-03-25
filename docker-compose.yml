@@ -14,7 +14,7 @@ elasticsearch:
   log_driver: "syslog"
 
 influxdb:
-  image: portefaix/influxdb:0.11.0.1
+  image: portefaix/influxdb:0.10.0.1
   ports:
     - "8083:8083"
     - "8086:8086"
