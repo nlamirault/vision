@@ -7,8 +7,8 @@ After=docker.service
 Restart=always
 ExecStartPre=-/usr/bin/docker stop vision-influxdb
 ExecStartPre=-/usr/bin/docker rm vision-influxdb
-ExecStartPre=/usr/bin/docker pull portefaix/influxdb:0.9.6.1
-ExecStart=/usr/bin/docker run --rm -p 8083:8083 -p 8086:8086 -v /opt/vision/influxdb/lib:/var/lib/influxdb --name vision-influxdb portefaix/influxdb:0.9.6.1
+ExecStartPre=/usr/bin/docker pull portefaix/influxdb:0.11.0.1
+ExecStart=/usr/bin/docker run --rm -p 8083:8083 -p 8086:8086 -v /opt/vision/influxdb/lib:/var/lib/influxdb --name vision-influxdb portefaix/influxdb:0.11.0.1
 
 [Install]
 WantedBy=local.target
