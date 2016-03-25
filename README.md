@@ -26,11 +26,22 @@
 
         $ docker-compose up -d
 
-* Start services using [SystemD][]:
+* Or using [SystemD][]:
 
         $ cp -r vision-*.service /lib/systemd/system/
+        $ systemctl start vision-influxdb.service \
+            vision-cadvisor.service \
+            vision-elasticsearch.service  \
+            vision-grafana.service \
+            vision-kibana.service
 
-* To monitoring services using [cAdvisor][], you must start it as the first container.
+* Creates the database for cadvisor (go to the InfluxDB UI):
+
+        CREATE DATABASE cadvisor
+
+or
+
+        $ curl -G 'http://localhost:8086/query' --data-urlencode "q=CREATE DATABASE telegraf"
 
 ## Usage
 
@@ -38,7 +49,7 @@
 
 * Install [Topbeat][] and [Packetbeat][]
 
-* Launch [Elasticsearch][] and [Kibana][] services
+* Requires [Elasticsearch][] and [Kibana][] services
 
 * Loading the templates into Elasticsearch
 
@@ -76,7 +87,7 @@ and open Topbeat dashboard. Do same with Packetbeat index and dashboard.
 
 * Install [Telegraf][]
 
-* Launch [InfluxDB][] and [Grafana][] services
+* Requires [InfluxDB][] and [Grafana][] services
 
 * Creates the database (go to the InfluxDB UI):
 
@@ -137,6 +148,7 @@ You could use services files to launch *Vision* monitoring tools using *SystemD*
     $ sudo systemctl enable vision-telegraf
     $ sudo systemctl enable vision-topbeat
     $ sudo systemctl enable vision-packetbeat
+    $ sudo systemctl start vision-packetbeat.service vision-telegraf.service vision-topbeat.service
 
 
 ## Development
